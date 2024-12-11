@@ -1,6 +1,6 @@
 const Dashboard = () => {
     return (
-      <div>
+      <div className="border">
         <h2 className="text-2xl font-semibold">Dashboard</h2>
         <p>This is where you can view your fitness stats.</p>
       </div>

@@ -2,7 +2,7 @@ import React from 'react'
 
 const Insights = () => {
   return (
-    <div>
+    <div className='border border-white'>
       look at your progress through charts
     </div>
   )
