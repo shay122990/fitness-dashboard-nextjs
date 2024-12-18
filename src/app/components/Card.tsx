@@ -1,21 +1,19 @@
-
 interface CardProps {
   title: string;
   description: string;
-  link: string;
+  tabId: string;
+  setActiveTab: (tabId: string) => void;
 }
 
-const Card: React.FC<CardProps> = ({ title, description, link }) => {
+const Card: React.FC<CardProps> = ({ title, description, tabId, setActiveTab }) => {
   return (
-    <div className="border p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+    <div
+      className="border p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 cursor-pointer"
+      onClick={() => setActiveTab(tabId)}
+    >
       <h3 className="text-xl font-semibold mb-2">{title}</h3>
       <p className="text-gray-600 mb-4">{description}</p>
-      <a
-        href={link}
-        className="text-blue-500 hover:underline"
-      >
-        Go to {title}
-      </a>
+      <span className="text-blue-500">Go to {title}</span>
     </div>
   );
 };

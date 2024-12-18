@@ -1,5 +1,4 @@
-"use client";
-
+"use client"
 import { useState } from "react";
 import Image from "next/image";
 import todayLogo from "../../../public/today-logo.png";
@@ -13,7 +12,7 @@ const Sidebar = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
 
   const tabs = [
-    { id: "dashboard", label: "Dashboard", component: <Dashboard /> },
+    { id: "dashboard", label: "Dashboard", component: <Dashboard setActiveTab={setActiveTab} /> },
     { id: "planner", label: "Workout Planner", component: <Planner /> },
     { id: "nutrition", label: "Nutrition Tracker", component: <Nutrition /> },
     { id: "insights", label: "Progress Insights", component: <Insights /> },
@@ -22,7 +21,7 @@ const Sidebar = () => {
 
   const renderActiveTab = () => {
     const activeTabData = tabs.find((tab) => tab.id === activeTab);
-    return activeTabData ? activeTabData.component : <Dashboard />;
+    return activeTabData ? activeTabData.component : <Dashboard setActiveTab={setActiveTab} />;
   };
 
   return (
