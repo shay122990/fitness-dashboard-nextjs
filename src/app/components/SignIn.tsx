@@ -1,5 +1,3 @@
-// SignInButton.tsx
-import React from 'react';
 import { useDispatch } from 'react-redux';
 import { googleSignIn } from '../../firebase/auth';
 

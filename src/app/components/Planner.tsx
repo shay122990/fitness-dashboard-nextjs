@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import InputBox from "./InputBox";
+import { fetchUserWorkouts } from "../../firebase/firestore";
+import { RootState } from "@/store";
 
 const Planner: React.FC = () => {
   const [selectedDay, setSelectedDay] = useState<string>("Monday");
-
   const [workouts, setWorkouts] = useState<{ [key: string]: string[] }>({
     Monday: [],
     Tuesday: [],
@@ -13,23 +15,39 @@ const Planner: React.FC = () => {
     Saturday: [],
     Sunday: [],
   });
-
   const [newWorkout, setNewWorkout] = useState<string>("");
+
+  const user = useSelector((state: RootState) => state.auth.user);
+
+  useEffect(() => {
+    const loadWorkouts = async () => {
+      if (user) {
+        const fetchedWorkouts = await fetchUserWorkouts(user.uid);
+        if (fetchedWorkouts) {
+          setWorkouts(fetchedWorkouts);
+        }
+      }
+    };
+    loadWorkouts();
+  }, [user]);
 
   const addWorkout = () => {
     if (selectedDay && newWorkout.trim()) {
       setWorkouts((prevWorkouts) => ({
         ...prevWorkouts,
-        [selectedDay]: [...prevWorkouts[selectedDay], newWorkout.trim()],
+        [selectedDay]: [
+          ...(prevWorkouts[selectedDay] || []), 
+          newWorkout.trim(),
+        ],
       }));
-      setNewWorkout(""); 
+      setNewWorkout("");
     }
   };
+  
 
   return (
     <div className="mt-6">
       <h3 className="text-xl font-bold">Workouts for {selectedDay}</h3>
-
      
       <select
         value={selectedDay}

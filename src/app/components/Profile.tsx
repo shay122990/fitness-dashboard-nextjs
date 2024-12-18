@@ -1,5 +1,3 @@
-// Profile.tsx
-import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store'; 
 import { clearUser } from '../../store/authSlice'; 

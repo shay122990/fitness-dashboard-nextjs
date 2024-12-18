@@ -1,30 +1,41 @@
-import { collection, addDoc, getDocs } from 'firebase/firestore';
-import { db } from './firebase-config';
+import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
+import { db } from "./firebase-config";
 
-export const addWorkout = async (userId: string, workout: string) => {
+// Save a workout for a specific user
+export const saveWorkout = async (userId: string, day: string, workout: string) => {
   try {
-    const workoutsRef = collection(db, 'workouts');
+    const workoutsRef = collection(db, "workouts");
     await addDoc(workoutsRef, {
       userId,
+      day,
       workout,
       createdAt: new Date(),
     });
-    console.log('Workout added successfully');
   } catch (error) {
-    console.error('Error adding workout:', error);
-    throw error;
+    console.error("Error saving workout:", error);
   }
 };
 
-export const getWorkouts = async (userId: string) => {
+
+// Fetch all workouts for a specific user
+export const fetchUserWorkouts = async (userId: string) => {
   try {
-    const workoutsRef = collection(db, 'workouts');
-    const workoutsSnapshot = await getDocs(workoutsRef);
-    const workoutsList = workoutsSnapshot.docs.map(doc => doc.data());
-    
-    return workoutsList.filter((workout) => workout.userId === userId);
+    const workoutsRef = collection(db, "workouts");
+    const q = query(workoutsRef, where("userId", "==", userId));
+    const querySnapshot = await getDocs(q);
+
+    const userWorkouts: { [key: string]: string[] } = {};
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      if (!userWorkouts[data.day]) {
+        userWorkouts[data.day] = [];
+      }
+      userWorkouts[data.day].push(data.workout);
+    });
+
+    return userWorkouts;
   } catch (error) {
-    console.error('Error fetching workouts:', error);
-    throw error;
+    console.error("Error fetching workouts:", error);
+    return null;
   }
 };
