@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import InputBox from "./InputBox";
-import { fetchUserWorkouts } from "../../firebase/firestore";
+import { fetchUserWorkouts, saveWorkout } from "../../firebase/firestore";  
 import { RootState } from "@/store";
 
 const Planner: React.FC = () => {
@@ -31,7 +31,7 @@ const Planner: React.FC = () => {
     loadWorkouts();
   }, [user]);
 
-  const addWorkout = () => {
+  const addWorkout = async () => {
     if (selectedDay && newWorkout.trim()) {
       setWorkouts((prevWorkouts) => ({
         ...prevWorkouts,
@@ -40,10 +40,12 @@ const Planner: React.FC = () => {
           newWorkout.trim(),
         ],
       }));
+      if (user) {
+        await saveWorkout(user.uid, selectedDay, newWorkout.trim());
+      }
       setNewWorkout("");
     }
   };
-  
 
   return (
     <div className="mt-6">

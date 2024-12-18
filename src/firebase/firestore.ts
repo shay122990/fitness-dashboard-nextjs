@@ -11,6 +11,7 @@ export const saveWorkout = async (userId: string, day: string, workout: string) 
       workout,
       createdAt: new Date(),
     });
+    console.log("Workout saved successfully!");
   } catch (error) {
     console.error("Error saving workout:", error);
   }
