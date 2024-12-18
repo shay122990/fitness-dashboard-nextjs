@@ -39,3 +39,41 @@ export const fetchUserWorkouts = async (userId: string) => {
     return null;
   }
 };
+
+// Save a calorie entry for a specific user
+export const saveCalories = async (userId: string, day: string, calories: string) => {
+  try {
+    const caloriesRef = collection(db, 'calories');
+    await addDoc(caloriesRef, {
+      userId,
+      day,
+      calories,
+      createdAt: new Date(),
+    });
+  } catch (error) {
+    console.error('Error saving calories:', error);
+  }
+};
+
+// Fetch all calorie entries for a specific user
+export const fetchUserCalories = async (userId: string) => {
+  try {
+    const caloriesRef = collection(db, 'calories');
+    const q = query(caloriesRef, where('userId', '==', userId));
+    const querySnapshot = await getDocs(q);
+
+    const userCalories: { [key: string]: string[] } = {};
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      if (!userCalories[data.day]) {
+        userCalories[data.day] = [];
+      }
+      userCalories[data.day].push(data.calories);
+    });
+
+    return userCalories;
+  } catch (error) {
+    console.error('Error fetching calories:', error);
+    return null;
+  }
+};
