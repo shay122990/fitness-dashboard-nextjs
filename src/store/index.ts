@@ -18,6 +18,13 @@ const store = configureStore({
     workouts: workoutsReducer,
     nutrition: nutritionReducer,
   },
+  // Ignore non-serializable values
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ["persist/PERSIST"],
+      },
+    }),
 });
 
 const persistor = persistStore(store);
