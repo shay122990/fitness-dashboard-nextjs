@@ -12,7 +12,7 @@ const Card: React.FC<CardProps> = ({ title, description, tabId, setActiveTab }) 
       onClick={() => setActiveTab(tabId)}
     >
       <h3 className="text-xl font-semibold mb-2">{title}</h3>
-      <p className="text-gray-600 mb-4">{description}</p>
+      <p className="text-white mb-4">{description}</p>
       <span className="text-blue-500">Go to {title}</span>
     </div>
   );
