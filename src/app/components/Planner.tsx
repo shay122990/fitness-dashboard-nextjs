@@ -8,6 +8,8 @@ import InputBox from "./InputBox";
 const Planner: React.FC = () => {
   const [selectedDay, setSelectedDay] = useState<string>("Monday");
   const [newWorkout, setNewWorkout] = useState<string>("");
+  const [sets, setSets] = useState<number>(1);
+  const [reps, setReps] = useState<number>(10);
 
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
@@ -26,12 +28,17 @@ const Planner: React.FC = () => {
   }, [user, dispatch]);
 
   const addWorkoutHandler = async () => {
-    if (selectedDay && newWorkout.trim()) {
-      dispatch(addWorkout({ day: selectedDay, workout: newWorkout.trim() }));
+    if (selectedDay && newWorkout.trim() && sets > 0 && reps > 0) {
+      const workoutDetails = `${newWorkout.trim()} - Sets: ${sets}, Reps: ${reps}`;
+      dispatch(addWorkout({ day: selectedDay, workout: workoutDetails }));
+
       if (user) {
-        await saveWorkout(user.uid, selectedDay, newWorkout.trim());
+        await saveWorkout(user.uid, selectedDay, workoutDetails);
       }
+
       setNewWorkout("");
+      setSets(1);  
+      setReps(10);
     }
   };
 
@@ -62,6 +69,30 @@ const Planner: React.FC = () => {
         onChange={setNewWorkout}
       />
 
+      <div className="mt-2">
+        <label htmlFor="sets" className="block text-sm font-semibold">Sets</label>
+        <input
+          type="number"
+          id="sets"
+          value={sets}
+          onChange={(e) => setSets(Number(e.target.value))}
+          min="1"
+          className="w-16 p-2 border rounded bg-gray-800 text-white"
+        />
+      </div>
+
+      <div className="mt-2">
+        <label htmlFor="reps" className="block text-sm font-semibold">Reps</label>
+        <input
+          type="number"
+          id="reps"
+          value={reps}
+          onChange={(e) => setReps(Number(e.target.value))}
+          min="1"
+          className="w-16 p-2 border rounded bg-gray-800 text-white"
+        />
+      </div>
+
       <button
         onClick={addWorkoutHandler}
         className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500"
@@ -74,7 +105,7 @@ const Planner: React.FC = () => {
         {workouts[selectedDay]?.length > 0 ? (
           <ul className="list-disc list-inside mt-4">
             {workouts[selectedDay].map((workout, index) => (
-              <li key={index} className=" list-disc list-inside">
+              <li key={index} className="list-disc list-inside">
                 <span>{workout}</span>
                 <button
                   onClick={() => removeWorkoutHandler(workout)}
