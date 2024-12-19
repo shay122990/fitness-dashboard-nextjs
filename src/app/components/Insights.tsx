@@ -3,6 +3,8 @@ import { Line } from "react-chartjs-2";
 import { fetchUserWorkouts, fetchUserCalories } from "../../firebase/firestore";
 import { auth } from "../../firebase/firebase-config";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 ChartJS.register(
   CategoryScale,
@@ -16,19 +18,24 @@ ChartJS.register(
 
 const Insights = () => {
   const [workoutData, setWorkoutData] = useState<number[]>([]);
-  const [caloriesData, setCaloriesData] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [userId, setUserId] = useState<string | null>(null); 
-  const [authLoading, setAuthLoading] = useState<boolean>(true); 
+  const [userId, setUserId] = useState<string | null>(null);
+  const [authLoading, setAuthLoading] = useState<boolean>(true);
+
+  const burnedCaloriesData = useSelector((state: RootState) => {
+    return Object.keys(state.nutrition).map((day) => {
+      return state.nutrition[day].burned.reduce((acc, curr) => acc + parseInt(curr, 10), 0);
+    });
+  });
 
   useEffect(() => {
     const user = auth.currentUser;
     if (user) {
       setUserId(user.uid);
     } else {
-      setUserId(null); 
+      setUserId(null);
     }
-    setAuthLoading(false); 
+    setAuthLoading(false);
   }, []);
 
   useEffect(() => {
@@ -41,10 +48,7 @@ const Insights = () => {
 
           if (userWorkouts && userCalories) {
             const workoutChartData = Object.keys(userWorkouts).map(day => userWorkouts[day].length);
-            const calorieChartData = Object.keys(userCalories).map(day => userCalories[day].reduce((acc, curr) => acc + parseInt(curr, 10), 0));
-
             setWorkoutData(workoutChartData);
-            setCaloriesData(calorieChartData);
           }
         } catch (error) {
           console.error("Error fetching data from Firestore:", error);
@@ -70,7 +74,7 @@ const Insights = () => {
   }
 
   const workoutChartData = {
-    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], 
+    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     datasets: [
       {
         label: "Workouts (sessions)",
@@ -83,11 +87,11 @@ const Insights = () => {
   };
 
   const caloriesChartData = {
-    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], 
+    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     datasets: [
       {
-        label: "Calories Burned",
-        data: caloriesData,
+        label: "Calories Burned (from Redux)",
+        data: burnedCaloriesData,
         borderColor: "rgba(255, 99, 132, 1)",
         backgroundColor: "rgba(255, 99, 132, 0.2)",
         fill: true,
@@ -116,17 +120,17 @@ const Insights = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="border p-4 rounded-lg">
             <p className="font-semibold">Total Workouts</p>
-            <p>{workoutData.length} Workouts</p> 
+            <p>{workoutData.length} Workouts</p>
           </div>
 
           <div className="border p-4 rounded-lg">
             <p className="font-semibold">Total Calories Burned</p>
-            <p>{caloriesData.reduce((acc, curr) => acc + curr, 0)} kcal</p>
+            <p>{burnedCaloriesData.reduce((acc, curr) => acc + curr, 0)} kcal</p>
           </div>
 
           <div className="border p-4 rounded-lg">
             <p className="font-semibold">Consistency</p>
-            <p>{workoutData.length}/7 days this week</p> 
+            <p>{workoutData.length}/7 days this week</p>
           </div>
         </div>
       </div>
