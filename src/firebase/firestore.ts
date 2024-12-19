@@ -1,14 +1,25 @@
 import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
 import { db } from "./firebase-config";
 
+// Define the WorkoutDetail type
+export interface WorkoutDetail {
+  workout: string;
+  sets: number;
+  reps: number;
+  weight: number;
+}
+
 // Save a workout for a specific user
-export const saveWorkout = async (userId: string, day: string, workout: string) => {
+export const saveWorkout = async (userId: string, day: string, workout: WorkoutDetail) => {
   try {
     const workoutsRef = collection(db, "workouts");
     await addDoc(workoutsRef, {
       userId,
       day,
-      workout,
+      workout: workout.workout,
+      sets: workout.sets,
+      reps: workout.reps,
+      weight: workout.weight,
       createdAt: new Date(),
     });
     console.log("Workout saved successfully!");
@@ -17,7 +28,6 @@ export const saveWorkout = async (userId: string, day: string, workout: string) 
   }
 };
 
-
 // Fetch all workouts for a specific user
 export const fetchUserWorkouts = async (userId: string) => {
   try {
@@ -25,13 +35,21 @@ export const fetchUserWorkouts = async (userId: string) => {
     const q = query(workoutsRef, where("userId", "==", userId));
     const querySnapshot = await getDocs(q);
 
-    const userWorkouts: { [key: string]: string[] } = {};
+    const userWorkouts: { [key: string]: WorkoutDetail[] } = {};
+
     querySnapshot.forEach((doc) => {
       const data = doc.data();
+      const workoutDetail: WorkoutDetail = {
+        workout: data.workout,
+        sets: data.sets,
+        reps: data.reps,
+        weight: data.weight,
+      };
+      
       if (!userWorkouts[data.day]) {
         userWorkouts[data.day] = [];
       }
-      userWorkouts[data.day].push(data.workout);
+      userWorkouts[data.day].push(workoutDetail);
     });
 
     return userWorkouts;
