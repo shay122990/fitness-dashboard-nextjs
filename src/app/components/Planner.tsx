@@ -1,45 +1,33 @@
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import InputBox from "./InputBox";
-import { fetchUserWorkouts, saveWorkout } from "../../firebase/firestore";  
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
+import { addWorkout, removeWorkout, setWorkouts } from "@/store/workoutsSlice";
+import { fetchUserWorkouts, saveWorkout } from "../../firebase/firestore";
+import InputBox from "./InputBox";
 
 const Planner: React.FC = () => {
   const [selectedDay, setSelectedDay] = useState<string>("Monday");
-  const [workouts, setWorkouts] = useState<{ [key: string]: string[] }>({
-    Monday: [],
-    Tuesday: [],
-    Wednesday: [],
-    Thursday: [],
-    Friday: [],
-    Saturday: [],
-    Sunday: [],
-  });
   const [newWorkout, setNewWorkout] = useState<string>("");
 
+  const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
+  const workouts = useSelector((state: RootState) => state.workouts);
 
   useEffect(() => {
     const loadWorkouts = async () => {
       if (user) {
         const fetchedWorkouts = await fetchUserWorkouts(user.uid);
         if (fetchedWorkouts) {
-          setWorkouts(fetchedWorkouts);
+          dispatch(setWorkouts(fetchedWorkouts));
         }
       }
     };
     loadWorkouts();
-  }, [user]);
+  }, [user, dispatch]);
 
-  const addWorkout = async () => {
+  const addWorkoutHandler = async () => {
     if (selectedDay && newWorkout.trim()) {
-      setWorkouts((prevWorkouts) => ({
-        ...prevWorkouts,
-        [selectedDay]: [
-          ...(prevWorkouts[selectedDay] || []), 
-          newWorkout.trim(),
-        ],
-      }));
+      dispatch(addWorkout({ day: selectedDay, workout: newWorkout.trim() }));
       if (user) {
         await saveWorkout(user.uid, selectedDay, newWorkout.trim());
       }
@@ -47,10 +35,14 @@ const Planner: React.FC = () => {
     }
   };
 
+  const removeWorkoutHandler = (workout: string) => {
+    dispatch(removeWorkout({ day: selectedDay, workout }));
+  };
+
   return (
     <div className="mt-6">
       <h3 className="text-xl font-bold">Workouts for {selectedDay}</h3>
-     
+
       <select
         value={selectedDay}
         onChange={(e) => setSelectedDay(e.target.value)}
@@ -67,11 +59,11 @@ const Planner: React.FC = () => {
         label="Add Workout"
         placeholder="e.g., Squats"
         value={newWorkout}
-        onChange={setNewWorkout} 
+        onChange={setNewWorkout}
       />
 
       <button
-        onClick={addWorkout}
+        onClick={addWorkoutHandler}
         className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500"
       >
         Add Workout
@@ -82,7 +74,15 @@ const Planner: React.FC = () => {
         {workouts[selectedDay]?.length > 0 ? (
           <ul className="list-disc list-inside mt-4">
             {workouts[selectedDay].map((workout, index) => (
-              <li key={index}>{workout}</li>
+              <li key={index} className=" list-disc list-inside">
+                <span>{workout}</span>
+                <button
+                  onClick={() => removeWorkoutHandler(workout)}
+                  className="ml-4 px-2 py-1 bg-red-500 text-white rounded hover:bg-red-400"
+                >
+                  Remove
+                </button>
+              </li>
             ))}
           </ul>
         ) : (
