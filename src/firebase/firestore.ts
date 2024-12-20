@@ -1,30 +1,42 @@
-import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
+import { collection, addDoc, getDocs, query, where, writeBatch } from "firebase/firestore";
 import { db } from "./firebase-config";
 
-// Define the WorkoutDetail type
-export interface WorkoutDetail {
-  workout: string;
-  sets: number;
-  reps: number;
-  weight: number;
-}
-
 // Save a workout for a specific user
-export const saveWorkout = async (userId: string, day: string, workout: WorkoutDetail) => {
+export const saveWorkout = async (userId: string, day: string, workout: string) => {
   try {
     const workoutsRef = collection(db, "workouts");
     await addDoc(workoutsRef, {
       userId,
       day,
-      workout: workout.workout,
-      sets: workout.sets,
-      reps: workout.reps,
-      weight: workout.weight,
+      workout,
       createdAt: new Date(),
     });
     console.log("Workout saved successfully!");
   } catch (error) {
     console.error("Error saving workout:", error);
+  }
+};
+// Remove a workout from Firestore
+export const removeWorkoutFromFirestore = async (userId: string, day: string, workout: string) => {
+  try {
+    const workoutsRef = query(
+      collection(db, "workouts"),
+      where("userId", "==", userId),
+      where("day", "==", day),
+      where("workout", "==", workout)
+    );
+    const querySnapshot = await getDocs(workoutsRef);
+    const batch = writeBatch(db);
+
+    querySnapshot.forEach((doc) => {
+      batch.delete(doc.ref);
+    });
+
+    await batch.commit();
+    console.log("Workout removed successfully from Firestore!");
+  } catch (error) {
+    console.error("Error removing workout:", error);
+    throw error;
   }
 };
 
@@ -35,21 +47,13 @@ export const fetchUserWorkouts = async (userId: string) => {
     const q = query(workoutsRef, where("userId", "==", userId));
     const querySnapshot = await getDocs(q);
 
-    const userWorkouts: { [key: string]: WorkoutDetail[] } = {};
-
+    const userWorkouts: { [key: string]: string[] } = {};
     querySnapshot.forEach((doc) => {
       const data = doc.data();
-      const workoutDetail: WorkoutDetail = {
-        workout: data.workout,
-        sets: data.sets,
-        reps: data.reps,
-        weight: data.weight,
-      };
-      
       if (!userWorkouts[data.day]) {
         userWorkouts[data.day] = [];
       }
-      userWorkouts[data.day].push(workoutDetail);
+      userWorkouts[data.day].push(data.workout);
     });
 
     return userWorkouts;
@@ -60,39 +64,82 @@ export const fetchUserWorkouts = async (userId: string) => {
 };
 
 // Save a calorie entry for a specific user
-export const saveCalories = async (userId: string, day: string, calories: string) => {
+export const saveCalorieEntry = async (userId: string, day: string, calories: string, type: "eaten" | "burned") => {
   try {
-    const caloriesRef = collection(db, 'calories');
+    const caloriesRef = collection(db, "calories");
     await addDoc(caloriesRef, {
       userId,
       day,
       calories,
+      type,
       createdAt: new Date(),
     });
+    console.log("Calorie entry saved successfully!");
   } catch (error) {
-    console.error('Error saving calories:', error);
+    console.error("Error saving calorie entry:", error);
+    throw error;
   }
 };
 
 // Fetch all calorie entries for a specific user
-export const fetchUserCalories = async (userId: string) => {
+export const fetchCalorieEntries = async (userId: string) => {
   try {
-    const caloriesRef = collection(db, 'calories');
-    const q = query(caloriesRef, where('userId', '==', userId));
+    const caloriesRef = collection(db, "calories");
+    const q = query(caloriesRef, where("userId", "==", userId));
     const querySnapshot = await getDocs(q);
 
-    const userCalories: { [key: string]: string[] } = {};
+    const userCalories: {
+      [key: string]: {
+        eaten: string[];
+        burned: string[];
+      };
+    } = {
+      Monday: { eaten: [], burned: [] },
+      Tuesday: { eaten: [], burned: [] },
+      Wednesday: { eaten: [], burned: [] },
+      Thursday: { eaten: [], burned: [] },
+      Friday: { eaten: [], burned: [] },
+      Saturday: { eaten: [], burned: [] },
+      Sunday: { eaten: [], burned: [] },
+    };
+
     querySnapshot.forEach((doc) => {
       const data = doc.data();
-      if (!userCalories[data.day]) {
-        userCalories[data.day] = [];
+      const day = data.day as keyof typeof userCalories;
+      const type = data.type as "eaten" | "burned";
+
+      if (userCalories[day] && userCalories[day][type]) {
+        userCalories[day][type].push(data.calories);
       }
-      userCalories[data.day].push(data.calories);
     });
 
     return userCalories;
   } catch (error) {
-    console.error('Error fetching calories:', error);
+    console.error("Error fetching calorie entries:", error);
     return null;
+  }
+};
+// Remove a calorie entry from Firestore
+export const removeCalorieEntry = async (userId: string, day: string, calories: string, type: "eaten" | "burned") => {
+  try {
+    const calorieRef = query(
+      collection(db, "calories"),
+      where("userId", "==", userId),
+      where("day", "==", day),
+      where("calories", "==", calories),
+      where("type", "==", type)
+    );
+    const querySnapshot = await getDocs(calorieRef);
+    const batch = writeBatch(db);
+
+    querySnapshot.forEach((doc) => {
+      batch.delete(doc.ref);
+    });
+
+    await batch.commit();
+    console.log("Calorie entry removed successfully from Firestore!");
+  } catch (error) {
+    console.error("Error removing calorie entry:", error);
+    throw error;
   }
 };

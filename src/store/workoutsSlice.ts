@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { WorkoutDetail, WorkoutsState } from "@/app/types/workoutTypes";
+import { WorkoutsState } from "@/app/types/workoutTypes";
 
 const initialState: WorkoutsState = {
   Monday: [],
@@ -15,16 +15,11 @@ const workoutsSlice = createSlice({
   name: "workouts",
   initialState,
   reducers: {
-    addWorkout: (state, action: PayloadAction<{ day: string; workout: WorkoutDetail }>) => {
-      state[action.payload.day] = [
-        ...(state[action.payload.day] || []),
-        action.payload.workout,
-      ];
+    addWorkout: (state, action: PayloadAction<{ day: string; workout: string }>) => {
+      state[action.payload.day] = [...(state[action.payload.day] || []), action.payload.workout];
     },
     removeWorkout: (state, action: PayloadAction<{ day: string; workout: string }>) => {
-      state[action.payload.day] = state[action.payload.day].filter(
-        (workout) => workout.workout !== action.payload.workout
-      );
+      state[action.payload.day] = state[action.payload.day].filter(w => w !== action.payload.workout);
     },
     setWorkouts: (state, action: PayloadAction<WorkoutsState>) => {
       return action.payload;

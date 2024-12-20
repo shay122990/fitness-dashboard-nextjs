@@ -1,26 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { fetchUserWorkouts, fetchUserCalories } from "../../firebase/firestore";
+import { fetchUserWorkouts, fetchCalorieEntries } from "../../firebase/firestore";
 import { auth } from "../../firebase/firebase-config";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
-import Chart from './Chart'; 
-import StatCard from './StatCard';
+import Chart from "../components/Chart";
+import StatCard from "../components/StatCard";
 
 const Insights = () => {
   const [workoutData, setWorkoutData] = useState<number[]>([]);
+  const [burnedCaloriesData, setBurnedCaloriesData] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [userId, setUserId] = useState<string | null>(null);
   const [authLoading, setAuthLoading] = useState<boolean>(true);
 
-  const burnedCaloriesData = useSelector((state: RootState) => {
-    return Object.keys(state.nutrition).map((day) => {
-      const dayData = state.nutrition[day];
-      if (dayData && dayData.burned) {
-        return dayData.burned.reduce((acc, curr) => acc + parseInt(curr, 10), 0);
-      }
-      return 0;
-    });
-  });
+  const nutritionData = useSelector((state: RootState) => state.nutrition);
 
   useEffect(() => {
     const user = auth.currentUser;
@@ -38,11 +31,21 @@ const Insights = () => {
         setLoading(true);
         try {
           const userWorkouts = await fetchUserWorkouts(userId);
-          const userCalories = await fetchUserCalories(userId);
+          const userCalories = await fetchCalorieEntries(userId);
 
-          if (userWorkouts && userCalories) {
-            const workoutChartData = Object.keys(userWorkouts).map(day => userWorkouts[day].length);
+          if (userWorkouts) {
+            const workoutChartData = Object.keys(userWorkouts).map(
+              (day) => userWorkouts[day]?.length || 0
+            );
             setWorkoutData(workoutChartData);
+          }
+
+          if (userCalories) {
+            const calorieData = Object.keys(userCalories).map((day) => {
+              const burned = userCalories[day]?.burned || [];
+              return burned.reduce((acc: number, curr: string) => acc + parseInt(curr, 10), 0);
+            });
+            setBurnedCaloriesData(calorieData);
           }
         } catch (error) {
           console.error("Error fetching data from Firestore:", error);
@@ -53,7 +56,7 @@ const Insights = () => {
 
       fetchData();
     }
-  }, [userId]);
+  }, [userId,nutritionData]);
 
   if (authLoading) {
     return <div>Checking authentication...</div>;
@@ -85,7 +88,7 @@ const Insights = () => {
     datasets: [
       {
         label: "Calories Burned",
-        data: burnedCaloriesData, 
+        data: burnedCaloriesData,
         borderColor: "rgba(255, 99, 132, 1)",
         backgroundColor: "rgba(255, 99, 132, 0.2)",
         fill: true,
@@ -98,16 +101,16 @@ const Insights = () => {
       <h3 className="text-xl font-bold mb-4">Your Progress</h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Chart data={workoutChartData} title="Weekly Workout Progress" />
-        <Chart data={caloriesChartData} title="Calories Burned Over Time" />
+        <Chart title="Weekly Workout Progress" data={workoutChartData} options={{ responsive: true }} />
+        <Chart title="Calories Burned Over Time" data={caloriesChartData} options={{ responsive: true }} />
       </div>
 
       <div className="mt-6">
         <h4 className="font-semibold">Key Stats</h4>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <StatCard label="Total Workouts" value={workoutData.length} />
-          <StatCard label="Total Calories Burned" value={burnedCaloriesData.reduce((acc, curr) => acc + curr, 0)} />
-          <StatCard label="Consistency" value={`${workoutData.length}/7 days this week`} />
+          <StatCard label="Total Workouts" value={`${workoutData.reduce((acc, val) => acc + val, 0)} Workouts`} />
+          <StatCard label="Total Calories Burned" value={`${burnedCaloriesData.reduce((acc, curr) => acc + curr, 0)} kcal`} />
+          <StatCard label="Consistency" value={`${workoutData.filter((val) => val > 0).length}/7 days this week`} />
         </div>
       </div>
     </div>

@@ -2,21 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { addWorkout, removeWorkout, setWorkouts } from "@/store/workoutsSlice";
-import { fetchUserWorkouts, saveWorkout } from "../../firebase/firestore";
+import { fetchUserWorkouts, saveWorkout, removeWorkoutFromFirestore } from "../../firebase/firestore";
 import InputBox from "./InputBox";
-import WorkoutList from "./WorkoutList";
-import WeeklyWorkoutSummary from "./WeeklyWorkoutSummary";
-import { WorkoutDetail } from "../types/workoutTypes";
-
 
 const Planner: React.FC = () => {
   const [selectedDay, setSelectedDay] = useState<string>("Monday");
   const [newWorkout, setNewWorkout] = useState<string>("");
-  const [sets, setSets] = useState<number>(0);
-  const [reps, setReps] = useState<number>(0);
-  const [weight, setWeight] = useState<number>(0);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [sets, setSets] = useState<number>(1);
+  const [reps, setReps] = useState<number>(10);
 
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
@@ -25,17 +18,9 @@ const Planner: React.FC = () => {
   useEffect(() => {
     const loadWorkouts = async () => {
       if (user) {
-        try {
-          setLoading(true);
-          const fetchedWorkouts = await fetchUserWorkouts(user.uid);
-          if (fetchedWorkouts) {
-            dispatch(setWorkouts(fetchedWorkouts));
-          }
-        } catch (error) {
-          console.error("Failed to load workouts:", error);
-          setError("Failed to load workouts.");
-        } finally {
-          setLoading(false);
+        const fetchedWorkouts = await fetchUserWorkouts(user.uid);
+        if (fetchedWorkouts) {
+          dispatch(setWorkouts(fetchedWorkouts));
         }
       }
     };
@@ -43,50 +28,36 @@ const Planner: React.FC = () => {
   }, [user, dispatch]);
 
   const addWorkoutHandler = async () => {
-    if (newWorkout.trim() && sets > 0 && reps > 0 && weight > 0) {
-      const workoutDetail: WorkoutDetail = {
-        workout: newWorkout.trim(),
-        sets,
-        reps,
-        weight,
-      };
+    if (selectedDay && newWorkout.trim() && sets > 0 && reps > 0) {
+      const workoutDetails = `${newWorkout.trim()} - Sets: ${sets}, Reps: ${reps}`;
+      dispatch(addWorkout({ day: selectedDay, workout: workoutDetails }));
 
-      const existingWorkout = workouts[selectedDay]?.some(
-        (workout) => workout.workout === workoutDetail.workout
-      );
-      if (existingWorkout) {
-        setError("This workout is already added for today.");
-        return;
+      if (user) {
+        await saveWorkout(user.uid, selectedDay, workoutDetails);
       }
 
-      try {
-        setLoading(true);
-        dispatch(addWorkout({ day: selectedDay, workout: workoutDetail }));
-        if (user) {
-          await saveWorkout(user.uid, selectedDay, workoutDetail);
-        }
-        setNewWorkout("");
-        setSets(0);
-        setReps(0);
-        setWeight(0);
-      } catch (error) {
-        setError("Failed to add workout.");
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      setError("Please fill in all workout details.");
+      setNewWorkout("");
+      setSets(1);  
+      setReps(10);
     }
   };
 
-  const removeWorkoutHandler = (workout: string) => {
-    dispatch(removeWorkout({ day: selectedDay, workout }));
+  const removeWorkoutHandler = async (workout: string) => {
+    if (!user) return;
+  
+    try {
+      await removeWorkoutFromFirestore(user.uid, selectedDay, workout);
+      dispatch(removeWorkout({ day: selectedDay, workout })); 
+    } catch (error) {
+      console.error("Failed to remove workout:", error);
+    }
   };
+  
 
   return (
     <div className="mt-6">
       <h3 className="text-xl font-bold">Workouts for {selectedDay}</h3>
+
       <select
         value={selectedDay}
         onChange={(e) => setSelectedDay(e.target.value)}
@@ -107,51 +78,74 @@ const Planner: React.FC = () => {
       />
 
       <div className="mt-2">
-        <InputBox
-          label="Sets"
+        <label htmlFor="sets" className="block text-sm font-semibold">Sets</label>
+        <input
           type="number"
-          value={sets.toString()}
-          onChange={(value) => setSets(Number(value))}
-          placeholder="e.g., 3"
+          id="sets"
+          value={sets}
+          onChange={(e) => setSets(Number(e.target.value))}
+          min="1"
+          className="w-16 p-2 border rounded bg-gray-800 text-white"
         />
       </div>
 
       <div className="mt-2">
-        <InputBox
-          label="Reps"
+        <label htmlFor="reps" className="block text-sm font-semibold">Reps</label>
+        <input
           type="number"
-          value={reps.toString()}
-          onChange={(value) => setReps(Number(value))}
-          placeholder="e.g., 10"
-        />
-      </div>
-
-      <div className="mt-2">
-        <InputBox
-          label="Weight (kg)"
-          type="number"
-          value={weight.toString()}
-          onChange={(value) => setWeight(Number(value))}
-          placeholder="e.g., 50"
+          id="reps"
+          value={reps}
+          onChange={(e) => setReps(Number(e.target.value))}
+          min="1"
+          className="w-16 p-2 border rounded bg-gray-800 text-white"
         />
       </div>
 
       <button
         onClick={addWorkoutHandler}
         className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500"
-        disabled={loading}
       >
-        {loading ? "Adding..." : "Add Workout"}
+        Add Workout
       </button>
 
-      {error && <p className="text-red-500 mt-2">{error}</p>}
+      <div className="mt-6 border">
+        <h4 className="text-lg font-bold">Workouts for {selectedDay}</h4>
+        {workouts[selectedDay]?.length > 0 ? (
+          <ul className="list-disc list-inside mt-4">
+            {workouts[selectedDay].map((workout, index) => (
+              <li key={index} className="list-disc list-inside">
+                <span>{workout}</span>
+                <button
+                  onClick={() => removeWorkoutHandler(workout)}
+                  className="ml-4 px-2 py-1 bg-red-500 text-white rounded hover:bg-red-400"
+                >
+                  Remove
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No workouts planned for {selectedDay}.</p>
+        )}
+      </div>
 
-      <WorkoutList
-        day={selectedDay}
-        workouts={workouts[selectedDay] || []}
-        onRemoveWorkout={removeWorkoutHandler}
-      />
-      <WeeklyWorkoutSummary workouts={workouts} />
+      <div className="mt-6 border">
+        <h4 className="text-lg font-bold">Workouts for the Week</h4>
+        {Object.keys(workouts).map((day) => (
+          <div key={day}>
+            <h5 className="text-md font-semibold">{day}</h5>
+            {workouts[day]?.length > 0 ? (
+              <ul className="list-disc list-inside mt-2">
+                {workouts[day].map((workout, index) => (
+                  <li key={index}>{workout}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>No workouts planned for {day}.</p>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

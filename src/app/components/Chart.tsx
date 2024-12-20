@@ -5,11 +5,11 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-const Chart: React.FC<ChartProps> = ({ data, title }) => {
+const Chart: React.FC<ChartProps> = ({ data, title, options }) => {
   return (
     <div className="border p-4 rounded-lg">
       <h4 className="font-semibold">{title}</h4>
-      <Line data={data} options={{ responsive: true }} />
+      <Line data={data} options={options} />
     </div>
   );
 };

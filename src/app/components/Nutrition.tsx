@@ -1,33 +1,54 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addCalories, removeCalories } from '../../store/nutritionSlice';
-import { RootState } from '../../store/index';
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addCalories, removeCalories, setNutritionData } from "../../store/nutritionSlice";
+import { saveCalorieEntry, fetchCalorieEntries, removeCalorieEntry } from "../../firebase/firestore";
+import { RootState } from "../../store/index";
 
 const Nutrition = () => {
   const dispatch = useDispatch();
   const nutritionData = useSelector((state: RootState) => state.nutrition);
-  const [calories, setCalories] = useState('');
-  const [selectedDay, setSelectedDay] = useState<string>('Monday');
+  const [calories, setCalories] = useState("");
+  const [selectedDay, setSelectedDay] = useState<string>("Monday");
+  const user = useSelector((state: RootState) => state.auth.user);
 
-  const handleAddCalories = async () => {
-    if (selectedDay && calories.trim()) {
-      dispatch(addCalories({ day: selectedDay, calories: calories.trim(), type: "eaten" }));
+  useEffect(() => {
+    const loadCalories = async () => {
+      if (user) {
+        const fetchedCalories = await fetchCalorieEntries(user.uid);
+        if (fetchedCalories) {
+          dispatch(setNutritionData(fetchedCalories));
+        }
+      }
+    };
+
+    loadCalories();
+  }, [user, dispatch]);
+
+  const handleAddCalories = async (type: "eaten" | "burned") => {
+    if (selectedDay && calories.trim() && user) {
+      const calorieValue = calories.trim();
+      dispatch(addCalories({ day: selectedDay, calories: calorieValue, type }));
       setCalories("");
+
+      try {
+        await saveCalorieEntry(user.uid, selectedDay, calorieValue, type);
+      } catch (error) {
+        console.error("Failed to save calorie entry:", error);
+      }
     }
   };
 
-  const handleAddBurnedCalories = async () => {
-    if (selectedDay && calories.trim()) {
-      dispatch(addCalories({ day: selectedDay, calories: calories.trim(), type: "burned" }));
-      setCalories("");
+  const handleRemoveCalories = async (calorie: string, type: "eaten" | "burned") => {
+    if (user) {
+      dispatch(removeCalories({ day: selectedDay, calories: calorie, type }));
+
+      try {
+        await removeCalorieEntry(user.uid, selectedDay, calorie, type);
+      } catch (error) {
+        console.error("Failed to remove calorie entry:", error);
+      }
     }
   };
-
-  const handleRemoveCalories = (calorie: string, type: "eaten" | "burned") => {
-    dispatch(removeCalories({ day: selectedDay, calories: calorie, type }));
-  };
-
-  const filteredDays = Object.keys(nutritionData).filter(day => day !== '_persist');
 
   return (
     <div className="nutrition-container">
@@ -38,7 +59,7 @@ const Nutrition = () => {
           value={selectedDay}
           onChange={(e) => setSelectedDay(e.target.value)}
         >
-          {filteredDays.map((day) => (
+          {Object.keys(nutritionData).map((day) => (
             <option key={day} value={day}>
               {day}
             </option>
@@ -53,8 +74,8 @@ const Nutrition = () => {
           onChange={(e) => setCalories(e.target.value)}
           placeholder="Enter calories"
         />
-        <button onClick={handleAddCalories}>Add Eaten Calories</button>
-        <button onClick={handleAddBurnedCalories}>Add Burned Calories</button>
+        <button onClick={() => handleAddCalories("eaten")}>Add Eaten Calories</button>
+        <button onClick={() => handleAddCalories("burned")}>Add Burned Calories</button>
       </div>
 
       <div className="mt-6 border">

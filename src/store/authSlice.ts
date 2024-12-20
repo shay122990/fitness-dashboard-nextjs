@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AuthState } from '@/app/types/authTypes';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AuthState } from "@/app/types/authTypes";
 
 const initialState: AuthState = {
   user: null,
@@ -7,10 +7,13 @@ const initialState: AuthState = {
 };
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<{ uid: string; name: string; email: string; photoURL: string }>) => {
+    setUser: (
+      state,
+      action: PayloadAction<{ uid: string; name: string; email: string; photoURL?: string }>
+    ) => {
       state.user = action.payload;
     },
     clearUser: (state) => {

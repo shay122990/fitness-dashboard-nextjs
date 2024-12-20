@@ -1,9 +1,11 @@
 export interface WorkoutDetail {
+    id?: string;
     workout: string;
     sets: number;
     reps: number;
     weight: number;
-}
+  }
+  
   
 export interface WeeklyWorkoutSummaryProps {
     workouts: Record<string, WorkoutDetail[]>;
@@ -15,5 +17,5 @@ export interface WorkoutListProps {
     onRemoveWorkout: (workout: string) => void;
 }
 export interface WorkoutsState {
-    [key: string]: WorkoutDetail[];
-  }
+  [key: string]: string[];
+}
