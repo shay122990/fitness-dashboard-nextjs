@@ -5,20 +5,26 @@ import authReducer from "./authSlice";
 import workoutsReducer from "./workoutsSlice";
 import nutritionReducer from "./nutritionSlice";
 
-const persistConfig = {
+const persistAuthConfig = {
   key: "auth",
   storage,
 };
 
-const persistedAuthReducer = persistReducer(persistConfig, authReducer);
+const persistNutritionConfig = {
+  key: "nutrition",
+  storage,
+};
+
+const persistedAuthReducer = persistReducer(persistAuthConfig, authReducer);
+const persistedNutritionReducer = persistReducer(persistNutritionConfig, nutritionReducer);
 
 const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
     workouts: workoutsReducer,
-    nutrition: nutritionReducer,
+    nutrition: persistedNutritionReducer, 
   },
-  // Ignore non-serializable values
+ 
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {

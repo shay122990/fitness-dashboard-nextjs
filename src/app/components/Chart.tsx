@@ -1,12 +1,10 @@
 import React from 'react';
 import { Line } from 'react-chartjs-2';
-import { ChartData } from 'chart.js';
+import { ChartProps } from '../types/chartTypes';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 
-
-interface ChartProps {
-  data: ChartData<'line'>;
-  title: string;
-}
+// Register necessary components
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const Chart: React.FC<ChartProps> = ({ data, title }) => {
   return (

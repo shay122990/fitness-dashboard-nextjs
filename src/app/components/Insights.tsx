@@ -14,7 +14,11 @@ const Insights = () => {
 
   const burnedCaloriesData = useSelector((state: RootState) => {
     return Object.keys(state.nutrition).map((day) => {
-      return state.nutrition[day].burned.reduce((acc, curr) => acc + parseInt(curr, 10), 0);
+      const dayData = state.nutrition[day];
+      if (dayData && dayData.burned) {
+        return dayData.burned.reduce((acc, curr) => acc + parseInt(curr, 10), 0);
+      }
+      return 0;
     });
   });
 
