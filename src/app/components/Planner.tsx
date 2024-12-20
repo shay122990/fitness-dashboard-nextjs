@@ -6,13 +6,8 @@ import { fetchUserWorkouts, saveWorkout } from "../../firebase/firestore";
 import InputBox from "./InputBox";
 import WorkoutList from "./WorkoutList";
 import WeeklyWorkoutSummary from "./WeeklyWorkoutSummary";
+import { WorkoutDetail } from "../types/workoutTypes";
 
-export interface WorkoutDetail {
-  workout: string;
-  sets: number;
-  reps: number;
-  weight: number;
-}
 
 const Planner: React.FC = () => {
   const [selectedDay, setSelectedDay] = useState<string>("Monday");

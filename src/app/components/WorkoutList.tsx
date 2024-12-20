@@ -1,11 +1,4 @@
-import React from "react";
-import { WorkoutDetail } from "./Planner";
-
-interface WorkoutListProps {
-  day: string;
-  workouts: WorkoutDetail[];
-  onRemoveWorkout: (workout: string) => void;
-}
+import { WorkoutListProps } from "../types/workoutTypes";
 
 const WorkoutList: React.FC<WorkoutListProps> = ({ day, workouts, onRemoveWorkout }) => (
   <div className="mt-6 border p-4">

@@ -1,9 +1,4 @@
-import React from "react";
-import { WorkoutDetail } from "./Planner";
-
-interface WeeklyWorkoutSummaryProps {
-  workouts: Record<string, WorkoutDetail[]>;
-}
+import { WeeklyWorkoutSummaryProps } from "../types/workoutTypes";
 
 const WeeklyWorkoutSummary: React.FC<WeeklyWorkoutSummaryProps> = ({ workouts }) => (
   <div className="mt-6 border p-4">
