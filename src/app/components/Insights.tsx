@@ -1,20 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Line } from "react-chartjs-2";
 import { fetchUserWorkouts, fetchUserCalories } from "../../firebase/firestore";
 import { auth } from "../../firebase/firebase-config";
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+import Chart from './Chart'; 
+import StatCard from './StatCard';
 
 const Insights = () => {
   const [workoutData, setWorkoutData] = useState<number[]>([]);
@@ -90,7 +80,7 @@ const Insights = () => {
     labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     datasets: [
       {
-        label: "Calories Burned (from Redux)",
+        label: "Calories Burned",
         data: burnedCaloriesData,
         borderColor: "rgba(255, 99, 132, 1)",
         backgroundColor: "rgba(255, 99, 132, 0.2)",
@@ -104,34 +94,16 @@ const Insights = () => {
       <h3 className="text-xl font-bold mb-4">Your Progress</h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="border p-4 rounded-lg">
-          <h4 className="font-semibold">Weekly Workout Progress</h4>
-          <Line data={workoutChartData} options={{ responsive: true }} />
-        </div>
-
-        <div className="border p-4 rounded-lg">
-          <h4 className="font-semibold">Calories Burned Over Time</h4>
-          <Line data={caloriesChartData} options={{ responsive: true }} />
-        </div>
+        <Chart data={workoutChartData} title="Weekly Workout Progress" />
+        <Chart data={caloriesChartData} title="Calories Burned Over Time" />
       </div>
 
       <div className="mt-6">
         <h4 className="font-semibold">Key Stats</h4>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="border p-4 rounded-lg">
-            <p className="font-semibold">Total Workouts</p>
-            <p>{workoutData.length} Workouts</p>
-          </div>
-
-          <div className="border p-4 rounded-lg">
-            <p className="font-semibold">Total Calories Burned</p>
-            <p>{burnedCaloriesData.reduce((acc, curr) => acc + curr, 0)} kcal</p>
-          </div>
-
-          <div className="border p-4 rounded-lg">
-            <p className="font-semibold">Consistency</p>
-            <p>{workoutData.length}/7 days this week</p>
-          </div>
+          <StatCard label="Total Workouts" value={workoutData.length} />
+          <StatCard label="Total Calories Burned" value={burnedCaloriesData.reduce((acc, curr) => acc + curr, 0)} />
+          <StatCard label="Consistency" value={`${workoutData.length}/7 days this week`} />
         </div>
       </div>
     </div>
