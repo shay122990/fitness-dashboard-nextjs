@@ -85,7 +85,7 @@ const Insights = () => {
     datasets: [
       {
         label: "Calories Burned",
-        data: burnedCaloriesData,
+        data: burnedCaloriesData, 
         borderColor: "rgba(255, 99, 132, 1)",
         backgroundColor: "rgba(255, 99, 132, 0.2)",
         fill: true,
