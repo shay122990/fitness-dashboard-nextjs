@@ -52,7 +52,7 @@ const Sidebar = () => {
         </ul>
       </div>
 
-      <div className="flex-1 p-8 h-100 border bg-gray-700">{renderActiveTab()}</div>
+      <div className="flex-1 items-center align-baseline p-8 h-100 border bg-gray-900">{renderActiveTab()}</div>
     </div>
   );
 };
