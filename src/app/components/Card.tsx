@@ -1,9 +1,4 @@
-interface CardProps {
-  title: string;
-  description: string;
-  tabId: string;
-  setActiveTab: (tabId: string) => void;
-}
+import { CardProps } from "../types/cardTypes";
 
 const Card: React.FC<CardProps> = ({ title, description, tabId, setActiveTab }) => {
   return (
