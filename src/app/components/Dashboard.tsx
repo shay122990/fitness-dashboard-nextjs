@@ -1,8 +1,6 @@
 import Card from "./Card";
 
-interface DashboardProps {
-  setActiveTab: (tabId: string) => void;
-}
+import { DashboardProps } from "../types/dashboardTypes";
 
 const Dashboard: React.FC<DashboardProps> = ({ setActiveTab }) => {
   return (
