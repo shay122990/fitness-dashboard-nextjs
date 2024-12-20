@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage"; 
+import storage from "redux-persist/lib/storage";
 import authReducer from "./authSlice";
 import workoutsReducer from "./workoutsSlice";
 import nutritionReducer from "./nutritionSlice";
@@ -10,21 +10,26 @@ const persistAuthConfig = {
   storage,
 };
 
+const persistWorkoutsConfig = {
+  key: "workouts",
+  storage,
+};
+
 const persistNutritionConfig = {
   key: "nutrition",
   storage,
 };
 
 const persistedAuthReducer = persistReducer(persistAuthConfig, authReducer);
+const persistedWorkoutsReducer = persistReducer(persistWorkoutsConfig, workoutsReducer);
 const persistedNutritionReducer = persistReducer(persistNutritionConfig, nutritionReducer);
 
 const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
-    workouts: workoutsReducer,
-    nutrition: persistedNutritionReducer, 
+    workouts: persistedWorkoutsReducer, 
+    nutrition: persistedNutritionReducer,
   },
- 
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
