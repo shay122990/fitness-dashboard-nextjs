@@ -1,11 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface NutritionState {
-  [key: string]: {
-    eaten: string[];
-    burned: string[];
-  };
-}
+import { NutritionState } from '@/app/types/nutritionTypes';
 
 const initialState: NutritionState = {
   Monday: { eaten: [], burned: [] },

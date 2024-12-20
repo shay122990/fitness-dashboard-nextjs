@@ -1,15 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface WorkoutDetail {
-  workout: string;
-  sets: number;
-  reps: number;
-  weight: number;
-}
-
-interface WorkoutsState {
-  [key: string]: WorkoutDetail[];
-}
+import { WorkoutDetail, WorkoutsState } from "@/app/types/workoutTypes";
 
 const initialState: WorkoutsState = {
   Monday: [],

@@ -14,4 +14,6 @@ export interface WorkoutListProps {
     workouts: WorkoutDetail[];
     onRemoveWorkout: (workout: string) => void;
 }
-  
+export interface WorkoutsState {
+    [key: string]: WorkoutDetail[];
+  }
