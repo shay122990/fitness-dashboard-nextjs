@@ -10,13 +10,19 @@ const persistConfig = {
   storage,
 };
 
+const persistNutritionConfig = {
+  key: "nutrition",
+  storage,
+};
+
 const persistedAuthReducer = persistReducer(persistConfig, authReducer);
+const persistedNutritionReducer = persistReducer(persistNutritionConfig, nutritionReducer);
 
 const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
     workouts: workoutsReducer,
-    nutrition: nutritionReducer,
+    nutrition: persistedNutritionReducer,
   },
   // Ignore non-serializable values
   middleware: (getDefaultMiddleware) =>

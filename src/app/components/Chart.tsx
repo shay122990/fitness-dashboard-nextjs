@@ -3,7 +3,6 @@ import { Line } from 'react-chartjs-2';
 import { ChartProps } from '../types/chartTypes';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 
-// Register necessary components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const Chart: React.FC<ChartProps> = ({ data, title }) => {

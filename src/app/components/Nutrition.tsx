@@ -8,7 +8,7 @@ const Nutrition = () => {
   const nutritionData = useSelector((state: RootState) => state.nutrition);
   const [calories, setCalories] = useState('');
   const [selectedDay, setSelectedDay] = useState<string>('Monday');
-  
+
   const handleAddCalories = async () => {
     if (selectedDay && calories.trim()) {
       dispatch(addCalories({ day: selectedDay, calories: calories.trim(), type: "eaten" }));
@@ -27,6 +27,8 @@ const Nutrition = () => {
     dispatch(removeCalories({ day: selectedDay, calories: calorie, type }));
   };
 
+  const filteredDays = Object.keys(nutritionData).filter(day => day !== '_persist');
+
   return (
     <div className="nutrition-container">
       <div className="day-selector">
@@ -36,7 +38,7 @@ const Nutrition = () => {
           value={selectedDay}
           onChange={(e) => setSelectedDay(e.target.value)}
         >
-          {Object.keys(nutritionData).map((day) => (
+          {filteredDays.map((day) => (
             <option key={day} value={day}>
               {day}
             </option>
