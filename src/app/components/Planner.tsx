@@ -4,8 +4,10 @@ import { RootState } from "@/store";
 import { addWorkout, removeWorkout, setWorkouts } from "@/store/workoutsSlice";
 import { fetchUserWorkouts, saveWorkout } from "../../firebase/firestore";
 import InputBox from "./InputBox";
+import WorkoutList from "./WorkoutList";
+import WeeklyWorkoutSummary from "./WeeklyWorkoutSummary";
 
-interface WorkoutDetail {
+export interface WorkoutDetail {
   workout: string;
   sets: number;
   reps: number;
@@ -17,9 +19,9 @@ const Planner: React.FC = () => {
   const [newWorkout, setNewWorkout] = useState<string>("");
   const [sets, setSets] = useState<number>(0);
   const [reps, setReps] = useState<number>(0);
-  const [weight, setWeight] = useState<number>(0); 
-  const [loading, setLoading] = useState<boolean>(false); 
-  const [error, setError] = useState<string | null>(null); 
+  const [weight, setWeight] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
@@ -147,48 +149,14 @@ const Planner: React.FC = () => {
         {loading ? "Adding..." : "Add Workout"}
       </button>
 
-      {error && <p className="text-red-500 mt-2">{error}</p>} 
+      {error && <p className="text-red-500 mt-2">{error}</p>}
 
-      <div className="mt-6 border">
-        <h4 className="text-lg font-bold">Workouts for {selectedDay}</h4>
-        {workouts[selectedDay]?.length > 0 ? (
-          <ul className="list-disc list-inside mt-4">
-            {workouts[selectedDay].map((workout, index) => (
-              <li key={index} className="list-disc list-inside">
-                <span>{workout.workout} - {workout.sets} sets x {workout.reps} reps - {workout.weight}kg</span>
-                <button
-                  onClick={() => removeWorkoutHandler(workout.workout)}
-                  className="ml-4 px-2 py-1 bg-red-500 text-white rounded hover:bg-red-400"
-                >
-                  Remove
-                </button>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No workouts planned for {selectedDay}.</p>
-        )}
-      </div>
-
-      <div className="mt-6 border">
-        <h4 className="text-lg font-bold">Workouts for the Week</h4>
-        {Object.keys(workouts).map((day) => (
-          <div key={day}>
-            <h5 className="text-md font-semibold">{day}</h5>
-            {workouts[day]?.length > 0 ? (
-              <ul className="list-disc list-inside mt-2">
-                {workouts[day].map((workout, index) => (
-                  <li key={index}>
-                    {workout.workout} - {workout.sets} sets x {workout.reps} reps - {workout.weight}kg
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>No workouts planned for {day}.</p>
-            )}
-          </div>
-        ))}
-      </div>
+      <WorkoutList
+        day={selectedDay}
+        workouts={workouts[selectedDay] || []}
+        onRemoveWorkout={removeWorkoutHandler}
+      />
+      <WeeklyWorkoutSummary workouts={workouts} />
     </div>
   );
 };
