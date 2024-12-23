@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { addCalories, removeCalories, setNutritionData } from "../../store/nutritionSlice";
 import { saveCalorieEntry, fetchCalorieEntries, removeCalorieEntry } from "../../firebase/firestore";
 import { RootState } from "../../store/index";
+import InputBox from "../components/InputBox";
 
 const Nutrition = () => {
   const dispatch = useDispatch();
   const nutritionData = useSelector((state: RootState) => state.nutrition);
-  const [calories, setCalories] = useState("");
+  const [calories, setCalories] = useState<string>("");
   const [selectedDay, setSelectedDay] = useState<string>("Monday");
   const user = useSelector((state: RootState) => state.auth.user);
 
@@ -58,6 +59,7 @@ const Nutrition = () => {
           id="day"
           value={selectedDay}
           onChange={(e) => setSelectedDay(e.target.value)}
+          className="p-2 border rounded bg-gray-800 text-white"
         >
           {Object.keys(nutritionData).map((day) => (
             <option key={day} value={day}>
@@ -67,20 +69,32 @@ const Nutrition = () => {
         </select>
       </div>
 
-      <div className="input-calories">
-        <input
-          type="text"
-          value={calories}
-          onChange={(e) => setCalories(e.target.value)}
+      <div className="input-calories mt-4">
+        <InputBox
+          label="Calories"
           placeholder="Enter calories"
+          value={calories}
+          onChange={setCalories}
         />
-        <button onClick={() => handleAddCalories("eaten")}>Add Eaten Calories</button>
-        <button onClick={() => handleAddCalories("burned")}>Add Burned Calories</button>
+        <div className="flex gap-2 mt-2">
+          <button
+            onClick={() => handleAddCalories("eaten")}
+            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-400"
+          >
+            Add Eaten Calories
+          </button>
+          <button
+            onClick={() => handleAddCalories("burned")}
+            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-400"
+          >
+            Add Burned Calories
+          </button>
+        </div>
       </div>
 
       <div className="mt-6 border">
         <h4 className="text-lg font-bold">Eaten Calories for {selectedDay}</h4>
-        {nutritionData[selectedDay]?.eaten.length > 0 ? (
+        {nutritionData[selectedDay]?.eaten?.length > 0 ? (
           <ul className="list-disc list-inside mt-4">
             {nutritionData[selectedDay].eaten.map((calorie, index) => (
               <li key={index} className="flex items-center justify-between">
@@ -101,7 +115,7 @@ const Nutrition = () => {
 
       <div className="mt-6 border">
         <h4 className="text-lg font-bold">Burned Calories for {selectedDay}</h4>
-        {nutritionData[selectedDay]?.burned.length > 0 ? (
+        {nutritionData[selectedDay]?.burned?.length > 0 ? (
           <ul className="list-disc list-inside mt-4">
             {nutritionData[selectedDay].burned.map((calorie, index) => (
               <li key={index} className="flex items-center justify-between">
