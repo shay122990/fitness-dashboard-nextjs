@@ -5,7 +5,6 @@ import { addWorkout, removeWorkout, setWorkouts } from "@/store/workoutsSlice";
 import { fetchUserWorkouts, saveWorkout, removeWorkoutFromFirestore } from "../../firebase/firestore";
 import InputBox from "../components/InputBox";
 import DaySelector from "../components/DaySelector";
-import ListWithRemove from "../components/ListWithRemove";
 import Button from "../components/Button";
 import Card from "./Card";
 
@@ -76,12 +75,6 @@ const Planner: React.FC = () => {
       <InputBox label="Weight (kg)" placeholder="e.g., 50" value={weight.toString()} type="number" onChange={(value) => setWeight(Number(value))} />
 
       <Button label="Add Workout" onClick={addWorkoutHandler} className="bg-blue-600 mt-4" />
-
-      <ListWithRemove
-        title={`Workouts for ${selectedDay}`}
-        items={workouts[selectedDay] || []}
-        onRemove={removeWorkoutHandler}
-      />
 
       <div className="mt-6">
         <h4 className="text-lg font-bold">Workouts for the Week</h4>
