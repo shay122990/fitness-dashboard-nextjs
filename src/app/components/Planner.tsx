@@ -83,8 +83,9 @@ const Planner: React.FC = () => {
         {workouts[selectedDay]?.map((workout, index) => (
           <Card
             key={index}
-            title={`Workout`}
+            title="Workout"
             description={workout}
+            day={selectedDay} 
             tabId={`workout-${index}`}
             actionButton={{
               label: "Remove",
