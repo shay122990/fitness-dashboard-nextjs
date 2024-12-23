@@ -69,8 +69,9 @@ const Nutrition = () => {
       {nutritionData[selectedDay]?.eaten.map((calorie, index) => (
         <Card
           key={index}
-          title={`Eaten Calories`}
+          title="Eaten Calories"
           description={calorie}
+          day={selectedDay} 
           tabId={`eaten-${index}`}
           actionButton={{
             label: "Remove",
@@ -81,8 +82,9 @@ const Nutrition = () => {
       {nutritionData[selectedDay]?.burned.map((calorie, index) => (
         <Card
           key={index}
-          title={`Burned Calories`}
+          title="Burned Calories"
           description={calorie}
+          day={selectedDay} 
           tabId={`burned-${index}`}
           actionButton={{
             label: "Remove",
