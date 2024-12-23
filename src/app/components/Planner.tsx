@@ -96,7 +96,7 @@ const Planner: React.FC = () => {
 
       <div className="mt-6">
         <h4 className="text-lg font-bold">Workouts for {selectedDay}</h4>
-        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="mt-4">
           {renderCardForDay(selectedDay, workouts[selectedDay] || [])}
         </div>
       </div>
@@ -105,7 +105,7 @@ const Planner: React.FC = () => {
         <h4 className="text-lg font-bold">Workouts for the Week</h4>
         <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {Object.entries(workouts).map(([day, dayWorkouts]) =>
-            day !== selectedDay ? renderCardForDay(day, dayWorkouts as string[]) : null
+            renderCardForDay(day, dayWorkouts as string[])
           )}
         </div>
       </div>
