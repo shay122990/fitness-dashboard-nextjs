@@ -7,6 +7,7 @@ import InputBox from "../components/InputBox";
 import DaySelector from "../components/DaySelector";
 import ListWithRemove from "../components/ListWithRemove";
 import Button from "../components/Button";
+import Card from "./Card";
 
 const Planner: React.FC = () => {
   const [selectedDay, setSelectedDay] = useState<string>("Monday");
@@ -84,14 +85,15 @@ const Planner: React.FC = () => {
 
       <div className="mt-6">
         <h4 className="text-lg font-bold">Workouts for the Week</h4>
-        {Object.keys(workouts).map((day) => (
-          <ListWithRemove
-            key={day}
-            title={`${day}`}
-            items={workouts[day] || []}
-            onRemove={(workout) => {
-              setSelectedDay(day);
-              removeWorkoutHandler(workout);
+        {workouts[selectedDay]?.map((workout, index) => (
+          <Card
+            key={index}
+            title={`Workout`}
+            description={workout}
+            tabId={`workout-${index}`}
+            actionButton={{
+              label: "Remove",
+              onClick: () => removeWorkoutHandler(workout),
             }}
           />
         ))}
