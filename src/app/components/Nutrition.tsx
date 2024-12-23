@@ -6,6 +6,7 @@ import { RootState } from "../../store/index";
 import InputBox from "../components/InputBox";
 import DaySelector from "../components/DaySelector";
 import ListWithRemove from "../components/ListWithRemove";
+import Button from "../components/Button";
 
 const Nutrition = () => {
   const dispatch = useDispatch();
@@ -60,25 +61,10 @@ const Nutrition = () => {
         onChange={setSelectedDay}
         days={Object.keys(nutritionData)}
       />
-      <InputBox
-        label="Calories"
-        placeholder="Enter calories"
-        value={calories}
-        onChange={setCalories}
-      />
+      <InputBox label="Calories" placeholder="Enter calories" value={calories} onChange={setCalories} />
       <div className="flex gap-2 mt-2">
-        <button
-          onClick={() => handleAddCalories("eaten")}
-          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-400"
-        >
-          Add Eaten Calories
-        </button>
-        <button
-          onClick={() => handleAddCalories("burned")}
-          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-400"
-        >
-          Add Burned Calories
-        </button>
+        <Button label="Add Eaten Calories" onClick={() => handleAddCalories("eaten")} className="bg-green-500" />
+        <Button label="Add Burned Calories" onClick={() => handleAddCalories("burned")} className="bg-red-500" />
       </div>
       <ListWithRemove
         title={`Eaten Calories for ${selectedDay}`}
