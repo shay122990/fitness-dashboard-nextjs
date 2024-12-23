@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addCalories, clearCalories, setNutritionData } from "../../store/nutritionSlice";
 import { saveCalorieEntry, fetchCalorieEntries } from "../../firebase/firestore";
 import { RootState } from "../../store/index";
+import { daysOfWeek } from "../utils/days"; 
 import InputBox from "../components/InputBox";
 import DaySelector from "../components/DaySelector";
 import Button from "../components/Button";
@@ -65,11 +66,7 @@ const Nutrition = () => {
 
   return (
     <div className="nutrition-container">
-      <DaySelector
-        selectedDay={selectedDay}
-        onChange={setSelectedDay}
-        days={Object.keys(nutritionData)}
-      />
+      <DaySelector selectedDay={selectedDay} onChange={setSelectedDay} days={daysOfWeek} />
       <InputBox label="Calories" placeholder="Enter calories" value={calories} onChange={setCalories} />
       <div className="flex gap-2 mt-2">
         <Button label="Add Eaten Calories" onClick={() => handleAddCalories("eaten")} className="bg-green-500" />

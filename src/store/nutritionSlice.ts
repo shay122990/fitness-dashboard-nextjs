@@ -1,15 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { NutritionState } from '@/app/types/nutritionTypes';
+import { daysOfWeek } from '@/app/utils/days'; 
 
-const initialState: NutritionState = {
-  Monday: { eaten: [], burned: [] },
-  Tuesday: { eaten: [], burned: [] },
-  Wednesday: { eaten: [], burned: [] },
-  Thursday: { eaten: [], burned: [] },
-  Friday: { eaten: [], burned: [] },
-  Saturday: { eaten: [], burned: [] },
-  Sunday: { eaten: [], burned: [] },
-};
+const initialState: NutritionState = daysOfWeek.reduce((state, day) => {
+  state[day] = { eaten: [], burned: [] };
+  return state;
+}, {} as NutritionState);
 
 const nutritionSlice = createSlice({
   name: "nutrition",

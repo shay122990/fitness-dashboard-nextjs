@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { addWorkout, removeWorkout, setWorkouts } from "@/store/workoutsSlice";
 import { fetchUserWorkouts, saveWorkout, removeWorkoutFromFirestore } from "../../firebase/firestore";
+import { daysOfWeek } from "../utils/days"; 
 import InputBox from "../components/InputBox";
 import DaySelector from "../components/DaySelector";
 import Button from "../components/Button";
@@ -81,11 +82,7 @@ const Planner: React.FC = () => {
     <div className="planner-container">
       <h3 className="text-xl font-bold">Workout Planner</h3>
 
-      <DaySelector
-        selectedDay={selectedDay}
-        onChange={setSelectedDay}
-        days={["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]}
-      />
+      <DaySelector selectedDay={selectedDay} onChange={setSelectedDay} days={daysOfWeek} />
 
       <InputBox label="Add Workout" placeholder="e.g., Squats" value={newWorkout} onChange={setNewWorkout} />
       <InputBox label="Sets" placeholder="e.g., 3" value={sets.toString()} type="number" onChange={(value) => setSets(Number(value))} />
