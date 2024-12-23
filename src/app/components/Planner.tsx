@@ -6,6 +6,7 @@ import { fetchUserWorkouts, saveWorkout, removeWorkoutFromFirestore } from "../.
 import InputBox from "../components/InputBox";
 import DaySelector from "../components/DaySelector";
 import ListWithRemove from "../components/ListWithRemove";
+import Button from "../components/Button";
 
 const Planner: React.FC = () => {
   const [selectedDay, setSelectedDay] = useState<string>("Monday");
@@ -68,40 +69,12 @@ const Planner: React.FC = () => {
         days={["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]}
       />
 
-      <InputBox
-        label="Add Workout"
-        placeholder="e.g., Squats"
-        value={newWorkout}
-        onChange={setNewWorkout}
-      />
-      <InputBox
-        label="Sets"
-        placeholder="e.g., 3"
-        value={sets.toString()}
-        type="number"
-        onChange={(value) => setSets(Number(value))}
-      />
-      <InputBox
-        label="Reps"
-        placeholder="e.g., 12"
-        value={reps.toString()}
-        type="number"
-        onChange={(value) => setReps(Number(value))}
-      />
-      <InputBox
-        label="Weight (kg)"
-        placeholder="e.g., 50"
-        value={weight.toString()}
-        type="number"
-        onChange={(value) => setWeight(Number(value))}
-      />
+      <InputBox label="Add Workout" placeholder="e.g., Squats" value={newWorkout} onChange={setNewWorkout} />
+      <InputBox label="Sets" placeholder="e.g., 3" value={sets.toString()} type="number" onChange={(value) => setSets(Number(value))} />
+      <InputBox label="Reps" placeholder="e.g., 12" value={reps.toString()} type="number" onChange={(value) => setReps(Number(value))} />
+      <InputBox label="Weight (kg)" placeholder="e.g., 50" value={weight.toString()} type="number" onChange={(value) => setWeight(Number(value))} />
 
-      <button
-        onClick={addWorkoutHandler}
-        className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500"
-      >
-        Add Workout
-      </button>
+      <Button label="Add Workout" onClick={addWorkoutHandler} className="bg-blue-600 mt-4" />
 
       <ListWithRemove
         title={`Workouts for ${selectedDay}`}
