@@ -4,6 +4,8 @@ import { addCalories, removeCalories, setNutritionData } from "../../store/nutri
 import { saveCalorieEntry, fetchCalorieEntries, removeCalorieEntry } from "../../firebase/firestore";
 import { RootState } from "../../store/index";
 import InputBox from "../components/InputBox";
+import DaySelector from "../components/DaySelector";
+import ListWithRemove from "../components/ListWithRemove";
 
 const Nutrition = () => {
   const dispatch = useDispatch();
@@ -53,86 +55,41 @@ const Nutrition = () => {
 
   return (
     <div className="nutrition-container">
-      <div className="day-selector">
-        <label htmlFor="day">Select Day: </label>
-        <select
-          id="day"
-          value={selectedDay}
-          onChange={(e) => setSelectedDay(e.target.value)}
-          className="p-2 border rounded bg-gray-800 text-white"
+      <DaySelector
+        selectedDay={selectedDay}
+        onChange={setSelectedDay}
+        days={Object.keys(nutritionData)}
+      />
+      <InputBox
+        label="Calories"
+        placeholder="Enter calories"
+        value={calories}
+        onChange={setCalories}
+      />
+      <div className="flex gap-2 mt-2">
+        <button
+          onClick={() => handleAddCalories("eaten")}
+          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-400"
         >
-          {Object.keys(nutritionData).map((day) => (
-            <option key={day} value={day}>
-              {day}
-            </option>
-          ))}
-        </select>
+          Add Eaten Calories
+        </button>
+        <button
+          onClick={() => handleAddCalories("burned")}
+          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-400"
+        >
+          Add Burned Calories
+        </button>
       </div>
-
-      <div className="input-calories mt-4">
-        <InputBox
-          label="Calories"
-          placeholder="Enter calories"
-          value={calories}
-          onChange={setCalories}
-        />
-        <div className="flex gap-2 mt-2">
-          <button
-            onClick={() => handleAddCalories("eaten")}
-            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-400"
-          >
-            Add Eaten Calories
-          </button>
-          <button
-            onClick={() => handleAddCalories("burned")}
-            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-400"
-          >
-            Add Burned Calories
-          </button>
-        </div>
-      </div>
-
-      <div className="mt-6 border">
-        <h4 className="text-lg font-bold">Eaten Calories for {selectedDay}</h4>
-        {nutritionData[selectedDay]?.eaten?.length > 0 ? (
-          <ul className="list-disc list-inside mt-4">
-            {nutritionData[selectedDay].eaten.map((calorie, index) => (
-              <li key={index} className="flex items-center justify-between">
-                <span>{calorie} kcal</span>
-                <button
-                  onClick={() => handleRemoveCalories(calorie, "eaten")}
-                  className="ml-4 px-2 py-1 bg-red-500 text-white rounded hover:bg-red-400"
-                >
-                  Remove
-                </button>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No calories eaten logged for {selectedDay}.</p>
-        )}
-      </div>
-
-      <div className="mt-6 border">
-        <h4 className="text-lg font-bold">Burned Calories for {selectedDay}</h4>
-        {nutritionData[selectedDay]?.burned?.length > 0 ? (
-          <ul className="list-disc list-inside mt-4">
-            {nutritionData[selectedDay].burned.map((calorie, index) => (
-              <li key={index} className="flex items-center justify-between">
-                <span>{calorie} kcal</span>
-                <button
-                  onClick={() => handleRemoveCalories(calorie, "burned")}
-                  className="ml-4 px-2 py-1 bg-red-500 text-white rounded hover:bg-red-400"
-                >
-                  Remove
-                </button>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No calories burned logged for {selectedDay}.</p>
-        )}
-      </div>
+      <ListWithRemove
+        title={`Eaten Calories for ${selectedDay}`}
+        items={nutritionData[selectedDay]?.eaten || []}
+        onRemove={(item) => handleRemoveCalories(item, "eaten")}
+      />
+      <ListWithRemove
+        title={`Burned Calories for ${selectedDay}`}
+        items={nutritionData[selectedDay]?.burned || []}
+        onRemove={(item) => handleRemoveCalories(item, "burned")}
+      />
     </div>
   );
 };
