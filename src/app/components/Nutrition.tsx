@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addCalories, removeCalories, setNutritionData } from "../../store/nutritionSlice";
-import { saveCalorieEntry, fetchCalorieEntries, removeCalorieEntry } from "../../firebase/firestore";
+import { addCalories, clearCalories, setNutritionData } from "../../store/nutritionSlice";
+import { saveCalorieEntry, fetchCalorieEntries } from "../../firebase/firestore";
 import { RootState } from "../../store/index";
 import InputBox from "../components/InputBox";
 import DaySelector from "../components/DaySelector";
@@ -42,16 +42,25 @@ const Nutrition = () => {
     }
   };
 
-  const handleRemoveCalories = async (calorie: string, type: "eaten" | "burned") => {
-    if (user) {
-      dispatch(removeCalories({ day: selectedDay, calories: calorie, type }));
+  const handleClearCalories = (day: string) => {
+    dispatch(clearCalories({ day }));
+  };
 
-      try {
-        await removeCalorieEntry(user.uid, selectedDay, calorie, type);
-      } catch (error) {
-        console.error("Failed to remove calorie entry:", error);
-      }
-    }
+  const renderCardForDay = (day: string, data: { eaten: string[]; burned: string[] }) => {
+    const eatenCalories = data.eaten.join(", ");
+    const burnedCalories = data.burned.join(", ");
+    return (
+      <Card
+        key={day}
+        title={`${day} Entries`}
+        description={`Eaten: ${eatenCalories || "None"} | Burned: ${burnedCalories || "None"}`}
+        tabId={`card-${day}`}
+        actionButton={{
+          label: "Clear All",
+          onClick: () => handleClearCalories(day),
+        }}
+      />
+    );
   };
 
   return (
@@ -66,41 +75,18 @@ const Nutrition = () => {
         <Button label="Add Eaten Calories" onClick={() => handleAddCalories("eaten")} className="bg-green-500" />
         <Button label="Add Burned Calories" onClick={() => handleAddCalories("burned")} className="bg-red-500" />
       </div>
-      {nutritionData[selectedDay]?.eaten.map((calorie, index) => (
-        <Card
-          key={index}
-          title="Eaten Calories"
-          description={calorie}
-          day={selectedDay} 
-          tabId={`eaten-${index}`}
-          actionButton={{
-            label: "Remove",
-            onClick: () => handleRemoveCalories(calorie, "eaten"),
-          }}
-        />
-      ))}
-      {nutritionData[selectedDay]?.burned.map((calorie, index) => (
-        <Card
-          key={index}
-          title="Burned Calories"
-          description={calorie}
-          day={selectedDay} 
-          tabId={`burned-${index}`}
-          actionButton={{
-            label: "Remove",
-            onClick: () => handleRemoveCalories(calorie, "burned"),
-          }}
-        />
-      ))}
+
+      <h2 className="mt-4">Entries for {selectedDay}</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {nutritionData[selectedDay] && renderCardForDay(selectedDay, nutritionData[selectedDay])}
+      </div>
+
+      <h2 className="mt-6">Entries for the Week</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {Object.entries(nutritionData).map(([day, data]) => renderCardForDay(day, data))}
+      </div>
     </div>
   );
 };
 
 export default Nutrition;
-
-
-
-
-  
-
-

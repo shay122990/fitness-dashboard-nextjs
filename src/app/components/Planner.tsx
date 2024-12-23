@@ -48,15 +48,33 @@ const Planner: React.FC = () => {
     }
   };
 
-  const removeWorkoutHandler = async (workout: string) => {
+  const removeWorkoutHandler = async (day: string, workout: string) => {
     if (!user) return;
 
     try {
-      await removeWorkoutFromFirestore(user.uid, selectedDay, workout);
-      dispatch(removeWorkout({ day: selectedDay, workout }));
+      await removeWorkoutFromFirestore(user.uid, day, workout);
+      dispatch(removeWorkout({ day, workout }));
     } catch (error) {
       console.error("Failed to remove workout:", error);
     }
+  };
+
+  const renderCardForDay = (day: string, workouts: string[]) => {
+    const workoutList = workouts.length > 0 ? workouts.join(", ") : "No workouts for today";
+    return (
+      <Card
+        key={day}
+        title={`${day} Workouts`}
+        description={workoutList}
+        tabId={`card-${day}`}
+        actionButton={{
+          label: "Remove All",
+          onClick: () => {
+            workouts.forEach((workout) => removeWorkoutHandler(day, workout));
+          },
+        }}
+      />
+    );
   };
 
   return (
@@ -76,23 +94,20 @@ const Planner: React.FC = () => {
 
       <Button label="Add Workout" onClick={addWorkoutHandler} className="bg-blue-600 mt-4" />
 
-      
+      <div className="mt-6">
+        <h4 className="text-lg font-bold">Workouts for {selectedDay}</h4>
+        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {renderCardForDay(selectedDay, workouts[selectedDay] || [])}
+        </div>
+      </div>
 
       <div className="mt-6">
         <h4 className="text-lg font-bold">Workouts for the Week</h4>
-        {workouts[selectedDay]?.map((workout, index) => (
-          <Card
-            key={index}
-            title="Workout"
-            description={workout}
-            day={selectedDay} 
-            tabId={`workout-${index}`}
-            actionButton={{
-              label: "Remove",
-              onClick: () => removeWorkoutHandler(workout),
-            }}
-          />
-        ))}
+        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {Object.entries(workouts).map(([day, dayWorkouts]) =>
+            day !== selectedDay ? renderCardForDay(day, dayWorkouts as string[]) : null
+          )}
+        </div>
       </div>
     </div>
   );

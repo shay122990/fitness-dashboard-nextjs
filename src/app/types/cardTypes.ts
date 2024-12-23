@@ -7,5 +7,4 @@ export interface CardProps {
     label: string;
     onClick: () => void;
   };
-  day?: string; 
 }

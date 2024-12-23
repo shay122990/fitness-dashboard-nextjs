@@ -1,10 +1,9 @@
 import { CardProps } from "../types/cardTypes";
 
-const Card: React.FC<CardProps> = ({ title, description, tabId, setActiveTab, actionButton, day }) => {
+const Card: React.FC<CardProps> = ({ title, description, tabId, setActiveTab, actionButton }) => {
   return (
-    <div className="border p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 cursor-pointer">
+    <div className="border p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300">
       <h3 className="text-xl font-semibold mb-2">{title}</h3>
-      {day && <p className="text-gray-500 mb-2">{day}</p>}
       <p className="text-white mb-4">{description}</p>
       {setActiveTab && (
         <span
