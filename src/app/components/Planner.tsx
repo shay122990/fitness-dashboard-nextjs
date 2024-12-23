@@ -3,13 +3,16 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { addWorkout, removeWorkout, setWorkouts } from "@/store/workoutsSlice";
 import { fetchUserWorkouts, saveWorkout, removeWorkoutFromFirestore } from "../../firebase/firestore";
-import InputBox from "./InputBox";
+import InputBox from "../components/InputBox";
+import DaySelector from "../components/DaySelector";
+import ListWithRemove from "../components/ListWithRemove";
 
 const Planner: React.FC = () => {
   const [selectedDay, setSelectedDay] = useState<string>("Monday");
   const [newWorkout, setNewWorkout] = useState<string>("");
   const [sets, setSets] = useState<number>(1);
   const [reps, setReps] = useState<number>(10);
+  const [weight, setWeight] = useState<number>(0);
 
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
@@ -24,12 +27,13 @@ const Planner: React.FC = () => {
         }
       }
     };
+
     loadWorkouts();
   }, [user, dispatch]);
 
   const addWorkoutHandler = async () => {
     if (selectedDay && newWorkout.trim() && sets > 0 && reps > 0) {
-      const workoutDetails = `${newWorkout.trim()} - Sets: ${sets}, Reps: ${reps}`;
+      const workoutDetails = `${newWorkout.trim()} - Sets: ${sets}, Reps: ${reps}, Weight: ${weight} kg`;
       dispatch(addWorkout({ day: selectedDay, workout: workoutDetails }));
 
       if (user) {
@@ -37,38 +41,32 @@ const Planner: React.FC = () => {
       }
 
       setNewWorkout("");
-      setSets(1);  
+      setSets(1);
       setReps(10);
+      setWeight(0);
     }
   };
 
   const removeWorkoutHandler = async (workout: string) => {
     if (!user) return;
-  
+
     try {
       await removeWorkoutFromFirestore(user.uid, selectedDay, workout);
-      dispatch(removeWorkout({ day: selectedDay, workout })); 
+      dispatch(removeWorkout({ day: selectedDay, workout }));
     } catch (error) {
       console.error("Failed to remove workout:", error);
     }
   };
-  
 
   return (
-    <div className="mt-6">
-      <h3 className="text-xl font-bold">Workouts for {selectedDay}</h3>
+    <div className="planner-container">
+      <h3 className="text-xl font-bold">Workout Planner</h3>
 
-      <select
-        value={selectedDay}
-        onChange={(e) => setSelectedDay(e.target.value)}
-        className="p-2 border rounded bg-gray-800 text-white"
-      >
-        {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((day) => (
-          <option key={day} value={day}>
-            {day}
-          </option>
-        ))}
-      </select>
+      <DaySelector
+        selectedDay={selectedDay}
+        onChange={setSelectedDay}
+        days={["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]}
+      />
 
       <InputBox
         label="Add Workout"
@@ -76,30 +74,27 @@ const Planner: React.FC = () => {
         value={newWorkout}
         onChange={setNewWorkout}
       />
-
-      <div className="mt-2">
-        <label htmlFor="sets" className="block text-sm font-semibold">Sets</label>
-        <input
-          type="number"
-          id="sets"
-          value={sets}
-          onChange={(e) => setSets(Number(e.target.value))}
-          min="1"
-          className="w-16 p-2 border rounded bg-gray-800 text-white"
-        />
-      </div>
-
-      <div className="mt-2">
-        <label htmlFor="reps" className="block text-sm font-semibold">Reps</label>
-        <input
-          type="number"
-          id="reps"
-          value={reps}
-          onChange={(e) => setReps(Number(e.target.value))}
-          min="1"
-          className="w-16 p-2 border rounded bg-gray-800 text-white"
-        />
-      </div>
+      <InputBox
+        label="Sets"
+        placeholder="e.g., 3"
+        value={sets.toString()}
+        type="number"
+        onChange={(value) => setSets(Number(value))}
+      />
+      <InputBox
+        label="Reps"
+        placeholder="e.g., 12"
+        value={reps.toString()}
+        type="number"
+        onChange={(value) => setReps(Number(value))}
+      />
+      <InputBox
+        label="Weight (kg)"
+        placeholder="e.g., 50"
+        value={weight.toString()}
+        type="number"
+        onChange={(value) => setWeight(Number(value))}
+      />
 
       <button
         onClick={addWorkoutHandler}
@@ -108,42 +103,24 @@ const Planner: React.FC = () => {
         Add Workout
       </button>
 
-      <div className="mt-6 border">
-        <h4 className="text-lg font-bold">Workouts for {selectedDay}</h4>
-        {workouts[selectedDay]?.length > 0 ? (
-          <ul className="list-disc list-inside mt-4">
-            {workouts[selectedDay].map((workout, index) => (
-              <li key={index} className="list-disc list-inside">
-                <span>{workout}</span>
-                <button
-                  onClick={() => removeWorkoutHandler(workout)}
-                  className="ml-4 px-2 py-1 bg-red-500 text-white rounded hover:bg-red-400"
-                >
-                  Remove
-                </button>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No workouts planned for {selectedDay}.</p>
-        )}
-      </div>
+      <ListWithRemove
+        title={`Workouts for ${selectedDay}`}
+        items={workouts[selectedDay] || []}
+        onRemove={removeWorkoutHandler}
+      />
 
-      <div className="mt-6 border">
+      <div className="mt-6">
         <h4 className="text-lg font-bold">Workouts for the Week</h4>
         {Object.keys(workouts).map((day) => (
-          <div key={day}>
-            <h5 className="text-md font-semibold">{day}</h5>
-            {workouts[day]?.length > 0 ? (
-              <ul className="list-disc list-inside mt-2">
-                {workouts[day].map((workout, index) => (
-                  <li key={index}>{workout}</li>
-                ))}
-              </ul>
-            ) : (
-              <p>No workouts planned for {day}.</p>
-            )}
-          </div>
+          <ListWithRemove
+            key={day}
+            title={`${day}`}
+            items={workouts[day] || []}
+            onRemove={(workout) => {
+              setSelectedDay(day);
+              removeWorkoutHandler(workout);
+            }}
+          />
         ))}
       </div>
     </div>
