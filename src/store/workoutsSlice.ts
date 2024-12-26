@@ -20,6 +20,9 @@ const workoutsSlice = createSlice({
     setWorkouts: (state, action: PayloadAction<WorkoutsState>) => {
       return action.payload;
     },
+    updateWorkout: (state, action: PayloadAction<{ day: string; oldWorkout: string; newWorkout: string }>) => { 
+      state[action.payload.day] = state[action.payload.day].map(w => w === action.payload.oldWorkout ? action.payload.newWorkout : w );
+    },
   },
 });
 
