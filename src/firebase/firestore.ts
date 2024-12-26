@@ -40,6 +40,30 @@ export const removeWorkoutFromFirestore = async (userId: string, day: string, wo
   }
 };
 
+// Update workout for a specific user
+export const updateWorkoutInFirestore = async (userId: string, day: string, oldWorkout: string, newWorkout: string) => {
+  try {
+    const workoutsRef = query(
+      collection(db, "workouts"),
+      where("userId", "==", userId),
+      where("day", "==", day),
+      where("workout", "==", oldWorkout)
+    );
+    const querySnapshot = await getDocs(workoutsRef);
+    const batch = writeBatch(db);
+
+    querySnapshot.forEach((doc) => {
+      batch.update(doc.ref, { workout: newWorkout });
+    });
+
+    await batch.commit();
+    console.log("Workout updated successfully in Firestore!");
+  } catch (error) {
+    console.error("Error updating workout:", error);
+    throw error;
+  }
+};
+
 // Fetch all workouts for a specific user
 export const fetchUserWorkouts = async (userId: string) => {
   try {
