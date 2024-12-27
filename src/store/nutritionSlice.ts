@@ -29,8 +29,19 @@ const nutritionSlice = createSlice({
     setNutritionData: (state, action: PayloadAction<NutritionState>) => {
       return action.payload;
     },
+    updateCalories: (
+      state,
+      action: PayloadAction<{ day: string; oldCalories: string; newCalories: string; type: "eaten" | "burned" }>
+    ) => {
+      const { day, oldCalories, newCalories, type } = action.payload;
+      const calorieList = state[day][type];
+      const index = calorieList.indexOf(oldCalories);
+      if (index !== -1) {
+        calorieList[index] = newCalories;
+      }
+    }
   },
 });
 
-export const { addCalories, removeCalories, clearCalories, setNutritionData } = nutritionSlice.actions;
+export const { addCalories, removeCalories, clearCalories, setNutritionData, updateCalories } = nutritionSlice.actions;
 export default nutritionSlice.reducer;
