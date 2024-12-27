@@ -143,6 +143,38 @@ export const fetchCalorieEntries = async (userId: string) => {
     return null;
   }
 };
+
+// Update calories entered to Firestore 
+export const updateCaloriesInFirestore = async (
+  userId: string,
+  day: string,
+  oldCalories: string,
+  newCalories: string,
+  type: "eaten" | "burned"
+) => {
+  try {
+    const caloriesRef = query(
+      collection(db, "calories"),
+      where("userId", "==", userId),
+      where("day", "==", day),
+      where("calories", "==", oldCalories),
+      where("type", "==", type)
+    );
+    const querySnapshot = await getDocs(caloriesRef);
+    const batch = writeBatch(db);
+
+    querySnapshot.forEach((doc) => {
+      batch.update(doc.ref, { calories: newCalories });
+    });
+
+    await batch.commit();
+    console.log("Calorie entry updated successfully in Firestore!");
+  } catch (error) {
+    console.error("Error updating calorie entry:", error);
+    throw error;
+  }
+};
+
 // Remove a calorie entry from Firestore
 export const removeCalorieEntry = async (userId: string, day: string, calories: string, type: "eaten" | "burned") => {
   try {
