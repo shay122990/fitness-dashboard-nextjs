@@ -4,7 +4,7 @@ const Card: React.FC<CardProps> = ({ title, description, tabId, setActiveTab, ac
   return (
     <div className="border p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300">
       <h3 className="text-xl font-semibold mb-2">{title}</h3>
-      <p className="text-white mb-4">{description}</p>
+      <span className="text-white mb-4">{description}</span>
       {setActiveTab && (
         <span
           className="text-blue-500 cursor-pointer"
