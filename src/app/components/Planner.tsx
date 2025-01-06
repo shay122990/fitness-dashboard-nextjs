@@ -53,7 +53,6 @@ const Planner: React.FC = () => {
 
         setEditingWorkout(null);
       } else {
-        // Add new workout
         dispatch(addWorkout({ day: selectedDay, workout: workoutDetails }));
 
         if (user) {

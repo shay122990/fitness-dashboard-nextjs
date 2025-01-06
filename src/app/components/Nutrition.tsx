@@ -58,7 +58,6 @@ const Nutrition = () => {
 
         setEditingEntry(null);
       } else {
-        // Add new entry
         dispatch(addCalories({ day: selectedDay, calories: calorieValue, type }));
 
         try {
