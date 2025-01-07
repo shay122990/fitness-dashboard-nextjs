@@ -2,7 +2,6 @@ import { useDispatch } from 'react-redux';
 import { googleSignIn } from '../../firebase/auth';
 import { FaGoogle } from "react-icons/fa";
 
-
 const SignInButton = () => {
   const dispatch = useDispatch();
 
@@ -15,13 +14,15 @@ const SignInButton = () => {
   };
 
   return (
-    <button
-      onClick={handleSignIn}
-      className="flex items-center bg-blue-500 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:scale-105 hover:shadow-lg transition-transform gap-1"
-    >
-      <FaGoogle/>
-      Sign in with Google
-    </button>
+    <div className="flex items-center justify-center min-h-screen">
+      <button
+        onClick={handleSignIn}
+        className="flex items-center bg-blue-500 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:scale-105 hover:shadow-lg transition-transform gap-1"
+      >
+        <FaGoogle />
+        Sign in with Google
+      </button>
+    </div>
   );
 };
 
