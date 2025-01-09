@@ -14,7 +14,7 @@ export const googleSignIn = async (dispatch: AppDispatch) => {
         uid: user.uid,
         name: user.displayName || '',
         email: user.email || '',
-        // photoURL: user.photoURL || ''
+        photoURL: user.photoURL || ''
       }
     });
 

@@ -45,6 +45,27 @@ src/
 
 ---
 
+### **Firestore rules**
+
+```
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Profiles
+    match /profiles/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Workouts
+    match /workouts/{workoutId} {
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+      allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
+    }
+
+    // Add other collections as needed
+  }
+}
+```
+
 ### **Tech Stack**
 
 - **Next.js**
