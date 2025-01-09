@@ -57,11 +57,24 @@ service cloud.firestore {
 
     // Workouts
     match /workouts/{workoutId} {
+      // Allow create if the userId in the document matches the authenticated user's UID
       allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+      // Allow read, update, and delete if the userId in the document matches the authenticated user's UID
       allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
     }
 
-    // Add other collections as needed
+    // Calories
+    match /calories/{calorieId} {
+      // Allow create if the userId in the document matches the authenticated user's UID
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+      // Allow read, update, and delete if the userId in the document matches the authenticated user's UID
+      allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
+    }
+
+    // Allow nested collections for user-specific data
+    match /users/{userId}/calories/{calorieId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
   }
 }
 ```
