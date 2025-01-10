@@ -1,7 +1,8 @@
-"use client"
+"use client";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 import Image from "next/image";
-import todayLogo from "../../../public/today-logo.png";
 import Dashboard from "./Dashboard";
 import Planner from "./Planner";
 import Nutrition from "./Nutrition";
@@ -10,6 +11,7 @@ import Profile from "./Profile";
 
 const Sidebar = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
+  const user = useSelector((state: RootState) => state.auth.user);
 
   const tabs = [
     { id: "dashboard", label: "Dashboard", component: <Dashboard setActiveTab={setActiveTab} /> },
@@ -28,10 +30,10 @@ const Sidebar = () => {
     <div className="flex flex-row gap-2 lg:gap-6 justify-center w-full border">
       <div className="flex items-center flex-col gap-8 top-0 left-0 w-24 sm:w-24 md:w-48 lg:w-60 p-2 pt-10 bg-gray-800 text-white h-full">
         <Image
-          src={todayLogo}
+          src={user?.photoURL || "/today-logo.png"}
           width={120}
           height={120}
-          alt="logo image"
+          alt="Profile Logo"
           className="rounded-full"
           priority
         />
@@ -52,7 +54,9 @@ const Sidebar = () => {
         </ul>
       </div>
 
-      <div className="flex-1 items-center align-baseline p-8 h-100 border bg-gray-900">{renderActiveTab()}</div>
+      <div className="flex-1 items-center align-baseline p-8 h-100 border bg-gray-900">
+        {renderActiveTab()}
+      </div>
     </div>
   );
 };
