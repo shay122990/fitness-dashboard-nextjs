@@ -176,16 +176,38 @@ export const updateCaloriesInFirestore = async (
 };
 
 // Remove a calorie entry from Firestore
-export const removeCalorieEntry = async (userId: string, day: string, calories: string, type: "eaten" | "burned") => {
+// export const removeCalorieEntry = async (userId: string, day: string, calories: string, type: "eaten" | "burned") => {
+//   try {
+//     const calorieRef = query(
+//       collection(db, "calories"),
+//       where("userId", "==", userId),
+//       where("day", "==", day),
+//       where("calories", "==", calories),
+//       where("type", "==", type)
+//     );
+//     const querySnapshot = await getDocs(calorieRef);
+//     const batch = writeBatch(db);
+
+//     querySnapshot.forEach((doc) => {
+//       batch.delete(doc.ref);
+//     });
+
+//     await batch.commit();
+//     console.log("Calorie entry removed successfully from Firestore!");
+//   } catch (error) {
+//     console.error("Error removing calorie entry:", error);
+//     throw error;
+//   }
+// };
+// clear all calorie entries
+export const clearCaloriesFromFirestore = async (userId: string, day: string) => {
   try {
-    const calorieRef = query(
+    const caloriesRef = query(
       collection(db, "calories"),
       where("userId", "==", userId),
-      where("day", "==", day),
-      where("calories", "==", calories),
-      where("type", "==", type)
+      where("day", "==", day)
     );
-    const querySnapshot = await getDocs(calorieRef);
+    const querySnapshot = await getDocs(caloriesRef);
     const batch = writeBatch(db);
 
     querySnapshot.forEach((doc) => {
@@ -193,9 +215,9 @@ export const removeCalorieEntry = async (userId: string, day: string, calories: 
     });
 
     await batch.commit();
-    console.log("Calorie entry removed successfully from Firestore!");
+    console.log(`All calorie entries for ${day} cleared from Firestore!`);
   } catch (error) {
-    console.error("Error removing calorie entry:", error);
+    console.error("Error clearing calorie entries:", error);
     throw error;
   }
 };

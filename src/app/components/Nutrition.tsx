@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addCalories, clearCalories, setNutritionData, updateCalories } from "../../store/nutritionSlice";
-import { saveCalorieEntry, updateCaloriesInFirestore, fetchCalorieEntries } from "../../firebase/firestore";
+import { saveCalorieEntry, updateCaloriesInFirestore, fetchCalorieEntries, clearCaloriesFromFirestore } from "../../firebase/firestore";
 import { RootState } from "../../store/index";
 import { daysOfWeek } from "../utils/days"; 
 import InputBox from "../components/InputBox";
@@ -76,9 +76,18 @@ const Nutrition = () => {
     setCalories(oldCalories);
   };
 
-  const handleClearCalories = (day: string) => {
-    dispatch(clearCalories({ day }));
+  const handleClearCalories = async (day: string) => {
+    if (user) {
+      try {
+        await clearCaloriesFromFirestore(user.uid, day);
+        dispatch(clearCalories({ day }));
+        console.log(`Calories cleared for ${day}`);
+      } catch (error) {
+        console.error("Failed to clear calories from Firestore:", error);
+      }
+    }
   };
+  
 
   const renderSelectedDayCard = (day: string, data: { eaten: string[]; burned: string[] }) => {
     const renderEntries = (entries: string[], type: "eaten" | "burned") =>
