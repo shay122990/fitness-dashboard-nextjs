@@ -5,23 +5,47 @@ import { setUser } from "../store/authSlice";
 
 export const googleSignIn = async (dispatch: AppDispatch) => {
   try {
-    const result = await signInWithPopup(auth, googleAuthProvider);
-    const user = result.user;
+    await signInWithPopup(auth, googleAuthProvider);
+    const user = auth.currentUser;
+
+    if (user) {
+      await user.reload();
+      dispatch(
+        setUser({
+          uid: user.uid,
+          name: user.displayName || "",
+          email: user.email || "",
+          photoURL: user.photoURL || "",
+        })
+      );
+    }
 
     console.log("Google Sign-In successful:", user);
-
-    dispatch(
-      setUser({
-        uid: user.uid,
-        name: user.displayName || "",
-        email: user.email || "",
-        photoURL: user.photoURL || "",
-      })
-    );
-
     return user;
   } catch (error) {
     console.error("Google Sign-In error:", error);
+    throw error;
+  }
+};
+
+export const refreshUserProfile = async (dispatch: AppDispatch) => {
+  try {
+    const user = auth.currentUser;
+
+    if (user) {
+      await user.reload(); 
+      dispatch(
+        setUser({
+          uid: user.uid,
+          name: user.displayName || "",
+          email: user.email || "",
+          photoURL: user.photoURL || "",
+        })
+      );
+      console.log("User profile refreshed:", user.photoURL);
+    }
+  } catch (error) {
+    console.error("Error refreshing user profile:", error);
     throw error;
   }
 };
