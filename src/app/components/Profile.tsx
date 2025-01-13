@@ -1,15 +1,25 @@
 "use client";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store";
 import { clearUser } from "../../store/authSlice";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase/firebase-config";
-import SignIn from "./SignIn";
+import { googleSignIn } from "../../firebase/auth";
 import Image from "next/image";
+import Button from "../components/Button";
 
 const Profile = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
+
+  const handleSignIn = async () => {
+    try {
+      await googleSignIn(dispatch);
+    } catch (error) {
+      console.error("Sign-In failed:", error);
+    }
+  };
 
   const handleLogout = async () => {
     try {
@@ -21,34 +31,41 @@ const Profile = () => {
     }
   };
 
-  if (!user) {
-    return <SignIn />;
-  }
-
   return (
     <div className="max-w-sm mx-auto bg-gray-100 p-6 rounded-lg shadow-lg">
       <h2 className="text-2xl font-bold text-gray-800 text-center mb-4">Your Profile</h2>
-      <div className="text-gray-700">
-      <Image
-          src={user.photoURL || "/default-profile.png"}
-          alt={user.name || "Profile Picture"}
-          className="w-24 h-24 rounded-full mx-auto border-2 border-gray-300 mb-4"
-          width={96}
-          height={96}
+      {user ? (
+        <>
+          <div className="text-gray-700">
+            <Image
+              src={user.photoURL || "/default-profile.png"}
+              alt={user.name || "Profile Picture"}
+              className="w-24 h-24 rounded-full mx-auto border-2 border-gray-300 mb-4"
+              width={96}
+              height={96}
+            />
+            <p className="mb-2">
+              <span className="font-semibold">Name:</span> {user.name}
+            </p>
+            <p className="mb-2">
+              <span className="font-semibold">Email:</span> {user.email}
+            </p>
+          </div>
+          <Button
+            label="Log Out"
+            onClick={handleLogout}
+            isSignIn={false}
+            className="w-full"
+          />
+        </>
+      ) : (
+        <Button
+          label="Sign in with Google"
+          onClick={handleSignIn}
+          isSignIn={true}
+          className="flex items-center justify-center gap-2"
         />
-        <p className="mb-2">
-          <span className="font-semibold">Name:</span> {user.name}
-        </p>
-        <p className="mb-2">
-          <span className="font-semibold">Email:</span> {user.email}
-        </p>
-      </div>
-      <button
-        onClick={handleLogout}
-        className="w-full bg-red-500 text-white font-bold py-2 rounded-lg shadow-md hover:scale-105 hover:shadow-lg transition-transform"
-      >
-        Log Out
-      </button>
+      )}
     </div>
   );
 };
