@@ -54,7 +54,6 @@ const Profile = () => {
           <Button
             label="Log Out"
             onClick={handleLogout}
-            isSignIn={false}
             className="w-full"
           />
         </>
@@ -62,7 +61,6 @@ const Profile = () => {
         <Button
           label="Sign in with Google"
           onClick={handleSignIn}
-          isSignIn={true}
           className="flex items-center justify-center gap-2"
         />
       )}
