@@ -27,25 +27,3 @@ export const googleSignIn = async (dispatch: AppDispatch) => {
     throw error;
   }
 };
-
-export const refreshUserProfile = async (dispatch: AppDispatch) => {
-  try {
-    const user = auth.currentUser;
-
-    if (user) {
-      await user.reload(); 
-      dispatch(
-        setUser({
-          uid: user.uid,
-          name: user.displayName || "",
-          email: user.email || "",
-          photoURL: user.photoURL || "",
-        })
-      );
-      console.log("User profile refreshed:", user.photoURL);
-    }
-  } catch (error) {
-    console.error("Error refreshing user profile:", error);
-    throw error;
-  }
-};
