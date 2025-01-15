@@ -147,11 +147,13 @@ const Nutrition = () => {
           label={editingEntry ? "Update Eaten Calories" : "Add Eaten Calories"}
           onClick={() => handleAddOrUpdateCalories("eaten")}
           className="bg-green-500"
+          isSignIn={false}
         />
         <Button
           label={editingEntry ? "Update Burned Calories" : "Add Burned Calories"}
           onClick={() => handleAddOrUpdateCalories("burned")}
           className="bg-red-500"
+          isSignIn={false}
         />
       </div>
 

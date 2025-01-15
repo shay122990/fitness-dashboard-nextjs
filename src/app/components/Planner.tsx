@@ -136,7 +136,7 @@ const Planner: React.FC = () => {
       <InputBox label="Reps" placeholder="e.g., 12" value={reps.toString()} type="number" onChange={(value) => setReps(Number(value))} />
       <InputBox label="Weight (kg)" placeholder="e.g., 50" value={weight.toString()} type="number" onChange={(value) => setWeight(Number(value))} />
 
-      <Button label={editingWorkout ? "Update Workout" : "Add Workout"} onClick={addOrUpdateWorkoutHandler} className="bg-blue-600 mt-4" />
+      <Button label={editingWorkout ? "Update Workout" : "Add Workout"} onClick={addOrUpdateWorkoutHandler} className="bg-blue-600 mt-4" isSignIn={false} />
 
       <div className="mt-6">
         <h4 className="text-lg font-bold">Workouts for {selectedDay}</h4>

@@ -1,6 +1,6 @@
 export interface ButtonProps {
     label: string;
-    onClick: () => void;
+    onClick: () => void | Promise<void>;
     className?: string;
     isSignIn: boolean;
   }
