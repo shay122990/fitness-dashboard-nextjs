@@ -1,18 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
-import {
-  addWorkout,
-  removeWorkout,
-  updateWorkout,
-  setWorkouts,
-} from "@/store/workoutsSlice";
-import {
-  fetchUserWorkouts,
-  saveWorkout,
-  removeWorkoutFromFirestore,
-  updateWorkoutInFirestore,
-} from "../../firebase/firestore";
+import {addWorkout,removeWorkout,updateWorkout,setWorkouts} from "@/store/workoutsSlice";
+import {fetchUserWorkouts,saveWorkout,removeWorkoutFromFirestore,updateWorkoutInFirestore} from "../../firebase/firestore";
 import { daysOfWeek } from "../utils/days";
 import InputBox from "../components/InputBox";
 import DaySelector from "../components/DaySelector";
@@ -22,9 +12,9 @@ import Card from "./Card";
 const Planner: React.FC = () => {
   const [selectedDay, setSelectedDay] = useState<string>("Monday");
   const [newWorkout, setNewWorkout] = useState<string>("");
-  const [sets, setSets] = useState<number>(1);
+  const [sets, setSets] = useState<string>(""); 
   const [reps, setReps] = useState<string>("8-10");
-  const [weight, setWeight] = useState<string | number>(""); 
+  const [weight, setWeight] = useState<string | number>("");
   const [editingWorkout, setEditingWorkout] = useState<string | null>(null);
 
   const dispatch = useDispatch();
@@ -61,7 +51,7 @@ const Planner: React.FC = () => {
       return;
     }
 
-    if (selectedDay && newWorkout.trim() && sets > 0) {
+    if (selectedDay && newWorkout.trim() && sets.trim()) {
       const workoutDetails = `${newWorkout.trim()} - Sets: ${sets}, Reps: ${reps}, Weight: ${weight}`;
 
       if (editingWorkout) {
@@ -92,9 +82,9 @@ const Planner: React.FC = () => {
       }
 
       setNewWorkout("");
-      setSets(1);
+      setSets(""); 
       setReps("8");
-      setWeight(""); 
+      setWeight("");
     }
   };
 
@@ -107,8 +97,8 @@ const Planner: React.FC = () => {
       .replace("Reps: ", "")
       .replace("Weight: ", "")
       .split(", ");
-    setSets(parseInt(setsStr));
-    setReps(repsStr); 
+    setSets(setsStr.trim()); 
+    setReps(repsStr.trim());
     setWeight(weightStr.trim());
   };
 
@@ -179,9 +169,9 @@ const Planner: React.FC = () => {
       <InputBox
         label="Sets"
         placeholder="e.g., 3"
-        value={sets.toString()}
-        type="number"
-        onChange={(value) => setSets(Number(value))}
+        value={sets}
+        type="text" 
+        onChange={(value) => setSets(value)}
       />
       <InputBox
         label="Reps"
@@ -193,7 +183,7 @@ const Planner: React.FC = () => {
       <InputBox
         label="Weight"
         placeholder="e.g., 10kg or band"
-        value={weight.toString()} 
+        value={weight.toString()}
         type="text"
         onChange={(value) => setWeight(value)}
       />
@@ -215,9 +205,7 @@ const Planner: React.FC = () => {
       <div className="mt-6">
         <h4 className="text-lg font-bold">Workouts for the Week</h4>
         <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {daysOfWeek.map((day) =>
-            renderCardForDay(day, workouts[day] || [])
-          )}
+          {daysOfWeek.map((day) => renderCardForDay(day, workouts[day] || []))}
         </div>
       </div>
     </div>
