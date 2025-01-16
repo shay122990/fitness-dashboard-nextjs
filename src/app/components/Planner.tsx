@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
-import { addWorkout, removeWorkout, updateWorkout, setWorkouts } from "@/store/workoutsSlice";
-import { fetchUserWorkouts, saveWorkout, removeWorkoutFromFirestore, updateWorkoutInFirestore } from "../../firebase/firestore";
-import { daysOfWeek } from "../utils/days"; 
+import {
+  addWorkout,
+  removeWorkout,
+  updateWorkout,
+  setWorkouts,
+} from "@/store/workoutsSlice";
+import {
+  fetchUserWorkouts,
+  saveWorkout,
+  removeWorkoutFromFirestore,
+  updateWorkoutInFirestore,
+} from "../../firebase/firestore";
+import { daysOfWeek } from "../utils/days";
 import InputBox from "../components/InputBox";
 import DaySelector from "../components/DaySelector";
 import Button from "../components/Button";
@@ -14,7 +24,7 @@ const Planner: React.FC = () => {
   const [newWorkout, setNewWorkout] = useState<string>("");
   const [sets, setSets] = useState<number>(1);
   const [reps, setReps] = useState<string>("8-10");
-  const [weight, setWeight] = useState<number>(0);
+  const [weight, setWeight] = useState<string | number>(""); 
   const [editingWorkout, setEditingWorkout] = useState<string | null>(null);
 
   const dispatch = useDispatch();
@@ -35,15 +45,25 @@ const Planner: React.FC = () => {
   }, [user, dispatch]);
 
   const addOrUpdateWorkoutHandler = async () => {
-    const repsPattern = /^\d+(-\d+)?$/; 
+    const repsPattern = /^\d+(-\d+)?$/;
     if (!repsPattern.test(reps)) {
-      alert("Please enter reps as a single number (e.g., 8) or a range (e.g., 8-10).");
+      alert(
+        "Please enter reps as a single number (e.g., 8) or a range (e.g., 8-10)."
+      );
       return;
     }
-  
+
+    const weightPattern = /^(\d+(\.\d+)?(kg|lbs)?)|([a-zA-Z\s]+)$/;
+    if (!weightPattern.test(weight.toString())) {
+      alert(
+        "Please enter weight as a number (e.g., 10kg, 10) or a string (e.g., pink band)."
+      );
+      return;
+    }
+
     if (selectedDay && newWorkout.trim() && sets > 0) {
-      const workoutDetails = `${newWorkout.trim()} - Sets: ${sets}, Reps: ${reps}, Weight: ${weight} kg`;
-  
+      const workoutDetails = `${newWorkout.trim()} - Sets: ${sets}, Reps: ${reps}, Weight: ${weight}`;
+
       if (editingWorkout) {
         dispatch(
           updateWorkout({
@@ -52,27 +72,32 @@ const Planner: React.FC = () => {
             newWorkout: workoutDetails,
           })
         );
-  
+
         if (user) {
-          await updateWorkoutInFirestore(user.uid, selectedDay, editingWorkout, workoutDetails);
+          await updateWorkoutInFirestore(
+            user.uid,
+            selectedDay,
+            editingWorkout,
+            workoutDetails
+          );
         }
-  
+
         setEditingWorkout(null);
       } else {
         dispatch(addWorkout({ day: selectedDay, workout: workoutDetails }));
-  
+
         if (user) {
           await saveWorkout(user.uid, selectedDay, workoutDetails);
         }
       }
-  
+
       setNewWorkout("");
       setSets(1);
       setReps("8");
-      setWeight(0);
+      setWeight(""); 
     }
   };
-  
+
   const startEditingWorkout = (workout: string) => {
     setEditingWorkout(workout);
     const [name, details] = workout.split(" - ");
@@ -83,11 +108,9 @@ const Planner: React.FC = () => {
       .replace("Weight: ", "")
       .split(", ");
     setSets(parseInt(setsStr));
-    setReps(repsStr);
-    setWeight(parseInt(weightStr.replace(" kg", "")));
+    setReps(repsStr); 
+    setWeight(weightStr.trim());
   };
-  
-  
 
   const removeWorkoutHandler = async (day: string, workout: string) => {
     if (!user) return;
@@ -100,7 +123,11 @@ const Planner: React.FC = () => {
     }
   };
 
-  const renderCardForDay = (day: string, workouts: string[], showActions: boolean = false) => (
+  const renderCardForDay = (
+    day: string,
+    workouts: string[],
+    showActions: boolean = false
+  ) => (
     <Card
       key={day}
       title={`${day} Workouts`}
@@ -137,24 +164,60 @@ const Planner: React.FC = () => {
     <div className="planner-container">
       <h3 className="text-xl font-bold">Workout Planner</h3>
 
-      <DaySelector selectedDay={selectedDay} onChange={setSelectedDay} days={daysOfWeek} />
+      <DaySelector
+        selectedDay={selectedDay}
+        onChange={setSelectedDay}
+        days={daysOfWeek}
+      />
 
-      <InputBox label="Workout Name" placeholder="e.g., Squats" value={newWorkout} onChange={setNewWorkout} />
-      <InputBox label="Sets" placeholder="e.g., 3" value={sets.toString()} type="number" onChange={(value) => setSets(Number(value))} />
-      <InputBox label="Reps" placeholder="e.g., 8-10" value={reps} type="text" onChange={(value) => setReps(value)} />
-      <InputBox label="Weight (kg)" placeholder="e.g., 50" value={weight.toString()} type="number" onChange={(value) => setWeight(Number(value))} />
+      <InputBox
+        label="Workout Name"
+        placeholder="e.g., Squats"
+        value={newWorkout}
+        onChange={setNewWorkout}
+      />
+      <InputBox
+        label="Sets"
+        placeholder="e.g., 3"
+        value={sets.toString()}
+        type="number"
+        onChange={(value) => setSets(Number(value))}
+      />
+      <InputBox
+        label="Reps"
+        placeholder="e.g., 8 or 8-10"
+        value={reps}
+        type="text"
+        onChange={(value) => setReps(value)}
+      />
+      <InputBox
+        label="Weight"
+        placeholder="e.g., 10kg or band"
+        value={weight.toString()} 
+        type="text"
+        onChange={(value) => setWeight(value)}
+      />
 
-      <Button label={editingWorkout ? "Update Workout" : "Add Workout"} onClick={addOrUpdateWorkoutHandler} className="bg-blue-600 mt-4" isSignIn={false} />
+      <Button
+        label={editingWorkout ? "Update Workout" : "Add Workout"}
+        onClick={addOrUpdateWorkoutHandler}
+        className="bg-blue-600 mt-4"
+        isSignIn={false}
+      />
 
       <div className="mt-6">
         <h4 className="text-lg font-bold">Workouts for {selectedDay}</h4>
-        <div className="mt-4">{renderCardForDay(selectedDay, workouts[selectedDay] || [], true)}</div>
+        <div className="mt-4">
+          {renderCardForDay(selectedDay, workouts[selectedDay] || [], true)}
+        </div>
       </div>
 
       <div className="mt-6">
         <h4 className="text-lg font-bold">Workouts for the Week</h4>
         <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {daysOfWeek.map((day) => renderCardForDay(day, workouts[day] || []))}
+          {daysOfWeek.map((day) =>
+            renderCardForDay(day, workouts[day] || [])
+          )}
         </div>
       </div>
     </div>
