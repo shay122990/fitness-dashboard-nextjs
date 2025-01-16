@@ -13,7 +13,7 @@ const Planner: React.FC = () => {
   const [selectedDay, setSelectedDay] = useState<string>("Monday");
   const [newWorkout, setNewWorkout] = useState<string>("");
   const [sets, setSets] = useState<number>(1);
-  const [reps, setReps] = useState<number>(10);
+  const [reps, setReps] = useState<string>("8-10");
   const [weight, setWeight] = useState<number>(0);
   const [editingWorkout, setEditingWorkout] = useState<string | null>(null);
 
@@ -35,9 +35,16 @@ const Planner: React.FC = () => {
   }, [user, dispatch]);
 
   const addOrUpdateWorkoutHandler = async () => {
-    if (selectedDay && newWorkout.trim() && sets > 0 && reps > 0) {
+  
+    const repsPattern = /^\d+-\d+$/; 
+    if (!repsPattern.test(reps)) {
+      alert("Please enter reps in the format 'min-max' (e.g., 8-10).");
+      return;
+    }
+  
+    if (selectedDay && newWorkout.trim() && sets > 0) {
       const workoutDetails = `${newWorkout.trim()} - Sets: ${sets}, Reps: ${reps}, Weight: ${weight} kg`;
-
+  
       if (editingWorkout) {
         dispatch(
           updateWorkout({
@@ -46,26 +53,26 @@ const Planner: React.FC = () => {
             newWorkout: workoutDetails,
           })
         );
-
+  
         if (user) {
           await updateWorkoutInFirestore(user.uid, selectedDay, editingWorkout, workoutDetails);
         }
-
+  
         setEditingWorkout(null);
       } else {
         dispatch(addWorkout({ day: selectedDay, workout: workoutDetails }));
-
+  
         if (user) {
           await saveWorkout(user.uid, selectedDay, workoutDetails);
         }
       }
-
       setNewWorkout("");
       setSets(1);
-      setReps(10);
+      setReps("8-10"); 
       setWeight(0);
     }
   };
+  
 
   const removeWorkoutHandler = async (day: string, workout: string) => {
     if (!user) return;
@@ -88,9 +95,10 @@ const Planner: React.FC = () => {
       .replace("Weight: ", "")
       .split(", ");
     setSets(parseInt(setsStr));
-    setReps(parseInt(repsStr));
+    setReps(repsStr); 
     setWeight(parseInt(weightStr.replace(" kg", "")));
   };
+  
 
   const renderCardForDay = (day: string, workouts: string[], showActions: boolean = false) => (
     <Card
@@ -133,7 +141,7 @@ const Planner: React.FC = () => {
 
       <InputBox label="Workout Name" placeholder="e.g., Squats" value={newWorkout} onChange={setNewWorkout} />
       <InputBox label="Sets" placeholder="e.g., 3" value={sets.toString()} type="number" onChange={(value) => setSets(Number(value))} />
-      <InputBox label="Reps" placeholder="e.g., 12" value={reps.toString()} type="number" onChange={(value) => setReps(Number(value))} />
+      <InputBox label="Reps" placeholder="e.g., 8-10" value={reps} type="text" onChange={(value) => setReps(value)} />
       <InputBox label="Weight (kg)" placeholder="e.g., 50" value={weight.toString()} type="number" onChange={(value) => setWeight(Number(value))} />
 
       <Button label={editingWorkout ? "Update Workout" : "Add Workout"} onClick={addOrUpdateWorkoutHandler} className="bg-blue-600 mt-4" isSignIn={false} />
