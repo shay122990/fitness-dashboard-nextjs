@@ -35,10 +35,9 @@ const Planner: React.FC = () => {
   }, [user, dispatch]);
 
   const addOrUpdateWorkoutHandler = async () => {
-  
-    const repsPattern = /^\d+-\d+$/; 
+    const repsPattern = /^\d+(-\d+)?$/; 
     if (!repsPattern.test(reps)) {
-      alert("Please enter reps in the format 'min-max' (e.g., 8-10).");
+      alert("Please enter reps as a single number (e.g., 8) or a range (e.g., 8-10).");
       return;
     }
   
@@ -66,12 +65,28 @@ const Planner: React.FC = () => {
           await saveWorkout(user.uid, selectedDay, workoutDetails);
         }
       }
+  
       setNewWorkout("");
       setSets(1);
-      setReps("8-10"); 
+      setReps("8");
       setWeight(0);
     }
   };
+  
+  const startEditingWorkout = (workout: string) => {
+    setEditingWorkout(workout);
+    const [name, details] = workout.split(" - ");
+    setNewWorkout(name);
+    const [setsStr, repsStr, weightStr] = details
+      .replace("Sets: ", "")
+      .replace("Reps: ", "")
+      .replace("Weight: ", "")
+      .split(", ");
+    setSets(parseInt(setsStr));
+    setReps(repsStr);
+    setWeight(parseInt(weightStr.replace(" kg", "")));
+  };
+  
   
 
   const removeWorkoutHandler = async (day: string, workout: string) => {
@@ -84,21 +99,6 @@ const Planner: React.FC = () => {
       console.error("Failed to remove workout:", error);
     }
   };
-
-  const startEditingWorkout = (workout: string) => {
-    setEditingWorkout(workout);
-    const [name, details] = workout.split(" - ");
-    setNewWorkout(name);
-    const [setsStr, repsStr, weightStr] = details
-      .replace("Sets: ", "")
-      .replace("Reps: ", "")
-      .replace("Weight: ", "")
-      .split(", ");
-    setSets(parseInt(setsStr));
-    setReps(repsStr); 
-    setWeight(parseInt(weightStr.replace(" kg", "")));
-  };
-  
 
   const renderCardForDay = (day: string, workouts: string[], showActions: boolean = false) => (
     <Card
