@@ -9,12 +9,13 @@ interface CardProps {
     label: string;
     onClick: () => void;
   };
+  textColor?:string;
 }
-const Card: React.FC<CardProps> = ({ title, description, tabId, setActiveTab, actionButton }) => {
+const Card: React.FC<CardProps> = ({ title, description, tabId, setActiveTab, actionButton, textColor="text-white" }) => {
   return (
     <div className="border p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300">
-      <h3 className="text-xl font-semibold mb-2 text-black">{title}</h3>
-      <span className="text-black mb-4">{description}</span>
+      <h3 className={`text-xl font-semibold mb-2 ${textColor}`}>{title}</h3>
+      <span className={`mb-4 ${textColor}`}>{description}</span>
       {setActiveTab && (
         <button
           className="text-blue-500 cursor-pointer"

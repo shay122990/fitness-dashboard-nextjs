@@ -134,6 +134,7 @@ const Nutrition: React.FC<NutritionProps> = ({ setActiveTab }) => {
           label: "Clear All",
           onClick: () => handleClearCalories(day),
         }}
+        textColor="text-white"
       />
     );
   };

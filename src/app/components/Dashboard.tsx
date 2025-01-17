@@ -32,24 +32,28 @@ const Dashboard: React.FC<DashboardProps> = ({ setActiveTab }) => {
           description="Plan and track your workouts to stay on track with your fitness goals."
           tabId="planner"
           setActiveTab={setActiveTab}
+          textColor="text-black"
         />
         <Card
           title="Nutrition Tracker"
           description="Track your meals and calories to maintain a balanced diet."
           tabId="nutrition"
           setActiveTab={setActiveTab}
+          textColor="text-black"
         />
         <Card
           title="Insights"
           description="View your progress, workout statistics, and overall fitness trends."
           tabId="insights"
           setActiveTab={setActiveTab}
+          textColor="text-black"
         />
         <Card
           title="Profile"
           description="Update your personal information and view your fitness profile."
           tabId="profile"
           setActiveTab={setActiveTab}
+          textColor="text-black"
         />
       </div>
     </div>

@@ -137,6 +137,7 @@ const Planner: React.FC<PlannerProps> = ({ setActiveTab }) => {
           : "No workouts for today"
       }
       tabId={`tab-${day}`}
+      textColor="text-white"
     />
   );
 

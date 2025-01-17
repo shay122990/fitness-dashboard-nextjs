@@ -28,7 +28,7 @@ const Sidebar = () => {
 
   return (
     <div className="flex flex-row gap-2 lg:gap-6 justify-center w-full">
-      <div className="fixed top-0 left-0 h-screen w-24 sm:w-32 md:w-48 lg:w-60 pt-20 bg-gray-800 text-white p-4 flex flex-col items-center">
+      <div className="fixed top-0 left-0 h-screen w-24 sm:w-32 md:w-48 lg:w-60 pt-12 bg-gray-800 text-white p-4 flex flex-col items-center">
         <Image
           src={user?.photoURL || "/today-logo.png"}
           width={120}
@@ -38,7 +38,7 @@ const Sidebar = () => {
           priority
         />
 
-        <ul className="space-y-10 mt-4">
+        <ul className="space-y-10 mt-10">
           {tabs.map((tab) => (
             <li key={tab.id}>
               <button
