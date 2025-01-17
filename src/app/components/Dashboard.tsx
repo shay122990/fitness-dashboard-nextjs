@@ -1,13 +1,30 @@
 import Card from "./Card";
+import Image from "next/image";
 
 interface DashboardProps {
   setActiveTab: (tabId: string) => void;
 }
+
 const Dashboard: React.FC<DashboardProps> = ({ setActiveTab }) => {
   return (
-    <div className="border p-6">
-      <h2 className="text-2xl font-semibold mb-4">Dashboard</h2>
-      <p className="mb-6">Your personal tracker.</p>
+    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-300 p-6">
+      <Image src="/today-logo.png" width="100" height="100" alt="App Logo" className="w-20 mx-auto mb-4 animate-fadeIn rounded-full" />
+      
+      <div className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white p-6 rounded-lg text-center mb-8">
+        <h1 className="text-4xl font-bold mb-2">Welcome to Your Fitness Hub!</h1>
+        <p className="text-lg">Plan. Track. Achieve. All in one place.</p>
+      </div>
+
+      {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="p-4 bg-green-100 rounded-lg shadow-md">
+          <h4 className="font-bold text-green-600">Workouts This Week</h4>
+          <p className="text-2xl font-semibold text-black">5</p>
+        </div>
+        <div className="p-4 bg-yellow-100 rounded-lg shadow-md">
+          <h4 className="font-bold text-yellow-600">Calories Tracked</h4>
+          <p className="text-2xl font-semibold text-black">12,000</p>
+        </div>
+      </div> */}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card

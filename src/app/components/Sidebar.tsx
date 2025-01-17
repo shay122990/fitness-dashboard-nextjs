@@ -27,8 +27,8 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="flex flex-row gap-2 lg:gap-6 justify-center w-full border">
-      <div className="flex items-center flex-col gap-8 top-0 left-0 w-24 sm:w-24 md:w-48 lg:w-60 p-2 pt-10 bg-gray-800 text-white h-full">
+    <div className="flex flex-row gap-2 lg:gap-6 justify-center w-full">
+      <div className="fixed top-0 left-0 h-screen w-24 sm:w-32 md:w-48 lg:w-60 pt-20 bg-gray-800 text-white p-4 flex flex-col items-center">
         <Image
           src={user?.photoURL || "/today-logo.png"}
           width={120}
@@ -54,7 +54,7 @@ const Sidebar = () => {
         </ul>
       </div>
 
-      <div className="flex-1 items-center align-baseline p-8 h-100 border bg-gray-900">
+      <div className="ml-24 sm:ml-32 md:ml-48 lg:ml-60 p-8 flex-1 h-screen overflow-y-auto bg-gray-900">
         {renderActiveTab()}
       </div>
     </div>
