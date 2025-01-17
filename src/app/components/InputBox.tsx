@@ -1,4 +1,10 @@
-import { InputBoxProps } from "../types/inputBoxTypes";
+interface InputBoxProps {
+  label: string;
+  placeholder: string;
+  value: string;
+  onChange: (value: string) => void;
+  type?: "text" | "number";
+}
 
 const InputBox: React.FC<InputBoxProps> = ({ label, placeholder, value, onChange, type = "text" }) => {
   return (

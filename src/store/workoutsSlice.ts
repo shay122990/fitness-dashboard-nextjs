@@ -1,7 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { WorkoutsState } from "@/app/types/workoutTypes";
 import { daysOfWeek } from "@/app/utils/days"; 
 
+interface WorkoutsState {
+  [key: string]: string[];
+}
 const initialState: WorkoutsState = daysOfWeek.reduce((state, day) => {
   state[day] = [];
   return state;

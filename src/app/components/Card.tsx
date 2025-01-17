@@ -1,5 +1,15 @@
-import { CardProps } from "../types/cardTypes";
+import { ReactNode } from "react";
 
+interface CardProps {
+  title: string;
+  description: ReactNode;
+  tabId: string;
+  setActiveTab?: (tabId: string) => void;
+  actionButton?: {
+    label: string;
+    onClick: () => void;
+  };
+}
 const Card: React.FC<CardProps> = ({ title, description, tabId, setActiveTab, actionButton }) => {
   return (
     <div className="border p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300">

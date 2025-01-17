@@ -1,4 +1,7 @@
-import { StatCardProps } from "../types/statCardTypes";
+export interface StatCardProps {
+  label: string;
+  value: string | number;
+}
 
 const StatCard: React.FC<StatCardProps> = ({ label, value }) => {
   return (

@@ -15,9 +15,9 @@ const Sidebar = () => {
 
   const tabs = [
     { id: "dashboard", label: "Dashboard", component: <Dashboard setActiveTab={setActiveTab} /> },
-    { id: "planner", label: "Workout Planner", component: <Planner /> },
-    { id: "nutrition", label: "Nutrition Tracker", component: <Nutrition /> },
-    { id: "insights", label: "Progress Insights", component: <Insights /> },
+    { id: "planner", label: "Workout Planner", component: <Planner setActiveTab={setActiveTab}/> },
+    { id: "nutrition", label: "Nutrition Tracker", component: <Nutrition setActiveTab={setActiveTab}/> },
+    { id: "insights", label: "Progress Insights", component: <Insights setActiveTab={setActiveTab} /> },
     { id: "profile", label: "Your Profile", component: <Profile /> },
   ];
 

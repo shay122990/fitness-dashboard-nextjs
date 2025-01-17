@@ -5,8 +5,12 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import Chart from "../components/Chart";
 import StatCard from "../components/StatCard";
+import AuthCheck from "../components/AuthCheck";
 
-const Insights = () => {
+interface InsightsProps {
+  setActiveTab: (tabId: string) => void;
+}
+const Insights: React.FC<InsightsProps> = ({ setActiveTab }) => {
   const [workoutData, setWorkoutData] = useState<number[]>([]);
   const [burnedCaloriesData, setBurnedCaloriesData] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -56,19 +60,7 @@ const Insights = () => {
 
       fetchData();
     }
-  }, [userId,nutritionData]);
-
-  if (authLoading) {
-    return <div>Checking authentication...</div>;
-  }
-
-  if (!userId) {
-    return <div>Please sign in to see your progress.</div>;
-  }
-
-  if (loading) {
-    return <div>Loading your progress...</div>;
-  }
+  }, [userId, nutritionData]);
 
   const workoutChartData = {
     labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
@@ -97,23 +89,31 @@ const Insights = () => {
   };
 
   return (
-    <div className="border border-white p-6">
-      <h3 className="text-xl font-bold mb-4">Your Progress</h3>
+    <AuthCheck
+      authLoading={authLoading}
+      userId={userId}
+      loading={loading}
+      onRedirect={() => setActiveTab("profile")}
+      message="Sign in to see your progress and personalized insights."
+    >
+      <div className="border border-white p-6">
+        <h3 className="text-xl font-bold mb-4">Your Progress</h3>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Chart title="Weekly Workout Progress" data={workoutChartData} options={{ responsive: true }} />
-        <Chart title="Calories Burned Over Time" data={caloriesChartData} options={{ responsive: true }} />
-      </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Chart title="Weekly Workout Progress" data={workoutChartData} options={{ responsive: true }} />
+          <Chart title="Calories Burned Over Time" data={caloriesChartData} options={{ responsive: true }} />
+        </div>
 
-      <div className="mt-6">
-        <h4 className="font-semibold">Key Stats</h4>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <StatCard label="Total Workouts" value={`${workoutData.reduce((acc, val) => acc + val, 0)} Workouts`} />
-          <StatCard label="Total Calories Burned" value={`${burnedCaloriesData.reduce((acc, curr) => acc + curr, 0)} kcal`} />
-          <StatCard label="Consistency" value={`${workoutData.filter((val) => val > 0).length}/7 days this week`} />
+        <div className="mt-6">
+          <h4 className="font-semibold">Key Stats</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <StatCard label="Total Workouts" value={`${workoutData.reduce((acc, val) => acc + val, 0)} Workouts`} />
+            <StatCard label="Total Calories Burned" value={`${burnedCaloriesData.reduce((acc, curr) => acc + curr, 0)} kcal`} />
+            <StatCard label="Consistency" value={`${workoutData.filter((val) => val > 0).length}/7 days this week`} />
+          </div>
         </div>
       </div>
-    </div>
+    </AuthCheck>
   );
 };
 

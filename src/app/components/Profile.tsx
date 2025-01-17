@@ -61,7 +61,7 @@ const Profile = () => {
         <Button
           label="Sign in with Google"
           onClick={handleSignIn}
-          className="flex items-center justify-center gap-2"
+          className="w-full"
         />
       )}
     </div>

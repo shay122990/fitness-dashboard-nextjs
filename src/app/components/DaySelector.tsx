@@ -1,4 +1,8 @@
-import { DaySelectorProps } from "../types/daySelectorTypes";
+interface DaySelectorProps {
+  selectedDay: string;
+  onChange: (day: string) => void;
+  days: string[];
+}
 
 const DaySelector: React.FC<DaySelectorProps> = ({ selectedDay, onChange, days }) => (
   <div className="day-selector">

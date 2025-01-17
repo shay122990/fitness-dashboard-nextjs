@@ -1,6 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { NutritionState } from '@/app/types/nutritionTypes';
 import { daysOfWeek } from '@/app/utils/days'; 
+
+interface NutritionState {
+  [key: string]: {
+    eaten: string[];
+    burned: string[];
+  };
+}
 
 const initialState: NutritionState = daysOfWeek.reduce((state, day) => {
   state[day] = { eaten: [], burned: [] };
