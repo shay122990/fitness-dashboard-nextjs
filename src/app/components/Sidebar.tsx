@@ -28,7 +28,10 @@ const Sidebar = () => {
 
   return (
     <div className="flex flex-row gap-2 lg:gap-6 justify-center w-full">
-      <div className="fixed top-0 left-0 h-screen w-24 sm:w-32 md:w-48 lg:w-60 pt-12 bg-gray-800 text-white p-4 flex flex-col items-center">
+      <div  className="fixed top-0 left-0 h-screen w-24 sm:w-32 md:w-48 lg:w-60 pt-12 text-white p-4 flex flex-col items-center"
+        style={{
+          background: 'linear-gradient(229deg, rgba(10,4,255,1) 1%, rgba(0,19,60,1) 91%)',
+        }}>
         <Image
           src={user?.photoURL || "/today-logo.png"}
           width={120}
@@ -54,7 +57,9 @@ const Sidebar = () => {
         </ul>
       </div>
 
-      <div className="ml-24 sm:ml-32 md:ml-48 lg:ml-60 p-8 flex-1 h-screen overflow-y-auto bg-gray-900">
+      <div className="ml-24 sm:ml-32 md:ml-48 lg:ml-60 p-8 flex-1 h-screen overflow-y-auto bg-gray-900"
+      style={{background: 'radial-gradient(circle, rgba(10,4,255,1) 1%, rgba(0,19,60,1) 71%)'}}
+      >
         {renderActiveTab()}
       </div>
     </div>
