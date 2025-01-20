@@ -21,7 +21,7 @@ const AuthCheck: React.FC<AuthCheckProps> = ({
 
   if (!userId) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="flex items-center justify-center min-h-screen">
         <div className="bg-white shadow-md rounded-lg p-8 text-center max-w-sm">
           <h2 className="text-2xl font-bold mb-4 text-gray-700">Sign In Required</h2>
           <p className="text-gray-600 mb-6">{message}</p>

@@ -7,7 +7,7 @@ interface DashboardProps {
 
 const Dashboard: React.FC<DashboardProps> = ({ setActiveTab }) => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-300 p-6">
+    <div className="min-h-screen p-6">
       <Image src="/today-logo.png" width="100" height="100" alt="App Logo" className="w-20 mx-auto mb-4 animate-fadeIn rounded-full" />
       
       <div className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white p-6 rounded-lg text-center mb-8">
@@ -32,28 +32,28 @@ const Dashboard: React.FC<DashboardProps> = ({ setActiveTab }) => {
           description="Plan and track your workouts to stay on track with your fitness goals."
           tabId="planner"
           setActiveTab={setActiveTab}
-          textColor="text-black"
+          textColor="text-white"
         />
         <Card
           title="Nutrition Tracker"
           description="Track your meals and calories to maintain a balanced diet."
           tabId="nutrition"
           setActiveTab={setActiveTab}
-          textColor="text-black"
+          textColor="text-white"
         />
         <Card
           title="Insights"
           description="View your progress, workout statistics, and overall fitness trends."
           tabId="insights"
           setActiveTab={setActiveTab}
-          textColor="text-black"
+          textColor="text-white"
         />
         <Card
           title="Profile"
           description="Update your personal information and view your fitness profile."
           tabId="profile"
           setActiveTab={setActiveTab}
-          textColor="text-black"
+          textColor="text-white"
         />
       </div>
     </div>
