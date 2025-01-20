@@ -47,7 +47,7 @@ const Profile = () => {
             <p className="mb-2">
               <span className="font-semibold">Name:</span> {user.name}
             </p>
-            <p className="mb-2">
+            <p className="mb-2 text-sm break-words">
               <span className="font-semibold">Email:</span> {user.email}
             </p>
           </div>

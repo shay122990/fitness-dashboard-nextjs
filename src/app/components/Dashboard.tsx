@@ -11,7 +11,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setActiveTab }) => {
       <Image src="/today-logo.png" width="100" height="100" alt="App Logo" className="w-20 mx-auto mb-4 animate-fadeIn rounded-full" />
       
       <div className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white p-6 rounded-lg text-center mb-8">
-        <h1 className="text-4xl font-bold mb-2">Welcome to Your Fitness Hub!</h1>
+        <h1 className="text-4xl font-bold mb-2 break-words">Welcome to Your Fitness Hub!</h1>
         <p className="text-lg">Plan. Track. Achieve. All in one place.</p>
       </div>
 
