@@ -3,7 +3,7 @@ import Sidebar from "./components/Sidebar";
 export default function Home() {
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen background:back">
       <Sidebar  />
     </div>
   );
