@@ -20,7 +20,7 @@ export const googleSignIn = async (dispatch: AppDispatch) => {
       );
     }
 
-    console.log("Google Sign-In successful:", user);
+    console.log("Google Sign-In successful:");
     return user;
   } catch (error) {
     console.error("Google Sign-In error:", error);
