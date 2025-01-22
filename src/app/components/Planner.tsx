@@ -124,7 +124,7 @@ const Planner: React.FC<PlannerProps> = ({ setActiveTab }) => {
                 <span>{workout}</span>
                 {showActions && (
                   <div>
-                    <button className="text-blue-500 mr-2" onClick={() => startEditingWorkout(workout)}>
+                    <button className="text-green-400 mr-2" onClick={() => startEditingWorkout(workout)}>
                       Edit
                     </button>
                     <button className="text-red-500" onClick={() => removeWorkoutHandler(day, workout)}>

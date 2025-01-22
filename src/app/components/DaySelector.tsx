@@ -5,13 +5,13 @@ interface DaySelectorProps {
 }
 
 const DaySelector: React.FC<DaySelectorProps> = ({ selectedDay, onChange, days }) => (
-  <div className="day-selector">
+  <div className="flex gap-10 align-middle">
     <label htmlFor="day" className="font-semibold">Select Day:</label>
     <select
       id="day"
       value={selectedDay}
       onChange={(e) => onChange(e.target.value)}
-      className="p-2 border rounded bg-blue-950 text-white"
+      className="border rounded bg-blue-950 text-white"
     >
       {days.map((day) => (
         <option key={day} value={day}>
