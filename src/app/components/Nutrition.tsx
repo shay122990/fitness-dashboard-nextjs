@@ -170,12 +170,12 @@ const Nutrition: React.FC<NutritionProps> = ({ setActiveTab }) => {
           <Button
             label={editingEntry ? "Update Eaten Calories" : "Add Eaten Calories"}
             onClick={() => handleAddOrUpdateCalories("eaten")}
-            className="bg-green-500"
+            className="bg-green-400"
           />
           <Button
             label={editingEntry ? "Update Burned Calories" : "Add Burned Calories"}
             onClick={() => handleAddOrUpdateCalories("burned")}
-            className="bg-red-500"
+            className="bg-orange-500"
           />
         </div>
 

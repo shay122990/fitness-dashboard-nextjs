@@ -46,7 +46,7 @@ const Sidebar = () => {
             <li key={tab.id}>
               <button
                 className={`w-full text-left break-words text-sm lg:uppercase border p-2 ${
-                  activeTab === tab.id ? "bg-gray-700" : ""
+                  activeTab === tab.id ? "bg-blue-700" : ""
                 }`}
                 onClick={() => setActiveTab(tab.id)}
               >

@@ -11,7 +11,7 @@ const DaySelector: React.FC<DaySelectorProps> = ({ selectedDay, onChange, days }
       id="day"
       value={selectedDay}
       onChange={(e) => onChange(e.target.value)}
-      className="p-2 border rounded bg-gray-800 text-white"
+      className="p-2 border rounded bg-blue-950 text-white"
     >
       {days.map((day) => (
         <option key={day} value={day}>

@@ -159,7 +159,7 @@ const Planner: React.FC<PlannerProps> = ({ setActiveTab }) => {
         <Button
           label={editingWorkout ? "Update Workout" : "Add Workout"}
           onClick={addOrUpdateWorkoutHandler}
-          className="bg-blue-600 mt-4"
+          className="bg-green-400 mt-4"
         />
         <div className="mt-6">
           <h4 className="text-lg font-bold">Workouts for {selectedDay}</h4>

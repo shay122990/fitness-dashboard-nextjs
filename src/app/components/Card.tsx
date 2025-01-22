@@ -18,7 +18,7 @@ const Card: React.FC<CardProps> = ({ title, description, tabId, setActiveTab, ac
       <span className={`mb-4 ${textColor}`}>{description}</span>
       {setActiveTab && (
         <button
-          className="text-blue-500 cursor-pointer"
+          className="text-green-400 cursor-pointer"
           onClick={() => setActiveTab(tabId)}
         >
           Go to {title}
@@ -26,7 +26,7 @@ const Card: React.FC<CardProps> = ({ title, description, tabId, setActiveTab, ac
       )}
       {actionButton && (
         <button
-          className="mt-2 px-4 py-2 bg-red-500 text-black rounded hover:bg-red-400"
+          className="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-400"
           onClick={actionButton.onClick}
         >
           {actionButton.label}
