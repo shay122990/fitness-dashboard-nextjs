@@ -9,13 +9,14 @@ import { googleSignIn } from "../../firebase/auth";
 import Image from "next/image";
 import Button from "../components/Button";
 
-const Profile = () => {
+const Profile = ({ setActiveTab }: { setActiveTab: (tab: string) => void }) => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
 
   const handleSignIn = async () => {
     try {
       await googleSignIn(dispatch);
+      setActiveTab("dashboard");
     } catch (error) {
       console.error("Sign-In failed:", error);
     }
