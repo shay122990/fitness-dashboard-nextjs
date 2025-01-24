@@ -2,8 +2,8 @@ import localFont from "next/font/local";
 import { Metadata } from "next";
 import "./globals.css";
 import Providers from "../providers";
-import ClientSideWrapper from './clientSideWrapper'; 
-import Sidebar from './components/Sidebar';
+import ClientSideWrapper from "./clientSideWrapper";
+import Sidebar from "./components/Sidebar";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,14 +33,30 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
           <ClientSideWrapper>
-            <Sidebar />
-            <main className="flex-1 ml-24 sm:ml-32 md:ml-48 lg:ml-60 overflow-y-auto">
-              {children}
-            </main>
+            <div className="flex h-screen">
+              <div
+                className="h-screen w-[100px] lg:w-[150px]"
+                style={{
+                  background:
+                    "linear-gradient(35deg, rgba(0,18,255,1) 0%, rgba(3,0,132,1) 40%, rgba(1,0,39,1) 100%)",
+                }}
+              >
+                <Sidebar />
+              </div>
+              <main
+                className="flex-1 items-center overflow-y-auto p-4 lg:p-10"
+                style={{
+                  background:
+                    "radial-gradient(circle, rgba(10,4,255,1) 3%, rgba(0,19,60,1) 100%, rgba(8,56,161,1) 131%)",
+                }}
+              >
+                {children}
+              </main>
+            </div>
           </ClientSideWrapper>
         </Providers>
       </body>
