@@ -1,4 +1,5 @@
-"use client";
+'use client';
+
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store";
@@ -8,15 +9,17 @@ import { auth } from "../../firebase/firebase-config";
 import { googleSignIn } from "../../firebase/auth";
 import Image from "next/image";
 import Button from "../components/Button";
+import { useRouter } from "next/navigation";  
 
-const Profile = ({ setActiveTab }: { setActiveTab: (tab: string) => void }) => {
+const Profile = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
+  const router = useRouter();  
 
   const handleSignIn = async () => {
     try {
       await googleSignIn(dispatch);
-      setActiveTab("dashboard");
+      router.push("/");  
     } catch (error) {
       console.error("Sign-In failed:", error);
     }

@@ -1,37 +1,47 @@
+"use client";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase/firebase-config";
-import { addCalories, clearCalories, setNutritionData, updateCalories } from "../../store/nutritionSlice";
-import { saveCalorieEntry, updateCaloriesInFirestore, fetchCalorieEntries, clearCaloriesFromFirestore } from "../../firebase/firestore";
+import {
+  addCalories,
+  clearCalories,
+  setNutritionData,
+  updateCalories,
+} from "../../store/nutritionSlice";
+import {
+  saveCalorieEntry,
+  updateCaloriesInFirestore,
+  fetchCalorieEntries,
+  clearCaloriesFromFirestore,
+} from "../../firebase/firestore";
 import { RootState } from "../../store/index";
-import { daysOfWeek } from "../utils/days"; 
+import { daysOfWeek } from "../utils/days";
 import InputBox from "../components/InputBox";
 import DaySelector from "../components/DaySelector";
 import Button from "../components/Button";
 import Card from "../components/Card";
 import AuthCheck from "../components/AuthCheck";
 
-interface NutritionProps {
-  setActiveTab: (tabId: string) => void;
-}
-
-const Nutrition: React.FC<NutritionProps> = ({ setActiveTab }) => {
+const Nutrition = () => {
   const dispatch = useDispatch();
   const nutritionData = useSelector((state: RootState) => state.nutrition);
   const [calories, setCalories] = useState<string>("");
-  const [editingEntry, setEditingEntry] = useState<{ type: "eaten" | "burned"; oldCalories: string } | null>(null);
+  const [editingEntry, setEditingEntry] = useState<{
+    type: "eaten" | "burned";
+    oldCalories: string;
+  } | null>(null);
   const [selectedDay, setSelectedDay] = useState<string>("Monday");
   const [authLoading, setAuthLoading] = useState<boolean>(true);
   const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
-    const user = auth.currentUser;
-    if (user) {
-      setUserId(user.uid);
-    } else {
-      setUserId(null);
-    }
-    setAuthLoading(false);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUserId(user?.uid || null);
+      setAuthLoading(false);
+    });
+
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
@@ -129,7 +139,6 @@ const Nutrition: React.FC<NutritionProps> = ({ setActiveTab }) => {
             <div>Burned: {data.burned.length > 0 ? renderEntries(data.burned, "burned") : "None"}</div>
           </>
         }
-        tabId={`card-${day}`}
         actionButton={{
           label: "Clear All",
           onClick: () => handleClearCalories(day),
@@ -143,7 +152,6 @@ const Nutrition: React.FC<NutritionProps> = ({ setActiveTab }) => {
     return Object.entries(nutritionData).map(([day, data]) => (
       <Card
         key={day}
-        tabId={`card-${day}`}
         title={`${day} Entries`}
         description={`Eaten: ${data.eaten.join(", ") || "None"} | Burned: ${data.burned.join(", ") || "None"}`}
       />
@@ -155,8 +163,8 @@ const Nutrition: React.FC<NutritionProps> = ({ setActiveTab }) => {
       authLoading={authLoading}
       userId={userId}
       loading={false}
-      onRedirect={() => setActiveTab("profile")}
-      message="Sign in to keep track of your calories."
+      onRedirect={() => (window.location.href = "/profile")}
+      message="Sign in to track your calories"
     >
       <div className="nutrition-container">
         <DaySelector selectedDay={selectedDay} onChange={setSelectedDay} days={daysOfWeek} />

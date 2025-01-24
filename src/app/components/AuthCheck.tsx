@@ -15,7 +15,7 @@ const AuthCheck: React.FC<AuthCheckProps> = ({
   message,
   children,
 }) => {
-  if (authLoading) {
+  if (authLoading ) {
     return <div>Checking authentication...</div>;
   }
 

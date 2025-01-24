@@ -2,6 +2,8 @@ import localFont from "next/font/local";
 import { Metadata } from "next";
 import "./globals.css";
 import Providers from "../providers";
+import ClientSideWrapper from './clientSideWrapper'; 
+import Sidebar from './components/Sidebar';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -15,15 +17,15 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Today - a fitness planner",
+  title: "Today - A Fitness Planner",
   description: "One stop to plan your workouts",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <head>
@@ -31,10 +33,15 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex`}
       >
         <Providers>
-          {children}
+          <ClientSideWrapper>
+            <Sidebar />
+            <main className="flex-1 ml-24 sm:ml-32 md:ml-48 lg:ml-60 overflow-y-auto">
+              {children}
+            </main>
+          </ClientSideWrapper>
         </Providers>
       </body>
     </html>

@@ -1,4 +1,6 @@
+"use client";
 import React, { useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
 import { fetchUserWorkouts, fetchCalorieEntries } from "../../firebase/firestore";
 import { auth } from "../../firebase/firebase-config";
 import { useSelector } from "react-redux";
@@ -7,26 +9,26 @@ import Chart from "../components/Chart";
 import StatCard from "../components/StatCard";
 import AuthCheck from "../components/AuthCheck";
 
-interface InsightsProps {
-  setActiveTab: (tabId: string) => void;
-}
-const Insights: React.FC<InsightsProps> = ({ setActiveTab }) => {
+const Insights = () => {
   const [workoutData, setWorkoutData] = useState<number[]>([]);
   const [burnedCaloriesData, setBurnedCaloriesData] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [userId, setUserId] = useState<string | null>(null);
-  const [authLoading, setAuthLoading] = useState<boolean>(true);
+  const [authLoading, setAuthLoading] = useState<boolean>(true); 
 
   const nutritionData = useSelector((state: RootState) => state.nutrition);
 
   useEffect(() => {
-    const user = auth.currentUser;
-    if (user) {
-      setUserId(user.uid);
-    } else {
-      setUserId(null);
-    }
-    setAuthLoading(false);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserId(user.uid);
+      } else {
+        setUserId(null);
+      }
+      setAuthLoading(false); 
+    });
+
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
@@ -59,6 +61,10 @@ const Insights: React.FC<InsightsProps> = ({ setActiveTab }) => {
       };
 
       fetchData();
+    } else {
+      setWorkoutData([]);
+      setBurnedCaloriesData([]);
+      setLoading(false); 
     }
   }, [userId, nutritionData]);
 
@@ -90,10 +96,10 @@ const Insights: React.FC<InsightsProps> = ({ setActiveTab }) => {
 
   return (
     <AuthCheck
-      authLoading={authLoading}
+      authLoading={authLoading} 
       userId={userId}
       loading={loading}
-      onRedirect={() => setActiveTab("profile")}
+      onRedirect={() => (window.location.href = "/profile")}
       message="Sign in to see your progress and personalized insights."
     >
       <div className="border border-white p-6">

@@ -1,9 +1,21 @@
+"use client";
 import React, { useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase/firebase-config";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
-import { addWorkout, removeWorkout, updateWorkout, setWorkouts } from "@/store/workoutsSlice";
-import { fetchUserWorkouts, saveWorkout, removeWorkoutFromFirestore, updateWorkoutInFirestore } from "../../firebase/firestore";
+import {
+  addWorkout,
+  removeWorkout,
+  updateWorkout,
+  setWorkouts,
+} from "@/store/workoutsSlice";
+import {
+  fetchUserWorkouts,
+  saveWorkout,
+  removeWorkoutFromFirestore,
+  updateWorkoutInFirestore,
+} from "../../firebase/firestore";
 import { daysOfWeek } from "../utils/days";
 import InputBox from "../components/InputBox";
 import DaySelector from "../components/DaySelector";
@@ -11,13 +23,10 @@ import Button from "../components/Button";
 import Card from "../components/Card";
 import AuthCheck from "../components/AuthCheck";
 
-interface PlannerProps {
-  setActiveTab: (tabId: string) => void;
-}
-
-const Planner: React.FC<PlannerProps> = ({ setActiveTab }) => {
+const Planner = () => {
   const dispatch = useDispatch();
   const workouts = useSelector((state: RootState) => state.workouts);
+
   const [selectedDay, setSelectedDay] = useState<string>("Monday");
   const [newWorkout, setNewWorkout] = useState<string>("");
   const [sets, setSets] = useState<string>("");
@@ -28,13 +37,16 @@ const Planner: React.FC<PlannerProps> = ({ setActiveTab }) => {
   const [authLoading, setAuthLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const user = auth.currentUser;
-    if (user) {
-      setUserId(user.uid);
-    } else {
-      setUserId(null);
-    }
-    setAuthLoading(false);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserId(user.uid);
+      } else {
+        setUserId(null);
+      }
+      setAuthLoading(false);
+    });
+
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
@@ -136,7 +148,6 @@ const Planner: React.FC<PlannerProps> = ({ setActiveTab }) => {
             ))
           : "No workouts for today"
       }
-      tabId={`tab-${day}`}
       textColor="text-white"
     />
   );
@@ -146,7 +157,7 @@ const Planner: React.FC<PlannerProps> = ({ setActiveTab }) => {
       authLoading={authLoading}
       userId={userId}
       loading={false}
-      onRedirect={() => setActiveTab("profile")}
+      onRedirect={() => (window.location.href = "/profile")}
       message="Sign in to save your workouts."
     >
       <div className="planner-container">
