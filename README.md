@@ -1,100 +1,145 @@
----
-### **Today Fitness Planner**
+# Today - A Fitness Planner
 
-Today Fitness Planner is a fitness dashboard application built with **Next.js**. It allows users to plan and track their workouts, helping them stay organized and achieve their fitness goals.
----
+Today is a fitness planning application that helps users plan their workouts, track their nutrition, and gain insights into their progress. Built with modern web technologies, it provides a seamless user experience for managing fitness goals.
 
-### **Features**
+## Features
 
-- **Workout Slices:** Manage workout plans using Redux Toolkit slices.
-- **State Management:** Centralized state handling for a seamless user experience.
-- **Next.js Framework:** Optimized performance with server-side rendering and routing.
+- **User Authentication**: Firebase Authentication to securely sign up and log in users.
+- **Workout Planner**: Create, edit, and delete workouts for specific days of the week.
+- **Nutrition Tracker**: Add and track consumed and burned calories for each day.
+- **Insights Dashboard**: View weekly stats and progress visualized using Chart.js.
+- **State Management**: Powered by Redux Toolkit for efficient and predictable state management.
+- **Persistent State**: Redux-Persist ensures the state is saved across sessions.
+- **Responsive Design**: Styled with Tailwind CSS for a clean and modern interface.
 
----
+## Technologies Used
 
-### **Installation**
+- **Frontend**: React, Redux, Tailwind CSS, Chart.js
+- **Backend**: Firebase Firestore for database and Firebase Authentication for secure login.
+- **Deployment**: Vercel for fast and reliable hosting.
+
+## Screenshots
+
+_(coming soon)_
+
+1. **Login Page**: ![Login Screenshot](#)
+2. **Workout Planner**: ![Workout Planner Screenshot](#)
+3. **Nutrition Tracker**: ![Nutrition Tracker Screenshot](#)
+4. **Insights Dashboard**: ![Insights Screenshot](#)
+
+## Setup Instructions
+
+### Prerequisites
+
+- Node.js installed on your machine
+- Firebase project setup (instructions below)
+
+### Installation
 
 1. Clone the repository:
+
    ```bash
-   git clone https://github.com/shay122990/fitness-dashboard-nextjs.git
+   git clone https://github.com/your-username/your-repo-name.git
+   cd your-repo-name
    ```
-2. Navigate to the project directory:
-   ```bash
-   cd today-fitness-planner
-   ```
-3. Install dependencies:
+
+2. Install dependencies:
+
    ```bash
    npm install
    ```
-4. Run the development server:
+
+3. Configure Firebase:
+
+   - Create a Firebase project at [Firebase Console](https://console.firebase.google.com/).
+   - Enable **Authentication** with the providers you want (e.g., Email/Password), I used Google Pop Up sign in.
+   - Enable **Firestore Database** and set the Firestore rules as shown below.
+   - Add a **Firebase config file** in your project. Replace `firebaseConfig` in the code with your Firebase project credentials.
+
+   ```javascript
+   const firebaseConfig = {
+     apiKey: "YOUR_API_KEY",
+     authDomain: "YOUR_AUTH_DOMAIN",
+     projectId: "YOUR_PROJECT_ID",
+     storageBucket: "YOUR_STORAGE_BUCKET",
+     messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+     appId: "YOUR_APP_ID",
+   };
+   ```
+
+4. Configure Firestore Rules:
+   Set the Firestore security rules to the following:
+
+   ```
+   rules_version = '2';
+   service cloud.firestore {
+     match /databases/{database}/documents {
+       // Profiles
+       match /profiles/{userId} {
+         allow read, write: if request.auth != null && request.auth.uid == userId;
+       }
+
+       // Workouts
+       match /workouts/{workoutId} {
+         allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+         allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
+       }
+
+       // Calories
+       match /calories/{calorieId} {
+         allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+         allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
+       }
+
+       // Nested user-specific collections
+       match /users/{userId} {
+         allow read, write: if request.auth != null && request.auth.uid == userId;
+
+         match /calories/{calorieId} {
+           allow read, write: if request.auth != null && request.auth.uid == userId;
+         }
+
+         match /workouts/{workoutId} {
+           allow read, write: if request.auth != null && request.auth.uid == userId;
+         }
+       }
+     }
+   }
+   ```
+
+5. Start the development server:
+
    ```bash
    npm run dev
    ```
 
----
+6. Open the app in your browser at `http://localhost:3000`.
 
-### **Folder Structure**
+## Deployment
 
-```
-src/
-├── store/
-│   ├── index.ts          # Redux store configuration
-│   ├── workoutsSlice.ts  # Slice for managing workouts
-├── components/           # Reusable components
-```
+1. Build the application:
+   ```bash
+   npm run build
+   ```
+2. Deploy to Vercel:
+   - Connect your GitHub repository to Vercel.
+   - Follow the Vercel setup instructions to deploy your app.
 
----
+## Usage
 
-### **Firestore rules**
+- Sign up or log in using the authentication system.
+- Use the **Workout Planner** to create, edit, or remove daily workouts.
+- Log your daily calorie intake and calories burned in the **Nutrition Tracker**.
+- View your progress for the week on the **Insights Dashboard**.
 
-```
-service cloud.firestore {
-  match /databases/{database}/documents {
-    // Profiles
-    match /profiles/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
-    }
+## Contributing
 
-    // Workouts
-    match /workouts/{workoutId} {
-      // Allow create if the userId in the document matches the authenticated user's UID
-      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
-      // Allow read, update, and delete if the userId in the document matches the authenticated user's UID
-      allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
-    }
+If you'd like to contribute to the project, please fork the repository and create a pull request. Contributions are welcome!
 
-    // Calories
-    match /calories/{calorieId} {
-      // Allow create if the userId in the document matches the authenticated user's UID
-      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
-      // Allow read, update, and delete if the userId in the document matches the authenticated user's UID
-      allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
-    }
+## License
 
-    // Allow nested collections for user-specific data
-    match /users/{userId}/calories/{calorieId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
-    }
-  }
-}
-```
-
-### **Tech Stack**
-
-- **Next.js**
-- **Redux Toolkit**
-- **TypeScript**
+This project is licensed under the MIT License.
 
 ---
 
-### **Contributing**
-
-Contributions are welcome! Feel free to fork the repository and submit pull requests.
-
----
-
-### **License**
-
-This project is licensed under the [MIT License](LICENSE).
-
----
+Feel free to reach out if you encounter any issues or have suggestions for improvement!
