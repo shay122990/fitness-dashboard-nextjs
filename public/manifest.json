@@ -1,0 +1,27 @@
+{
+    "name": "Today - A Fitness Planner",
+    "short_name": "Fitness Planner",
+    "description": "One stop to plan your workouts, track nutrition, and monitor progress.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#000013",
+    "theme_color": "#0A04FF",
+    "icons": [
+      {
+        "src": "/favicon.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/favicon.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      },
+      {
+        "src": "/favicon.png",
+        "sizes": "48x48",
+        "type": "image/x-icon"
+      }
+    ]
+  }
+  

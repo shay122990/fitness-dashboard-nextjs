@@ -29,8 +29,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/favicon.png" type="image/x-icon" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="icon" href="/favicon.png" type="image/x-icon" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="manifest" href="/manifest.json" />
+      <meta name="theme-color" content="#0A04FF" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
