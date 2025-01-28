@@ -1,9 +1,10 @@
-import { ReactNode } from "react";
+import React from "react";
 import Link from "next/link";
+import Button from "../components/Button";
 
 interface CardProps {
   title: string;
-  description: ReactNode;
+  description: React.ReactNode;
   tabId?: string;
   actionButton?: {
     label: string;
@@ -23,7 +24,7 @@ const Card: React.FC<CardProps> = ({
     <div className="border p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300">
       <h3 className={`text-xl font-semibold mb-2 ${textColor}`}>{title}</h3>
       <span className={`mb-4 ${textColor}`}>{description}</span>
-      
+
       {tabId && (
         <Link href={`/${tabId}`} className="text-green-400 cursor-pointer">
           Go to {title}
@@ -31,12 +32,11 @@ const Card: React.FC<CardProps> = ({
       )}
 
       {actionButton && (
-        <button
-          className="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-400"
+        <Button
+          label={actionButton.label}
           onClick={actionButton.onClick}
-        >
-          {actionButton.label}
-        </button>
+          className="mt-2"
+        />
       )}
     </div>
   );
