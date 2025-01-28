@@ -1,3 +1,5 @@
+import Button from "../components/Button";
+
 interface AuthCheckProps {
   authLoading: boolean;
   userId: string | null;
@@ -15,29 +17,28 @@ const AuthCheck: React.FC<AuthCheckProps> = ({
   message,
   children,
 }) => {
-  if (authLoading ) {
+  if (authLoading) {
     return <div>Checking authentication...</div>;
   }
 
   if (!userId) {
     return (
-      <div className="flex items-center justify-center min-h-screen ">
-        <div className=" flex flex-col bg-white shadow-md rounded-lg p-4 text-center justify-center w-96 h-60">
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="flex flex-col bg-white shadow-md rounded-lg p-4 text-center justify-center w-96 h-60">
           <h2 className="text-2xl font-bold mb-4 text-gray-700">Sign In Required</h2>
           <p className="text-gray-600 mb-6">{message}</p>
-          <button
-            onClick={onRedirect}
-            className="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600"
-          >
-            Go to Profile
-          </button>
+          <Button label="Go to Profile" onClick={onRedirect} isSignIn />
         </div>
       </div>
     );
   }
 
   if (loading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading your progress...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        Loading your progress...
+      </div>
+    );
   }
 
   return <>{children}</>;
