@@ -18,7 +18,7 @@ const AuthCheck: React.FC<AuthCheckProps> = ({
   children,
 }) => {
   if (authLoading) {
-    return <div>Checking authentication...</div>;
+    return <div>Checking authentication...</div>
   }
 
   if (!userId) {
@@ -27,7 +27,7 @@ const AuthCheck: React.FC<AuthCheckProps> = ({
         <div className="flex flex-col bg-white shadow-md rounded-lg p-4 text-center justify-center w-96 h-60">
           <h2 className="text-2xl font-bold mb-4 text-gray-700">Sign In Required</h2>
           <p className="text-gray-600 mb-6">{message}</p>
-          <Button label="Go to Profile" onClick={onRedirect} isSignIn />
+          <Button label="Go to Profile" onClick={onRedirect} className="bg-green-500" />
         </div>
       </div>
     );

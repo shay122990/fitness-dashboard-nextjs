@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 'use client';
 
 import React from "react";
@@ -65,7 +58,7 @@ const Profile = () => {
           <Button
             label="Log Out"
             onClick={handleLogout}
-            className="w-full bg-red-700"
+            className="w-full bg-red-500"
           />
         </>
       ) : (
@@ -80,4 +73,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
