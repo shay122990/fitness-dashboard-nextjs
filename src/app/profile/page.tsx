@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 'use client';
 
 import React from "react";
@@ -58,14 +65,14 @@ const Profile = () => {
           <Button
             label="Log Out"
             onClick={handleLogout}
-            className="w-full"
+            className="w-full bg-red-700"
           />
         </>
       ) : (
         <Button
           label="Sign in with Google"
           onClick={handleSignIn}
-          className="w-full"
+          className="w-full bg-green-500"
         />
       )}
     </div>
@@ -73,3 +80,4 @@ const Profile = () => {
 };
 
 export default Profile;
+
