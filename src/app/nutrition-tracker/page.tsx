@@ -120,32 +120,34 @@ const Nutrition = () => {
       entries.map((entry) => (
         <div key={entry} className="flex justify-between items-center">
           <span>{entry}</span>
-          <button
+          <Button
             className="text-blue-500 ml-2"
             onClick={() => startEditingEntry(type, entry)}
-          >
-            Edit
-          </button>
+            label="Edit"
+          />
         </div>
       ));
 
-    return (
-      <Card
-        key={day}
-        title={`${day} Entries`}
-        description={
-          <>
-            <div>Eaten: {data.eaten.length > 0 ? renderEntries(data.eaten, "eaten") : "None"}</div>
-            <div>Burned: {data.burned.length > 0 ? renderEntries(data.burned, "burned") : "None"}</div>
-          </>
-        }
-        actionButton={{
-          label: "Clear All",
-          onClick: () => handleClearCalories(day),
-        }}
-        textColor="text-white"
-      />
-    );
+      return (
+        <Card
+          key={day}
+          title={`${day} Entries`}
+          description={
+            <>
+              <div>Eaten: {data.eaten.length > 0 ? renderEntries(data.eaten, "eaten") : "None"}</div>
+              <div>Burned: {data.burned.length > 0 ? renderEntries(data.burned, "burned") : "None"}</div>
+            </>
+          }
+          textColor="text-white"
+        >
+          <Button
+            label="Clear All"
+            onClick={() => handleClearCalories(day)}
+            className="bg-red-400 mt-2"
+          />
+        </Card>
+      );
+      
   };
 
   const renderWeekCards = () => {
