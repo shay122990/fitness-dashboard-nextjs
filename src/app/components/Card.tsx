@@ -1,24 +1,20 @@
 import React from "react";
 import Link from "next/link";
-import Button from "../components/Button";
 
 interface CardProps {
   title: string;
   description: React.ReactNode;
   tabId?: string;
-  actionButton?: {
-    label: string;
-    onClick: () => void;
-  };
   textColor?: string;
+  children?: React.ReactNode; 
 }
 
 const Card: React.FC<CardProps> = ({
   title,
   description,
   tabId,
-  actionButton,
   textColor = "text-white",
+  children 
 }) => {
   return (
     <div className="border p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300">
@@ -30,16 +26,8 @@ const Card: React.FC<CardProps> = ({
           Go to {title}
         </Link>
       )}
-
-      {actionButton && (
-        <Button
-          label={actionButton.label}
-          onClick={actionButton.onClick}
-          className="mt-2"
-        />
-      )}
+      {children} 
     </div>
   );
 };
-
-export default Card;
+export default Card
