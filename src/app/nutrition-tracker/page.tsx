@@ -3,18 +3,8 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase/firebase-config";
-import {
-  addCalories,
-  clearCalories,
-  setNutritionData,
-  updateCalories,
-} from "../../store/nutritionSlice";
-import {
-  saveCalorieEntry,
-  updateCaloriesInFirestore,
-  fetchCalorieEntries,
-  clearCaloriesFromFirestore,
-} from "../../firebase/firestore";
+import {addCalories,clearCalories,setNutritionData,updateCalories,} from "../../store/nutritionSlice";
+import {saveCalorieEntry,updateCaloriesInFirestore,fetchCalorieEntries,clearCaloriesFromFirestore,} from "../../firebase/firestore";
 import { RootState } from "../../store/index";
 import { daysOfWeek } from "../utils/days";
 import InputBox from "../components/InputBox";
@@ -27,10 +17,7 @@ const Nutrition = () => {
   const dispatch = useDispatch();
   const nutritionData = useSelector((state: RootState) => state.nutrition);
   const [calories, setCalories] = useState<string>("");
-  const [editingEntry, setEditingEntry] = useState<{
-    type: "eaten" | "burned";
-    oldCalories: string;
-  } | null>(null);
+  const [editingEntry, setEditingEntry] = useState<{type: "eaten" | "burned"; oldCalories: string;} | null>(null);
   const [selectedDay, setSelectedDay] = useState<string>("Monday");
   const [authLoading, setAuthLoading] = useState<boolean>(true);
   const [userId, setUserId] = useState<string | null>(null);
@@ -121,7 +108,7 @@ const Nutrition = () => {
         <div key={entry} className="flex justify-between items-center">
           <span>{entry}</span>
           <Button
-            className="text-blue-500 ml-2"
+            className="text-blue-200 ml-2"
             onClick={() => startEditingEntry(type, entry)}
             label="Edit"
           />
@@ -143,7 +130,7 @@ const Nutrition = () => {
           <Button
             label="Clear All"
             onClick={() => handleClearCalories(day)}
-            className="bg-red-400 mt-2"
+            className="bg-red-500 mt-2"
           />
         </Card>
       );

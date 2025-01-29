@@ -4,18 +4,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase/firebase-config";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
-import {
-  addWorkout,
-  removeWorkout,
-  updateWorkout,
-  setWorkouts,
-} from "@/store/workoutsSlice";
-import {
-  fetchUserWorkouts,
-  saveWorkout,
-  removeWorkoutFromFirestore,
-  updateWorkoutInFirestore,
-} from "../../firebase/firestore";
+import {addWorkout,removeWorkout,updateWorkout,setWorkouts,} from "@/store/workoutsSlice";
+import {fetchUserWorkouts,saveWorkout,removeWorkoutFromFirestore,updateWorkoutInFirestore,} from "../../firebase/firestore";
 import { daysOfWeek } from "../utils/days";
 import InputBox from "../components/InputBox";
 import DaySelector from "../components/DaySelector";
@@ -136,12 +126,8 @@ const Planner = () => {
                 <span>{workout}</span>
                 {showActions && (
                   <div>
-                    <button className="text-green-400 mr-2" onClick={() => startEditingWorkout(workout)}>
-                      Edit
-                    </button>
-                    <button className="text-red-500" onClick={() => removeWorkoutHandler(day, workout)}>
-                      Remove
-                    </button>
+                    <Button  label="Edit "className="text-blue-200 mr-2" onClick={() => startEditingWorkout(workout)}/>
+                    <Button label="Remove" className="text-red-300" onClick={() => removeWorkoutHandler(day, workout)}/>
                   </div>
                 )}
               </div>
@@ -188,3 +174,4 @@ const Planner = () => {
 };
 
 export default Planner;
+

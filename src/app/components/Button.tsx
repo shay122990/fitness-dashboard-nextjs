@@ -13,7 +13,7 @@ const Button: React.FC<ButtonProps> = ({
 }) => (
   <button
     onClick={onClick}
-    className={`px-4 py-2 rounded text-white hover:opacity-90 transition-opacity ${className}`}
+    className={`px-4 py-2 rounded  hover:opacity-90 transition-opacity ${className}`}
   >
     {label}
   </button>

@@ -23,6 +23,7 @@ const nutritionSlice = createSlice({
         action.payload.calories,
       ];
     },
+    //optional slice for future actions
     removeCalories: (state, action: PayloadAction<{ day: string; calories: string; type: "eaten" | "burned" }>) => {
       state[action.payload.day][action.payload.type] = state[action.payload.day][action.payload.type].filter(
         (calorie) => calorie !== action.payload.calories
