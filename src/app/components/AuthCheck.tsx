@@ -18,7 +18,7 @@ const AuthCheck: React.FC<AuthCheckProps> = ({
   children,
 }) => {
   if (authLoading) {
-    return <div>Checking authentication...</div>
+    return <div className="flex items-center justify-center min-h-screen">Checking authentication...</div>
   }
 
   if (!userId) {
