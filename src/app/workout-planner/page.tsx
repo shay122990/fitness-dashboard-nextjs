@@ -12,6 +12,8 @@ import DaySelector from "../components/DaySelector";
 import Button from "../components/Button";
 import Card from "../components/Card";
 import AuthCheck from "../components/AuthCheck";
+import { v4 as uuidv4 } from "uuid";
+
 
 const Planner = () => {
   const dispatch = useDispatch();
@@ -117,17 +119,17 @@ const Planner = () => {
 
   const renderCardForDay = (day: string, workouts: string[], showActions: boolean = false) => (
     <Card
-      key={day}
+      key={`${day}-${uuidv4()}`}  
       title={`${day} Workouts`}
       description={
         workouts.length > 0
-          ? workouts.map((workout) => (
-              <div key={workout} className="flex justify-between items-center">
+          ? workouts.map((workout, index) => (
+              <div key={`${day}-${workout}-${index}`} className="flex justify-between items-center">
                 <span>{workout}</span>
                 {showActions && (
                   <div>
-                    <Button  label="Edit "className="text-blue-200 mr-2" onClick={() => startEditingWorkout(workout)}/>
-                    <Button label="Remove" className="text-red-300" onClick={() => removeWorkoutHandler(day, workout)}/>
+                    <Button label="Edit" className="text-blue-200 mr-2" onClick={() => startEditingWorkout(workout)} />
+                    <Button label="Remove" className="text-red-300" onClick={() => removeWorkoutHandler(day, workout)} />
                   </div>
                 )}
               </div>
