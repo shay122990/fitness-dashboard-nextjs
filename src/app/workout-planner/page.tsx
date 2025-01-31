@@ -1,4 +1,5 @@
-"use client";
+"use client"
+
 import React, { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase/firebase-config";
@@ -13,7 +14,7 @@ import Button from "../components/Button";
 import Card from "../components/Card";
 import AuthCheck from "../components/AuthCheck";
 import { v4 as uuidv4 } from "uuid";
-
+import Modal from "../components/Modal"; 
 
 const Planner = () => {
   const dispatch = useDispatch();
@@ -27,6 +28,8 @@ const Planner = () => {
   const [editingWorkout, setEditingWorkout] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [authLoading, setAuthLoading] = useState<boolean>(true);
+  const [modalVisible, setModalVisible] = useState(false); 
+  const [modalMessage, setModalMessage] = useState("");
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -61,13 +64,15 @@ const Planner = () => {
   const addOrUpdateWorkoutHandler = async () => {
     const repsPattern = /^\d+(-\d+)?$/;
     if (!repsPattern.test(reps)) {
-      alert("Please enter reps as a single number (e.g., 8) or a range (e.g., 8-10).");
+      setModalMessage("Please enter reps as a single number (e.g., 8) or a range (e.g., 8-10).");
+      setModalVisible(true);
       return;
     }
 
     const weightPattern = /^(\d+(\.\d+)?(kg|lbs)?)|([a-zA-Z\s]+)$/;
     if (!weightPattern.test(weight.toString())) {
-      alert("Please enter weight as a number (e.g., 10kg, 10) or a string (e.g., pink band).");
+      setModalMessage("Please enter weight as a number (e.g., 10kg, 10) or a text (e.g., pink band).");
+      setModalVisible(true);
       return;
     }
 
@@ -119,7 +124,7 @@ const Planner = () => {
 
   const renderCardForDay = (day: string, workouts: string[], showActions: boolean = false) => (
     <Card
-      key={`${day}-${uuidv4()}`}  
+      key={`${day}-${uuidv4()}`}
       title={`${day} Workouts`}
       description={
         workouts.length > 0
@@ -139,6 +144,11 @@ const Planner = () => {
       textColor="text-white"
     />
   );
+
+  const closeModal = () => {
+    setModalVisible(false);
+    setModalMessage(""); 
+  };
 
   return (
     <AuthCheck
@@ -171,9 +181,10 @@ const Planner = () => {
           </div>
         </div>
       </div>
+      
+      <Modal message={modalMessage} onClose={closeModal} visible={modalVisible} />
     </AuthCheck>
   );
 };
 
 export default Planner;
-
