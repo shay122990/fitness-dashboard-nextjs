@@ -1,10 +1,11 @@
-"use client";
+"use client"
+
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase/firebase-config";
-import {addCalories,clearCalories,setNutritionData,updateCalories,} from "../../store/nutritionSlice";
-import {saveCalorieEntry,updateCaloriesInFirestore,fetchCalorieEntries,clearCaloriesFromFirestore,} from "../../firebase/firestore";
+import { addCalories, clearCalories, setNutritionData, updateCalories } from "../../store/nutritionSlice";
+import { saveCalorieEntry, updateCaloriesInFirestore, fetchCalorieEntries, clearCaloriesFromFirestore } from "../../firebase/firestore";
 import { RootState } from "../../store/index";
 import { daysOfWeek } from "../utils/days";
 import InputBox from "../components/InputBox";
@@ -12,6 +13,7 @@ import DaySelector from "../components/DaySelector";
 import Button from "../components/Button";
 import Card from "../components/Card";
 import AuthCheck from "../components/AuthCheck";
+import Modal from "../components/Modal"; 
 
 const Nutrition = () => {
   const dispatch = useDispatch();
@@ -21,6 +23,7 @@ const Nutrition = () => {
   const [selectedDay, setSelectedDay] = useState<string>("Monday");
   const [authLoading, setAuthLoading] = useState<boolean>(true);
   const [userId, setUserId] = useState<string | null>(null);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false); 
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -49,14 +52,12 @@ const Nutrition = () => {
       const calorieValue = calories.trim();
 
       if (editingEntry) {
-        dispatch(
-          updateCalories({
-            day: selectedDay,
-            oldCalories: editingEntry.oldCalories,
-            newCalories: calorieValue,
-            type: editingEntry.type,
-          })
-        );
+        dispatch(updateCalories({
+          day: selectedDay,
+          oldCalories: editingEntry.oldCalories,
+          newCalories: calorieValue,
+          type: editingEntry.type,
+        }));
 
         try {
           await updateCaloriesInFirestore(
@@ -82,6 +83,8 @@ const Nutrition = () => {
       }
 
       setCalories("");
+    } else {
+      setIsModalVisible(true);
     }
   };
 
@@ -134,7 +137,6 @@ const Nutrition = () => {
           />
         </Card>
       );
-      
   };
 
   const renderWeekCards = () => {
@@ -186,6 +188,11 @@ const Nutrition = () => {
           {renderWeekCards()}
         </div>
       </div>
+      <Modal
+        message="Please enter a valid calorie number."
+        visible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+      />
     </AuthCheck>
   );
 };
