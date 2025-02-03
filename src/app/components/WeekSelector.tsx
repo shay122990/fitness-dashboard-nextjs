@@ -1,19 +1,28 @@
-export const WeekSelector = ({ selectedWeek, onChange }: { selectedWeek: number; onChange: (week: number) => void }) => {
-    const weekCount = 4; 
-    const weeks = Array.from({ length: weekCount }, (_, i) => `Week ${i + 1}`);
-  
-    return (
-      <div className="week-selector">
-        {weeks.map((week, index) => (
+
+interface WeekSelectorProps {
+  selectedWeek: number;
+  onSelectWeek: (week: number) => void;
+}
+
+const WeekSelector: React.FC<WeekSelectorProps> = ({ selectedWeek, onSelectWeek }) => {
+  return (
+    <div className="week-selector">
+      <label className="block text-lg font-bold mb-2">Select Week:</label>
+      <div className="flex space-x-2">
+        {[1, 2, 3, 4].map((week) => (
           <button
             key={week}
-            onClick={() => onChange(index + 1)} 
-            className={`week-button ${selectedWeek === index + 1 ? 'active' : ''}`}
+            className={`px-4 py-2 rounded-lg ${
+              selectedWeek === week ? "bg-blue-500 text-white" : "bg-gray-200"
+            }`}
+            onClick={() => onSelectWeek(week)}
           >
-            {week}
+            Week {week}
           </button>
         ))}
       </div>
-    );
-  };
-  
+    </div>
+  );
+};
+
+export default WeekSelector
