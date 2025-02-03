@@ -1,4 +1,5 @@
 import Button from "../components/Button";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 interface AuthCheckProps {
   authLoading: boolean;
@@ -36,7 +37,7 @@ const AuthCheck: React.FC<AuthCheckProps> = ({
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        Loading your progress...
+       <LoadingSpinner/>
       </div>
     );
   }
