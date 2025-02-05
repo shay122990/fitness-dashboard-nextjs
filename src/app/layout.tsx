@@ -1,20 +1,8 @@
-import localFont from "next/font/local";
 import { Metadata } from "next";
 import "./globals.css";
 import Providers from "../providers";
 import ClientSideWrapper from "./clientSideWrapper";
 import Sidebar from "./components/Sidebar";
-
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
 
 export const metadata: Metadata = {
   title: "Today - A Fitness Planner",
@@ -29,14 +17,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-      <link rel="icon" href="/favicon.png" type="image/x-icon" />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <link rel="manifest" href="/manifest.json" />
-      <meta name="theme-color" content="#0A04FF" />
+        <link rel="icon" href="/favicon.png" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width, initial-scale=1"  />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#0A04FF" />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body>
         <Providers>
           <ClientSideWrapper>
             <div className="flex h-screen">
