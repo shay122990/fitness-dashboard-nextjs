@@ -18,7 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.png" type="image/x-icon" />
-        <meta name="viewport" content="width=device-width, initial-scale=1"  />
+        <meta name="viewport" content="width=device-width, initial-scale=1" charSet="UTF-8" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#0A04FF" />
       </head>
