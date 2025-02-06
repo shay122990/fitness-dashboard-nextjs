@@ -4,8 +4,8 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase/firebase-config";
-import { addCalories, clearCalories, setNutritionData, updateCalories } from "../../store/nutritionSlice";
-import { saveCalorieEntry, updateCaloriesInFirestore, fetchCalorieEntries, clearCaloriesFromFirestore } from "../../firebase/firestore";
+import { addCalories, clearCalories, setNutritionData, updateCalories, removeCalories } from "../../store/nutritionSlice";
+import { saveCalorieEntry, updateCaloriesInFirestore, fetchCalorieEntries, clearCaloriesFromFirestore, removeCalorieEntry } from "../../firebase/firestore";
 import { RootState } from "../../store/index";
 import { daysOfWeek } from "../utils/days";
 import InputBox from "../components/InputBox";
@@ -104,17 +104,26 @@ const Nutrition = () => {
       }
     }
   };
+  const handleRemoveCalorie = async (day: string, calories: string, type: "eaten" | "burned") => {
+    if (!userId) return;
+  
+    try {
+      await removeCalorieEntry(userId, day, calories, type);
+      dispatch(removeCalories({ day, calories, type }));
+    } catch (error) {
+      console.error("Failed to remove calorie entry:", error);
+    }
+  };
 
   const renderSelectedDayCard = (day: string, data: { eaten: string[]; burned: string[] }) => {
     const renderEntries = (entries: string[], type: "eaten" | "burned") =>
       entries.map((entry) => (
         <div key={entry} className="flex justify-between items-center">
           <span>{entry}</span>
-          <Button
-            className="text-blue-200 ml-2"
-            onClick={() => startEditingEntry(type, entry)}
-            label="Edit"
-          />
+          <div className="flex gap-2">
+            <Button className="text-blue-200" onClick={() => startEditingEntry(type, entry)} label="Edit" />
+            <Button className="text-red-500" onClick={() => handleRemoveCalorie(day, entry, type)} label="Remove" />
+          </div>
         </div>
       ));
 
