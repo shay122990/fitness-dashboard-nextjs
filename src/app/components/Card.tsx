@@ -7,6 +7,7 @@ interface CardProps {
   tabId?: string;
   textColor?: string;
   children?: React.ReactNode; 
+  className?: string;  
 }
 
 const Card: React.FC<CardProps> = ({
@@ -14,10 +15,13 @@ const Card: React.FC<CardProps> = ({
   description,
   tabId,
   textColor = "text-white",
-  children 
+  children, 
+  className,
 }) => {
   return (
-    <div className="border p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+    <div
+      className={`border p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 flex flex-col  justify-between ${className}`}
+    >
       <h3 className={`text-xl font-semibold mb-2 ${textColor}`}>{title}</h3>
       <span className={`mb-4 ${textColor}`}>{description}</span>
 
@@ -30,4 +34,5 @@ const Card: React.FC<CardProps> = ({
     </div>
   );
 };
-export default Card
+
+export default Card;
