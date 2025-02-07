@@ -8,14 +8,14 @@ interface InputBoxProps {
 
 const InputBox: React.FC<InputBoxProps> = ({ label, placeholder, value, onChange, type = "text" }) => {
   return (
-    <div className="flex flex-col gap-2">
-      <label className="text-white font-semibold">{label}</label>
+    <div className="flex flex-col gap-3 w-full ">
+      <label className="text-white font-medium text-sm">{label}</label>
       <input
         type={type}
         placeholder={placeholder}
         value={value}
-        onChange={(e) => onChange(e.target.value)} 
-        className="p-2 border rounded bg-blue-900 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        onChange={(e) => onChange(e.target.value)}
+        className="p-3 border rounded-lg bg-blue-600 text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 ease-in-out transform hover:scale-105 focus:scale-105 shadow-md"
       />
     </div>
   );
