@@ -39,7 +39,7 @@ export default function RootLayout({
                 className="flex-1 items-center overflow-y-auto p-4 lg:p-10"
                 style={{
                   background:
-                    "radial-gradient(circle, rgba(10,4,255,1) 3%, rgba(0,19,60,1) 100%, rgba(8,56,161,1) 131%)",
+                    "radial-gradient(circle, rgba(0,106,253,1) 0%, rgba(4,11,36,1) 84%)",
                 }}
               >
                 {children}
