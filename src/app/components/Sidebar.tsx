@@ -10,7 +10,7 @@ const Sidebar = () => {
   const pathname = usePathname();  
   const user = useSelector((state: RootState) => state.auth.user); 
 
-  const isActive = (path: string) => (pathname === path ? "bg-blue-700" : "");
+  const isActive = (path: string) => (pathname === path ? "bg-blue-950" : "");
 
   return (
     <div className="h-full px-2 lg:px-4 mt-10 flex flex-col items-center text-white" 
@@ -27,6 +27,7 @@ const Sidebar = () => {
         className="rounded-full"
         priority
       />
+      <hr className="w-full h-[2px] bg-gradient-to-r from-transparent via-white to-transparent border-0" />
       <nav className="w-full mt-10">
         <ul className="space-y-6">
           {[
@@ -39,7 +40,7 @@ const Sidebar = () => {
             <li key={path}>
               <Link
                 href={path}
-                className={`block w-full text-center lg:uppercase text-sm border rounded-sm p-1 lg:p-3 ${isActive(path)}`}
+                className={`block w-full text-left lg:uppercase text-sm  rounded p-1 lg:p-3 ${isActive(path)}`}
               >
                 {label}
               </Link>
