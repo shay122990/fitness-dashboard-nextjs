@@ -15,7 +15,7 @@ const InputBox: React.FC<InputBoxProps> = ({ label, placeholder, value, onChange
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="p-3 border rounded-lg bg-blue-600 text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 ease-in-out transform hover:scale-105 focus:scale-105 shadow-md"
+        className="p-3  rounded-lg bg-black bg-opacity-50 text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 ease-in-out transform hover:scale-105 focus:scale-105 shadow-md"
       />
     </div>
   );
