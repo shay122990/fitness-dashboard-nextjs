@@ -166,7 +166,7 @@ const Nutrition = () => {
       onRedirect={() => (window.location.href = "/profile")}
       message="Sign in to track your calories"
     >
-      <div className="nutrition-container">
+      <div className="p-6 bg-black bg-opacity-30 rounded">
         <DaySelector selectedDay={selectedDay} onChange={setSelectedDay} days={daysOfWeek} />
         <InputBox
           label="Calories"

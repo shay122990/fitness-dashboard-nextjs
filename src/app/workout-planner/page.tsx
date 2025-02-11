@@ -158,7 +158,7 @@ const Planner = () => {
       onRedirect={() => (window.location.href = "/profile")}
       message="Sign in to save your workouts."
     >
-      <div className="planner-container">
+      <div className="p-6 bg-black bg-opacity-30 rounded">
         <h3 className="text-xl font-bold">Workout Planner</h3>
         <DaySelector selectedDay={selectedDay} onChange={setSelectedDay} days={daysOfWeek} />
         <InputBox label="Workout Name" placeholder="e.g., Squats" value={newWorkout} onChange={setNewWorkout} />

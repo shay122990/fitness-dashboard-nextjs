@@ -9,7 +9,7 @@ const Dashboard = () => {
   const user = useSelector((state: RootState) => state.auth.user);
 
   return (
-    <div className="min-h-screen p-6">
+    <div className="p-6 bg-black bg-opacity-30 rounded">
       <motion.div
         initial={{ opacity: 0, rotate: -45 }}
         animate={{ opacity: 1, rotate: 0 }}
@@ -26,13 +26,13 @@ const Dashboard = () => {
       </motion.div>
 
       <motion.div
-        className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white p-6 rounded-lg text-center mb-8"
+        className="bg-gradient-to-r from-blue-700 to-indigo-600 text-white p-6 rounded-lg text-center mb-8"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
       >
         <motion.h1
-          className="text-4xl font-bold mb-2 break-words"
+          className="text-4xl font-bold mb-2 break-words "
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}

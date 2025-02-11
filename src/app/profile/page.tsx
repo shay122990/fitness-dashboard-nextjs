@@ -36,11 +36,12 @@ const Profile = () => {
   };
 
   return (
-    <div className="max-w-sm mx-auto bg-gray-100 p-6 rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold text-gray-800 text-center mb-4">Your Profile</h2>
+    <div className="flex justify-center w-full h-full p-6 bg-black bg-opacity-30 rounded">
+       <div className="flex flex-col bg-white shadow-md rounded-lg p-4 text-center justify-center w-96 h-60">
+      <h2 className="text-2xl font-bold text-blue-950 text-center mb-4">Your Profile</h2>
       {user ? (
         <>
-          <div className="text-gray-700">
+          <div className="text-blue-950">
             <Image
               src={user.photoURL || "/default-profile.png"}
               alt={user.name || "Profile Picture"}
@@ -69,6 +70,8 @@ const Profile = () => {
         />
       )}
     </div>
+    </div>
+   
   );
 };
 

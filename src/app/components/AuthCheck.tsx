@@ -24,10 +24,10 @@ const AuthCheck: React.FC<AuthCheckProps> = ({
 
   if (!userId) {
     return (
-      <div className="flex justify-center min-h-screen">
+      <div className="flex justify-center w-full h-full p-6 bg-black bg-opacity-30 rounded">
         <div className="flex flex-col bg-white shadow-md rounded-lg p-4 text-center justify-center w-96 h-60">
-          <h2 className="text-2xl font-bold mb-4 text-gray-700">Sign In Required</h2>
-          <p className="text-gray-600 mb-6">{message}</p>
+          <h2 className="text-2xl font-bold mb-4 text-blue-950">Sign In Required</h2>
+          <p className="text-blue-950 mb-6">{message}</p>
           <Button label="Go to Profile" onClick={onRedirect} className="bg-green-500" />
         </div>
       </div>
