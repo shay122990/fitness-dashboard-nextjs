@@ -4,6 +4,7 @@ import Card from "../components/Card";
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
+import IntervalTimer from "../components/IntervalTimer";
 
 const Dashboard = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -113,6 +114,7 @@ const Dashboard = () => {
           />
         </motion.div>
       </motion.div>
+      <IntervalTimer  />
     </div>
   );
 };
