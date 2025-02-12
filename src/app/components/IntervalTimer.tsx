@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import InputBox from "./InputBox";
 import Card from "./Card";
+import Button from "./Button";
 
 const IntervalTimer = () => {
   const [workTime, setWorkTime] = useState("30"); 
@@ -94,22 +95,20 @@ const IntervalTimer = () => {
         </>
       )}
 
-      <div className="flex justify-center gap-4 mt-6">
-        {!hasStarted ? (
-          <button onClick={handleStart} className="px-4 py-2 bg-green-500 rounded text-white">
-            Start
-          </button>
-        ) : (
-          <>
-            <button onClick={handlePauseResume} className="px-4 py-2 bg-blue-500 rounded text-white">
-              {isRunning ? "Pause" : "Resume"}
-            </button>
-            <button onClick={handleReset} className="px-4 py-2 bg-red-500 rounded text-white">
-              Reset
-            </button>
-          </>
-        )}
-      </div>
+        <div className="flex justify-center gap-4 mt-6">
+            {!hasStarted ? (
+            <Button label="Start" onClick={handleStart} className="bg-green-500 text-white" />
+            ) : (
+            <>
+                <Button
+                label={isRunning ? "Pause" : "Resume"}
+                onClick={handlePauseResume}
+                className="bg-blue-500 text-white"
+                />
+                <Button label="Reset" onClick={handleReset} className="bg-red-500 text-white" />
+            </>
+            )}
+        </div>
     </Card>
   );
 };
