@@ -1,29 +1,31 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import InputBox from "./InputBox";
+import Card from "./Card";
 
 const IntervalTimer = () => {
-  const [workTime, setWorkTime] = useState(30); 
-  const [restTime, setRestTime] = useState(15); 
-  const [rounds, setRounds] = useState(5);
+  const [workTime, setWorkTime] = useState("30"); 
+  const [restTime, setRestTime] = useState("15"); 
+  const [rounds, setRounds] = useState("5"); 
 
-  const [timeLeft, setTimeLeft] = useState(workTime);
+  const [timeLeft, setTimeLeft] = useState(Number(workTime));
   const [isRunning, setIsRunning] = useState(false);
   const [isWorkPhase, setIsWorkPhase] = useState(true);
   const [currentRound, setCurrentRound] = useState(1);
-  const [hasStarted, setHasStarted] = useState(false); 
+  const [hasStarted, setHasStarted] = useState(false);
 
   useEffect(() => {
     if (!isRunning) return;
 
     if (timeLeft === 0) {
-      if (currentRound >= rounds && !isWorkPhase) {
-        setIsRunning(false); 
+      if (currentRound >= Number(rounds) && !isWorkPhase) {
+        setIsRunning(false);
         return;
       }
 
       setIsWorkPhase((prev) => !prev);
-      setTimeLeft(isWorkPhase ? restTime : workTime);
+      setTimeLeft(isWorkPhase ? Number(restTime) : Number(workTime));
 
       if (!isWorkPhase) setCurrentRound((prev) => prev + 1);
     }
@@ -36,9 +38,10 @@ const IntervalTimer = () => {
   }, [isRunning, timeLeft, isWorkPhase, currentRound, rounds, workTime, restTime]);
 
   const handleStart = () => {
+    if (Number(workTime) <= 0 || Number(restTime) <= 0 || Number(rounds) <= 0) return;
     setHasStarted(true);
     setIsRunning(true);
-    setTimeLeft(workTime);
+    setTimeLeft(Number(workTime));
   };
 
   const handlePauseResume = () => {
@@ -49,70 +52,65 @@ const IntervalTimer = () => {
     setIsRunning(false);
     setIsWorkPhase(true);
     setCurrentRound(1);
-    setTimeLeft(workTime);
+    setTimeLeft(Number(workTime));
     setHasStarted(false);
   };
 
   return (
-    <div className="flex flex-col items-center p-6 bg-gray-900 text-white rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold mb-4">Interval Timer</h2>
-
-      {!hasStarted && (
-        <div className="grid grid-cols-3 gap-4 mb-6">
-          <div className="flex flex-col">
-            <label className="text-sm">Work Time (s)</label>
-            <input
-              type="number"
-              value={workTime}
-              min={1}
-              onChange={(e) => setWorkTime(Number(e.target.value))}
-              className="p-2 rounded text-black"
-            />
-          </div>
-          <div className="flex flex-col">
-            <label className="text-sm">Rest Time (s)</label>
-            <input
-              type="number"
-              value={restTime}
-              min={1}
-              onChange={(e) => setRestTime(Number(e.target.value))}
-              className="p-2 rounded text-black"
-            />
-          </div>
-          <div className="flex flex-col">
-            <label className="text-sm">Rounds</label>
-            <input
-              type="number"
-              value={rounds}
-              min={1}
-              onChange={(e) => setRounds(Number(e.target.value))}
-              className="p-2 rounded text-black"
-            />
-          </div>
+    <Card
+      title="Interval Timer"
+      description="Customize your interval training by setting work and rest durations."
+      className="p-6 w-full max-w-md text-center"
+    >
+      {!hasStarted ? (
+        <div className="grid grid-cols-1 gap-4">
+          <InputBox
+            label="Work Time (seconds)"
+            placeholder="Enter work time"
+            value={workTime}
+            onChange={setWorkTime}
+            type="number"
+          />
+          <InputBox
+            label="Rest Time (seconds)"
+            placeholder="Enter rest time"
+            value={restTime}
+            onChange={setRestTime}
+            type="number"
+          />
+          <InputBox
+            label="Rounds"
+            placeholder="Enter number of rounds"
+            value={rounds}
+            onChange={setRounds}
+            type="number"
+          />
         </div>
-      )}
-
-      {hasStarted && (
+      ) : (
         <>
-          <h2 className="text-xl font-bold">{isWorkPhase ? "Work" : "Rest"} Time</h2>
-          <p className="text-4xl font-bold my-4">{timeLeft}s</p>
+          <h2 className="text-2xl font-bold mt-4">{isWorkPhase ? "Work" : "Rest"} Time</h2>
+          <p className="text-5xl font-bold my-4">{timeLeft}s</p>
           <p className="text-lg">Round: {currentRound}/{rounds}</p>
         </>
       )}
 
-      <div className="flex gap-4 mt-4">
+      <div className="flex justify-center gap-4 mt-6">
         {!hasStarted ? (
-          <button onClick={handleStart} className="px-4 py-2 bg-green-500 rounded">Start</button>
+          <button onClick={handleStart} className="px-4 py-2 bg-green-500 rounded text-white">
+            Start
+          </button>
         ) : (
           <>
-            <button onClick={handlePauseResume} className="px-4 py-2 bg-blue-500 rounded">
+            <button onClick={handlePauseResume} className="px-4 py-2 bg-blue-500 rounded text-white">
               {isRunning ? "Pause" : "Resume"}
             </button>
-            <button onClick={handleReset} className="px-4 py-2 bg-red-500 rounded">Reset</button>
+            <button onClick={handleReset} className="px-4 py-2 bg-red-500 rounded text-white">
+              Reset
+            </button>
           </>
         )}
       </div>
-    </div>
+    </Card>
   );
 };
 
