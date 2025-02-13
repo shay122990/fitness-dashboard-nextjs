@@ -13,7 +13,7 @@ const Sidebar = () => {
   const isActive = (path: string) => (pathname === path ? "bg-blue-950" : "");
 
   return (
-    <div className="h-full px-2 lg:px-4 mt-10 flex flex-col items-center text-white" 
+    <div className="h-full px-2 lg:px-4 pt-10 flex flex-col items-center text-white" 
     style={{
       background:
         "linear-gradient(0deg, rgba(3,37,97,1) 0%, rgba(4,11,36,1) 100%)",
