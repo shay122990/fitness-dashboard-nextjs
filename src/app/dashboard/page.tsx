@@ -99,7 +99,6 @@ const Dashboard = () => {
             className="flex flex-col justify-between"
           />
         </motion.div>
-
         <motion.div
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -113,8 +112,14 @@ const Dashboard = () => {
             className="flex flex-col justify-between"
           />
         </motion.div>
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="relative"
+        >
+          <IntervalTimer  />
+        </motion.div>
       </motion.div>
-      <IntervalTimer  />
     </div>
   );
 };
