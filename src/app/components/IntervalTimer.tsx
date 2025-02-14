@@ -5,10 +5,12 @@ import InputBox from "./InputBox";
 import Card from "./Card";
 import Button from "./Button";
 
+const beepSound = typeof window !== "undefined" ? new Audio("/beep.mp3") : null;
+
 const IntervalTimer = () => {
-  const [workTime, setWorkTime] = useState("30"); 
-  const [restTime, setRestTime] = useState("15"); 
-  const [rounds, setRounds] = useState("5"); 
+  const [workTime, setWorkTime] = useState("30");
+  const [restTime, setRestTime] = useState("15");
+  const [rounds, setRounds] = useState("5");
 
   const [timeLeft, setTimeLeft] = useState(Number(workTime));
   const [isRunning, setIsRunning] = useState(false);
@@ -32,7 +34,12 @@ const IntervalTimer = () => {
     }
 
     const timer = setInterval(() => {
-      setTimeLeft((prev) => prev - 1);
+      setTimeLeft((prev) => {
+        if (prev > 0) {
+          beepSound?.play(); 
+        }
+        return prev - 1;
+      });
     }, 1000);
 
     return () => clearInterval(timer);
@@ -95,20 +102,20 @@ const IntervalTimer = () => {
         </>
       )}
 
-        <div className="flex justify-center gap-4 mt-6">
-            {!hasStarted ? (
-            <Button label="Start" onClick={handleStart} className="bg-green-500 text-white" />
-            ) : (
-            <>
-                <Button
-                label={isRunning ? "Pause" : "Resume"}
-                onClick={handlePauseResume}
-                className="bg-blue-500 text-white"
-                />
-                <Button label="Reset" onClick={handleReset} className="bg-red-500 text-white" />
-            </>
-            )}
-        </div>
+      <div className="flex justify-center gap-4 mt-6">
+        {!hasStarted ? (
+          <Button label="Start" onClick={handleStart} className="bg-green-500 text-white" />
+        ) : (
+          <>
+            <Button
+              label={isRunning ? "Pause" : "Resume"}
+              onClick={handlePauseResume}
+              className="bg-blue-500 text-white"
+            />
+            <Button label="Reset" onClick={handleReset} className="bg-red-500 text-white" />
+          </>
+        )}
+      </div>
     </Card>
   );
 };

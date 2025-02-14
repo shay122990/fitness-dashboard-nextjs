@@ -10,7 +10,7 @@ const Dashboard = () => {
   const user = useSelector((state: RootState) => state.auth.user);
 
   return (
-    <div className="p-6 bg-black bg-opacity-30 rounded">
+    <div className="p-6 bg-black bg-opacity-30 rounded h-full">
       <motion.div
         initial={{ opacity: 0, rotate: -45 }}
         animate={{ opacity: 1, rotate: 0 }}
@@ -99,6 +99,7 @@ const Dashboard = () => {
             className="flex flex-col justify-between"
           />
         </motion.div>
+
         <motion.div
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
