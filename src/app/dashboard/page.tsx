@@ -10,7 +10,7 @@ const Dashboard = () => {
   const user = useSelector((state: RootState) => state.auth.user);
 
   return (
-    <div className="p-6 bg-black bg-opacity-30 rounded h-full">
+    <div className="p-6 bg-black bg-opacity-30 rounded">
       <motion.div
         initial={{ opacity: 0, rotate: -45 }}
         animate={{ opacity: 1, rotate: 0 }}
@@ -25,15 +25,16 @@ const Dashboard = () => {
           className="rounded-full"
         />
       </motion.div>
-
       <motion.div
-        className="bg-gradient-to-r from-blue-700 to-indigo-600 text-white p-6 rounded-lg text-center mb-8"
+        className="relative flex flex-col justify-center items-center text-white p-6 rounded-lg text-center mb-8 h-80 overflow-hidden"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
       >
+        <div className="absolute inset-0 bg-[url('/jellyfish.jpg')] bg-cover bg-center bg-no-repeat opacity-80"></div>
+        <div className="absolute inset-0 bg-black/50"></div>
         <motion.h1
-          className="text-4xl font-bold mb-2 break-words "
+          className="relative text-4xl font-bold mb-2 break-words"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -41,7 +42,7 @@ const Dashboard = () => {
           {user ? `Welcome back ${user.name}` : "Welcome to Your Fitness Hub!"}
         </motion.h1>
         <motion.p
-          className="text-lg"
+          className="relative text-lg"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.7 }}
@@ -113,12 +114,13 @@ const Dashboard = () => {
             className="flex flex-col justify-between"
           />
         </motion.div>
+
         <motion.div
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="relative"
         >
-          <IntervalTimer  />
+          <IntervalTimer />
         </motion.div>
       </motion.div>
     </div>
