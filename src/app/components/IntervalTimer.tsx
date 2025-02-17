@@ -19,29 +19,40 @@ const IntervalTimer = () => {
   const [isWorkPhase, setIsWorkPhase] = useState(true);
   const [currentRound, setCurrentRound] = useState(1);
   const [hasStarted, setHasStarted] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
-    if (!isRunning) return;
-
+    if (!isRunning || isTransitioning) return;
+  
     if (timeLeft === 0) {
-      transitionBeep?.play();
-
-      if (currentRound >= Number(rounds) && !isWorkPhase) {
-        setIsRunning(false);
-        return;
-      }
-
-      setIsWorkPhase((prev) => !prev);
-      setTimeLeft(isWorkPhase ? Number(restTime) : Number(workTime));
-
-      if (!isWorkPhase) setCurrentRound((prev) => prev + 1);
+      setIsTransitioning(true); 
+      
+      setTimeout(() => {
+        transitionBeep?.play(); 
+        
+        setTimeout(() => {
+          if (currentRound >= Number(rounds) && !isWorkPhase) {
+            setIsRunning(false);
+            setIsTransitioning(false);
+            return;
+          }
+  
+          setIsWorkPhase((prev) => !prev);
+          const nextTime = isWorkPhase ? Number(restTime) : Number(workTime);
+          setTimeLeft(nextTime);
+  
+          setIsTransitioning(false);
+        }, 2000); 
+      }, 0); 
+  
+      return;
     }
-
+  
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
-        if (prev > 0) {
+        if (prev > 1) {
           if (isWorkPhase) {
-            workBeep?.play(); 
+            workBeep?.play();
           } else {
             restBeep?.play();
           }
@@ -49,9 +60,9 @@ const IntervalTimer = () => {
         return prev - 1;
       });
     }, 1000);
-
+  
     return () => clearInterval(timer);
-  }, [isRunning, timeLeft, isWorkPhase, currentRound, rounds, workTime, restTime]);
+  }, [isRunning, timeLeft, isWorkPhase, currentRound, rounds, workTime, restTime, isTransitioning]);
 
   const handleStart = () => {
     if (Number(workTime) <= 0 || Number(restTime) <= 0 || Number(rounds) <= 0) return;
