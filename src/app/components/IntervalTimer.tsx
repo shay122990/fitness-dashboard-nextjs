@@ -5,7 +5,9 @@ import InputBox from "./InputBox";
 import Card from "./Card";
 import Button from "./Button";
 
-const beepSound = typeof window !== "undefined" ? new Audio("/beep.mp3") : null;
+const workBeep = typeof window !== "undefined" ? new Audio("/workBeep.mp3") : null;
+const restBeep = typeof window !== "undefined" ? new Audio("/restBeep.mp3") : null;
+const transitionBeep = typeof window !== "undefined" ? new Audio("/transitionBeep.mp3") : null;
 
 const IntervalTimer = () => {
   const [workTime, setWorkTime] = useState("30");
@@ -22,6 +24,8 @@ const IntervalTimer = () => {
     if (!isRunning) return;
 
     if (timeLeft === 0) {
+      transitionBeep?.play();
+
       if (currentRound >= Number(rounds) && !isWorkPhase) {
         setIsRunning(false);
         return;
@@ -36,7 +40,11 @@ const IntervalTimer = () => {
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev > 0) {
-          beepSound?.play(); 
+          if (isWorkPhase) {
+            workBeep?.play(); 
+          } else {
+            restBeep?.play();
+          }
         }
         return prev - 1;
       });
