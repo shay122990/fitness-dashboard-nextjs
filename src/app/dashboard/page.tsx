@@ -26,7 +26,7 @@ const Dashboard = () => {
         />
       </motion.div>
       <motion.div
-        className="relative flex flex-col justify-center items-center text-white p-6 rounded-lg text-center mb-8 h-80 overflow-hidden"
+        className="relative flex flex-col justify-center items-center text-white p-6 rounded-lg text-center mb-8 h-44 lg:h-96 overflow-hidden"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
@@ -34,7 +34,7 @@ const Dashboard = () => {
         <div className="absolute inset-0 bg-[url('/jellyfish.jpg')] bg-cover bg-center bg-no-repeat opacity-80"></div>
         <div className="absolute inset-0 bg-black/50"></div>
         <motion.h1
-          className="relative text-4xl font-bold mb-2 break-words"
+          className="relative lg:text-4xl text-xl  font-bold mb-2 break-words"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -69,7 +69,7 @@ const Dashboard = () => {
             description="Plan and track your workouts to stay on track with your fitness goals."
             tabId="workout-planner"
             textColor="text-white"
-            className="flex flex-col justify-between"
+            className="flex flex-col justify-between h-auto text-sm"
           />
         </motion.div>
 
@@ -83,7 +83,7 @@ const Dashboard = () => {
             description="Track your meals and calories to maintain a balanced diet."
             tabId="nutrition-tracker"
             textColor="text-white"
-            className="flex flex-col justify-between"
+            className="flex flex-col justify-between h-auto text-sm"
           />
         </motion.div>
 
@@ -97,7 +97,7 @@ const Dashboard = () => {
             description="View your progress, workout statistics, and overall fitness trends."
             tabId="progress-insights"
             textColor="text-white"
-            className="flex flex-col justify-between"
+            className="flex flex-col justify-between h-auto text-sm"
           />
         </motion.div>
 
@@ -111,7 +111,7 @@ const Dashboard = () => {
             description="Update your personal information and view your fitness profile."
             tabId="profile"
             textColor="text-white"
-            className="flex flex-col justify-between"
+            className="flex flex-col justify-between h-auto text-sm"
           />
         </motion.div>
 
