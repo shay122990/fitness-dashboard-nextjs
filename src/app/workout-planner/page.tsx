@@ -158,8 +158,15 @@ const Planner = () => {
       onRedirect={() => (window.location.href = "/profile")}
       message="Sign in to save your workouts."
     >
-      <div className="p-6 bg-black bg-opacity-30 rounded">
-        <h3 className="text-xl font-bold">Workout Planner</h3>
+        <div className="p-4 bg-black bg-opacity-30 rounded">
+        <div className="mb-3 bg-transparent-20 backdrop-blur-md rounded text-center p-4 shadow-lg">
+          <h3 className="text-xl font-bold uppercase text-green-400 drop-shadow-md">
+            Workout Planner
+          </h3>
+          <h4 className="drop-shadow-sm">
+            Plan your weekly workout and keep track for progressive overload
+          </h4>
+        </div>
         <DaySelector selectedDay={selectedDay} onChange={setSelectedDay} days={daysOfWeek} />
         <InputBox label="Workout Name" placeholder="e.g., Squats" value={newWorkout} onChange={setNewWorkout} />
         <InputBox label="Sets" placeholder="e.g., 3" value={sets} type="text" onChange={setSets} />
