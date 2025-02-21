@@ -18,18 +18,22 @@ const Sidebar = () => {
   return (
     <>
       <button 
-        className="fixed top-4 left-4 z-50 lg:hidden p-2 bg-blue-900 text-white rounded-md"
+        className="fixed top-4 left-4 z-50 lg:hidden p-2 bg-blue-700 text-white rounded-md"
         onClick={() => setIsOpen(!isOpen)}
       >
         {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
       </button>
 
       <div 
-        className={`fixed lg:static top-0 left-0 h-screen w-[250px] bg-gradient-to-b from-blue-900 to-blue-950 text-white transform ${
+        className={`fixed lg:static top-0 left-0 h-screen w-[150px] bg-gradient-to-b from-blue-700 to-blue-950 text-white transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 transition-transform duration-300 ease-in-out z-40`}
+        style={{
+          background:
+            "linear-gradient(0deg, rgba(3,37,97,1) 0%, rgba(4,11,36,1) 100%)",
+        }}
       >
-        <div className="h-full px-4 pt-10 flex flex-col items-center">
+        <div className="h-full px-4 pt-16 flex flex-col items-center">
           <Image
             src={user?.photoURL || "/today-logo.png"} 
             width={100}
