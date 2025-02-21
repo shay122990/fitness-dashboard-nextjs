@@ -36,7 +36,7 @@ export default function RootLayout({
                 <Sidebar />
               </div>
               <main
-                className="flex-1 items-center overflow-y-auto h-screen p-2 lg:p-10 "
+                className="flex-1 items-center overflow-y-auto  p-2 lg:p-3"
                 style={{
                   background:
                     "radial-gradient(circle, rgba(0,106,253,1) 0%, rgba(4,11,36,1) 84%)",
