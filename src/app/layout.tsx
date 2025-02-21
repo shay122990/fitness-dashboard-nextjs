@@ -26,22 +26,14 @@ export default function RootLayout({
         <Providers>
           <ClientSideWrapper>
             <div className="flex h-screen">
-              <div
-                className="h-screen w-[100px] lg:w-[150px]"
-                style={{
-                  background:
-                    "linear-gradient(35deg, rgba(0,18,255,1) 0%, rgba(3,0,132,1) 40%, rgba(1,0,39,1) 100%)",
-                }}
-              >
+              <div className="lg:w-1/5 h-screen fixed left-0 top-0">
                 <Sidebar />
               </div>
-              <main
-                className="flex-1 items-center overflow-y-auto  p-2 lg:p-3"
+              <main 
+                className="flex-1 lg:w-4/5 p-2 lg:p-3 h-screen overflow-y-auto lg:ml-[250px]"
                 style={{
                   background:
                     "radial-gradient(circle, rgba(0,106,253,1) 0%, rgba(4,11,36,1) 84%)",
-                    height: "auto",
-                    overflowY: "auto"
                 }}
               >
                 {children}

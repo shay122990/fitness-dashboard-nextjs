@@ -102,8 +102,8 @@ const Insights = () => {
       onRedirect={() => (window.location.href = "/profile")}
       message="Sign in to see your progress and personalized insights."
     >
-      <div className="p-6 bg-black bg-opacity-30 rounded mb-3">
-        <h3 className="text-xl font-bold mb-4">Your Progress</h3>
+      <div className="mb-24 p-4 bg-black bg-opacity-30 rounded ">
+        <h3 className="text-xl font-bold mb-4 text-center">Your Progress</h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Chart title="Weekly Workout Progress" data={workoutChartData} options={{ responsive: true }} />

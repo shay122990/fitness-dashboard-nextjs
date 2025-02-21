@@ -10,7 +10,7 @@ const Dashboard = () => {
   const user = useSelector((state: RootState) => state.auth.user);
 
   return (
-    <div className=" p-6 bg-black bg-opacity-30 rounded">
+    <div className="mb-24 p-6 bg-black bg-opacity-30 rounded">
       <motion.div
         initial={{ opacity: 0, rotate: -45 }}
         animate={{ opacity: 1, rotate: 0 }}
