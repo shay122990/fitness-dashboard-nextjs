@@ -40,6 +40,8 @@ export default function RootLayout({
                 style={{
                   background:
                     "radial-gradient(circle, rgba(0,106,253,1) 0%, rgba(4,11,36,1) 84%)",
+                    height: "auto",
+                    overflowY: "auto"
                 }}
               >
                 {children}
