@@ -1,27 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "@/store";
+import { updateWaterIntake, resetWaterIntake } from "@/store/waterSlice";
 
 const WaterTracker = () => {
   const goal = 8; 
-  const [cups, setCups] = useState(0);
-
-  useEffect(() => {
-    const savedCups = localStorage.getItem("waterIntake");
-    if (savedCups) setCups(Number(savedCups));
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("waterIntake", cups.toString());
-  }, [cups]);
+  const dispatch = useDispatch();
+  const cups = useSelector((state: RootState) => state.water.cups);
 
   const addCup = () => {
-    if (cups < goal) setCups(cups + 1);
+    if (cups < goal) dispatch(updateWaterIntake(cups + 1));
   };
 
   const resetWater = () => {
-    setCups(0);
+    dispatch(resetWaterIntake());
   };
 
   return (
