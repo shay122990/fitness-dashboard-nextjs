@@ -36,7 +36,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex justify-center w-full h-full p-6 bg-black bg-opacity-30 rounded mt-20">
+    <div className="flex justify-center w-full h-full px-6 pb-4 pt-20 bg-black bg-opacity-30 rounded ">
        <div className="flex flex-col bg-white shadow-md rounded-lg p-4 text-center justify-center w-96 h-80">
       <h2 className="text-2xl font-bold text-blue-950 text-center mb-4">Your Profile</h2>
       {user ? (
