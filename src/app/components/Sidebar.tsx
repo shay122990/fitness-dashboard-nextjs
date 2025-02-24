@@ -6,7 +6,9 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { useState } from "react";
-import { FiMenu, FiX } from "react-icons/fi";
+import { RiMenuFoldLine, RiMenuUnfoldLine } from "react-icons/ri";
+
+
 
 const Sidebar = () => {
   const pathname = usePathname();  
@@ -18,10 +20,10 @@ const Sidebar = () => {
   return (
     <>
       <button 
-        className="fixed top-4 left-4 z-50 lg:hidden p-2 bg-blue-700 text-white rounded-md"
+        className="fixed top-4 left-4 z-50 lg:hidden p-2 bg-gradient-to-b from-blue-700 to-blue-950 text-white rounded-md"
         onClick={() => setIsOpen(!isOpen)}
       >
-        {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+        {isOpen ? <RiMenuUnfoldLine size={24} /> : <RiMenuFoldLine size={24} />}
       </button>
 
       <div 
