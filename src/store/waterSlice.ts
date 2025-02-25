@@ -3,13 +3,18 @@ import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 const initialState = {
+  userId: null, 
   cups: 0,
 };
+
 
 const waterSlice = createSlice({
   name: "water",
   initialState,
   reducers: {
+    setUser: (state, action) => {
+      state.userId = action.payload; 
+    },
     updateWaterIntake: (state, action) => {
       state.cups = action.payload;
     },
@@ -19,7 +24,8 @@ const waterSlice = createSlice({
   },
 });
 
-export const { updateWaterIntake, resetWaterIntake } = waterSlice.actions;
+
+export const {setUser, updateWaterIntake, resetWaterIntake } = waterSlice.actions;
 
 const persistConfig = {
   key: "water",
