@@ -73,38 +73,52 @@ _(coming soon)_
    ```
    rules_version = '2';
    service cloud.firestore {
-     match /databases/{database}/documents {
-       // Profiles
-       match /profiles/{userId} {
-         allow read, write: if request.auth != null && request.auth.uid == userId;
-       }
+    match /databases/{database}/documents {
+    // Profiles
+    match /profiles/{userId} {
+      // Allow read and write if the authenticated user's UID matches the document ID
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
 
-       // Workouts
-       match /workouts/{workoutId} {
-         allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
-         allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
-       }
+    // Workouts
+    match /workouts/{workoutId} {
+      // Allow create if the userId in the document matches the authenticated user's UID
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+      // Allow read, update, and delete if the userId in the document matches the authenticated user's UID
+      allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
+    }
 
-       // Calories
-       match /calories/{calorieId} {
-         allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
-         allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
-       }
+    // Calories
+    match /calories/{calorieId} {
+      // Allow create if the userId in the document matches the authenticated user's UID
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+      // Allow read, update, and delete if the userId in the document matches the authenticated user's UID
+      allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
+    }
 
-       // Nested user-specific collections
-       match /users/{userId} {
-         allow read, write: if request.auth != null && request.auth.uid == userId;
+    // Water Intake
+    match /waterIntake/{userId} {
+      // Allow read and write if the authenticated user's UID matches the document ID
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
 
-         match /calories/{calorieId} {
-           allow read, write: if request.auth != null && request.auth.uid == userId;
-         }
+    // Nested user-specific collections
+    match /users/{userId} {
+      // General rule for all user-level data
+      allow read, write: if request.auth != null && request.auth.uid == userId;
 
-         match /workouts/{workoutId} {
-           allow read, write: if request.auth != null && request.auth.uid == userId;
-         }
-       }
-     }
+      // Nested collections under /users/{userId}
+      match /calories/{calorieId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+
+      match /workouts/{workoutId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
    }
+   }
+
    ```
 
 5. Start the development server:
