@@ -36,12 +36,12 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex justify-center w-full h-full px-6 pb-4 pt-20 bg-black bg-opacity-30 rounded ">
-       <div className="flex flex-col bg-white shadow-md rounded-lg p-4 text-center justify-center w-96 h-80">
-      <h2 className="text-2xl font-bold text-blue-950 text-center mb-4">Your Profile</h2>
+    <div className="flex justify-center w-full h-full px-6 pb-4 pt-20 bg-black bg-opacity-30 rounded">
+       <div className="flex flex-col bg-white shadow-md rounded-lg p-4 text-center justify-center items-center w-96 h-80 bg-gradient-to-br from-gray-900 to to-blue-700">
+      <h2 className="text-2xl font-bold text-center mb-4">Your Profile</h2>
       {user ? (
         <>
-          <div className="text-blue-950">
+          <div className="text-white">
             <Image
               src={user.photoURL || "/default-profile.png"}
               alt={user.name || "Profile Picture"}
@@ -59,14 +59,14 @@ const Profile = () => {
           <Button
             label="Log Out"
             onClick={handleLogout}
-            className="w-full bg-red-500"
+            className="w-52  bg-red-500"
           />
         </>
       ) : (
         <Button
           label="Sign in with Google"
           onClick={handleSignIn}
-          className="w-full bg-green-500"
+          className="w-52 bg-green-500"
         />
       )}
     </div>
