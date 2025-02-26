@@ -23,6 +23,7 @@ const Dashboard = () => {
           height={100}
           alt="App Logo"
           className="rounded-full"
+          priority
         />
       </motion.div>
       <motion.div
@@ -31,8 +32,19 @@ const Dashboard = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
       >
-        <div className="absolute inset-0 bg-[url('/jellyfish.jpg')] bg-cover bg-center bg-no-repeat opacity-80"></div>
-        <div className="absolute inset-0 bg-black/50"></div>
+        {/* <div className="absolute inset-0 bg-[url('/jellyfish.jpg')] bg-cover bg-center bg-no-repeat opacity-80"></div>
+        <div className="absolute inset-0 bg-black/50"></div> */}
+        <div className="absolute inset-0">
+          <Image
+            src="/jellyfish.jpg"
+            alt="Background"
+            layout="fill"
+            objectFit="cover"
+            className="opacity-80"
+            priority
+          />
+          <div className="absolute inset-0 bg-black/50"></div>
+        </div>
         <motion.h1
           className="relative lg:text-4xl text-xl  font-bold mb-2 break-words"
           initial={{ opacity: 0 }}
