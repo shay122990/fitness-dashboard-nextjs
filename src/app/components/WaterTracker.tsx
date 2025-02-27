@@ -55,7 +55,7 @@ const WaterTracker = () => {
   };
   
   return (
-    <div className="p-6 bg-black bg-opacity-30 rounded-lg text-center text-white">
+    <div className="flex flex-col justify-center gap-2 p-6 h-auto bg-black bg-opacity-30 rounded-lg text-center text-white">
       <h2 className="text-2xl font-bold mb-4">Water Tracker</h2>
       {userId ? (
         <>
@@ -71,7 +71,7 @@ const WaterTracker = () => {
           </div>
           <button
             onClick={addCup}
-            className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
+            className="bg-blue-500 text-white px-4 py-2 rounded "
             disabled={cups >= goal}
           >
             + Add Cup
