@@ -26,7 +26,7 @@ export default function RootLayout({
         <Providers>
           <ClientSideWrapper>
             <div className="flex h-screen">
-              <div className="lg:w-1/5 h-screen fixed left-0 top-0 z-10">
+              <div className="h-screen fixed left-0 top-0 z-10">
                 <Sidebar />
               </div>
               <main 
