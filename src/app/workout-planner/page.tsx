@@ -127,23 +127,34 @@ const Planner = () => {
       key={`${day}-${uuidv4()}`}
       title={`${day} Workouts`}
       description={
-        workouts.length > 0
-          ? workouts.map((workout, index) => (
-              <div key={`${day}-${workout}-${index}`} className="flex justify-between items-center">
-                <span>{workout}</span>
+        workouts.length > 0 ? (
+          <ol className="space-y-3">
+            {workouts.map((workout, index) => (
+              <li
+                key={`${day}-${workout}-${index}`}
+                className="border border-gray-700 p-3 rounded-md bg-gray-800 shadow-md flex justify-between items-center"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-green-400 font-bold">{index + 1}.</span>
+                  <span className="text-white">{workout}</span>
+                </div>
                 {showActions && (
-                  <div>
-                    <Button label="Edit" className="text-blue-200 mr-2" onClick={() => startEditingWorkout(workout)} />
+                  <div className="flex gap-2">
+                    <Button label="Edit" className="text-blue-200" onClick={() => startEditingWorkout(workout)} />
                     <Button label="Remove" className="text-red-300" onClick={() => removeWorkoutHandler(day, workout)} />
                   </div>
                 )}
-              </div>
-            ))
-          : "No workouts for today"
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p className="text-center text-gray-400">No workouts for today</p>
+        )
       }
       textColor="text-white"
     />
   );
+  
 
   const closeModal = () => {
     setModalVisible(false);
