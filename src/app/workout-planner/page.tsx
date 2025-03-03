@@ -77,8 +77,9 @@ const Planner = () => {
     }
 
     if (selectedDay && newWorkout.trim() && sets.trim()) {
-      const workoutDetails = `${newWorkout.trim()} - Sets: ${sets}, Reps: ${reps}, Weight: ${weight}`;
-      if (editingWorkout) {
+      const capitalizeWords = (text: string) => text.replace(/\b\w/g, (char) => char.toUpperCase());
+      const workoutDetails = `${capitalizeWords(newWorkout.trim())} - Sets: ${sets}, Reps: ${reps}, Weight: ${weight}`;
+            if (editingWorkout) {
         dispatch(updateWorkout({ day: selectedDay, oldWorkout: editingWorkout, newWorkout: workoutDetails }));
         if (userId) {
           await updateWorkoutInFirestore(userId, selectedDay, editingWorkout, workoutDetails);
@@ -92,7 +93,7 @@ const Planner = () => {
       }
       setNewWorkout("");
       setSets("");
-      setReps("8");
+      setReps("");
       setWeight("");
     }
   };
@@ -179,10 +180,10 @@ const Planner = () => {
           </h4>
         </div>
         <DaySelector selectedDay={selectedDay} onChange={setSelectedDay} days={daysOfWeek} />
-        <InputBox label="Workout Name" placeholder="e.g., Squats" value={newWorkout} onChange={setNewWorkout} />
-        <InputBox label="Sets" placeholder="e.g., 3" value={sets} type="text" onChange={setSets} />
-        <InputBox label="Reps" placeholder="e.g., 8 or 8-10" value={reps} type="text" onChange={setReps} />
-        <InputBox label="Weight" placeholder="e.g., 10kg or band" value={weight.toString()} type="text" onChange={setWeight} />
+        <InputBox label="WORKOUT NAME" placeholder="e.g., Squats" value={newWorkout} onChange={setNewWorkout} />
+        <InputBox label="SETS" placeholder="e.g., 3" value={sets} type="text" onChange={setSets} />
+        <InputBox label="REPS" placeholder="e.g., 8 or 8-10" value={reps} type="text" onChange={setReps} />
+        <InputBox label="WEIGHT" placeholder="e.g., 10kg or band" value={weight.toString()} type="text" onChange={setWeight} />
         <Button
           label={editingWorkout ? "Update Workout" : "Add Workout"}
           onClick={addOrUpdateWorkoutHandler}
