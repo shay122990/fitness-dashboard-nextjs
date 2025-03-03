@@ -116,36 +116,45 @@ const Nutrition = () => {
   };
 
   const renderSelectedDayCard = (day: string, data: { eaten: string[]; burned: string[] }) => {
-    const renderEntries = (entries: string[], type: "eaten" | "burned") =>
-      entries.map((entry) => (
-        <div key={entry} className="flex justify-between items-center">
-          <span>{entry}</span>
-          <div className="flex gap-2">
-            <Button className="text-blue-200" onClick={() => startEditingEntry(type, entry)} label="Edit" />
-            <Button className="text-red-500" onClick={() => handleRemoveCalorie(day, entry, type)} label="Remove" />
+    const renderEntries = (entries: string[], type: "eaten" | "burned") => (
+      <div className="space-y-2">
+        {entries.length > 0 ? (
+          entries.map((entry) => (
+            <div key={entry} className="flex justify-between items-center bg-gray-800 p-2 rounded-md">
+              <span className="text-white">{entry} kcal</span>
+              <div className="flex gap-2">
+                <Button className="text-blue-400" onClick={() => startEditingEntry(type, entry)} label="Edit" />
+                <Button className="text-red-500" onClick={() => handleRemoveCalorie(day, entry, type)} label="Remove" />
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-400">None</p>
+        )}
+      </div>
+    );
+  
+    return (
+      <Card
+        key={day}
+        title={`${day} Entries`}
+        description={
+          <div className="space-y-4">
+            <div>
+              <h5 className="text-green-300 font-semibold">Eaten Calories</h5>
+              {renderEntries(data.eaten, "eaten")}
+            </div>
+            <div>
+              <h5 className="text-red-300 font-semibold">Burned Calories</h5>
+              {renderEntries(data.burned, "burned")}
+            </div>
           </div>
-        </div>
-      ));
-
-      return (
-        <Card
-          key={day}
-          title={`${day} Entries`}
-          description={
-            <>
-              <div>Eaten: {data.eaten.length > 0 ? renderEntries(data.eaten, "eaten") : "None"}</div>
-              <div>Burned: {data.burned.length > 0 ? renderEntries(data.burned, "burned") : "None"}</div>
-            </>
-          }
-          textColor="text-white"
-        >
-          <Button
-            label="Clear All"
-            onClick={() => handleClearCalories(day)}
-            className="bg-red-500 mt-2"
-          />
-        </Card>
-      );
+        }
+        textColor="text-white"
+      >
+        <Button label="Clear All" onClick={() => handleClearCalories(day)} className="bg-red-500 mt-4" />
+      </Card>
+    );
   };
 
   const renderWeekCards = () => {
@@ -153,10 +162,43 @@ const Nutrition = () => {
       <Card
         key={day}
         title={`${day} Entries`}
-        description={`Eaten: ${data.eaten.join(", ") || "None"} | Burned: ${data.burned.join(", ") || "None"}`}
+        description={
+          <div className="space-y-4">
+            <div>
+              <h5 className="text-green-300 font-semibold">Eaten Calories</h5>
+              <div className="space-y-2">
+                {data.eaten.length > 0 ? (
+                  data.eaten.map((entry) => (
+                    <div key={entry} className="flex justify-between items-center bg-gray-800 p-2 rounded-md">
+                      <span className="text-white">{entry} kcal</span>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-gray-400">None</p>
+                )}
+              </div>
+            </div>
+            <div>
+              <h5 className="text-red-300 font-semibold">Burned Calories</h5>
+              <div className="space-y-2">
+                {data.burned.length > 0 ? (
+                  data.burned.map((entry) => (
+                    <div key={entry} className="flex justify-between items-center bg-gray-800 p-2 rounded-md">
+                      <span className="text-white">{entry} kcal</span>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-gray-400">None</p>
+                )}
+              </div>
+            </div>
+          </div>
+        }
+        textColor="text-white"
       />
     ));
   };
+  
 
   return (
     <AuthCheck
@@ -177,7 +219,7 @@ const Nutrition = () => {
           </div>
         <DaySelector selectedDay={selectedDay} onChange={setSelectedDay} days={daysOfWeek} />
         <InputBox
-          label="Calories"
+          label="CALORIES"
           placeholder={editingEntry ? "Update calories" : "Enter calories"}
           value={calories}
           onChange={setCalories}
@@ -195,12 +237,12 @@ const Nutrition = () => {
           />
         </div>
 
-        <h2 className="mt-4">Entries for {selectedDay}</h2>
+        <h2 className="mt-6 text-green-400 uppercase bg-gray-900 text-center p-6 rounded mb-2">Entries for {selectedDay}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {nutritionData[selectedDay] && renderSelectedDayCard(selectedDay, nutritionData[selectedDay])}
         </div>
 
-        <h2 className="mt-6">Entries for the Week</h2>
+        <h2 className="mt-2 text-green-400 uppercase bg-gray-900 text-center p-6 rounded mb-2">Entries for the Week</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {renderWeekCards()}
         </div>
