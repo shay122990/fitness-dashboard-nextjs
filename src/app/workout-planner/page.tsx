@@ -190,11 +190,11 @@ const Planner = () => {
           className="bg-green-400 mt-4"
         />
         <div className="mt-6">
-          <h4 className="text-lg font-bold">Workouts for {selectedDay}</h4>
+          <h4 className="mt-2 text-green-400 uppercase bg-gray-900 text-center p-6 rounded mb-2">Workouts for {selectedDay}</h4>
           <div className="mt-4">{renderCardForDay(selectedDay, workouts[selectedDay] || [], true)}</div>
         </div>
         <div className="mt-6">
-          <h4 className="text-lg font-bold">Workouts for the Week</h4>
+          <h4 className="mt-2 text-green-400 uppercase bg-gray-900 text-center p-6 rounded mb-2">Workouts for the Week</h4>
           <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {daysOfWeek.map((day) => renderCardForDay(day, workouts[day] || []))}
           </div>
