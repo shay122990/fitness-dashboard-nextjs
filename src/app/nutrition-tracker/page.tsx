@@ -152,7 +152,8 @@ const Nutrition = () => {
         }
         textColor="text-white"
       >
-        <Button label="Clear All" onClick={() => handleClearCalories(day)} className="bg-red-500 mt-4" />
+        <Button label="Clear All" onClick={() => handleClearCalories(day)}   className="bg-gradient-to-br from-gray-950  to-gray-800 text-red-500 shadow-sm shadow-red-500/50"
+        />
       </Card>
     );
   };
@@ -228,12 +229,12 @@ const Nutrition = () => {
           <Button
             label={editingEntry ? "Update Eaten Calories" : "Add Eaten Calories"}
             onClick={() => handleAddOrUpdateCalories("eaten")}
-            className="bg-green-400"
+            className="bg-gradient-to-br from-gray-950  to-gray-800 text-green-400 shadow-md shadow-green-900/50"
           />
           <Button
             label={editingEntry ? "Update Burned Calories" : "Add Burned Calories"}
             onClick={() => handleAddOrUpdateCalories("burned")}
-            className="bg-orange-500"
+            className="bg-gradient-to-br from-gray-950  to-gray-800 text-orange-500 shadow-md shadow-orange-500/50"
           />
         </div>
 

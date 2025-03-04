@@ -187,7 +187,7 @@ const Planner = () => {
         <Button
           label={editingWorkout ? "Update Workout" : "Add Workout"}
           onClick={addOrUpdateWorkoutHandler}
-          className="bg-green-400 mt-4"
+          className="bg-gradient-to-br from-gray-950  to-gray-800 text-green-400 shadow-md shadow-green-400/50 mt-4"
         />
         <div className="mt-6">
           <h4 className="mt-2 text-green-400 uppercase bg-gray-900 text-center p-6 rounded mb-2">Workouts for {selectedDay}</h4>
