@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "@/store";
+import { RootState } from "@/store/store";
 import { setUser, updateWaterIntake, resetWaterIntake } from "@/store/waterSlice";
 import { auth,db } from "@/firebase/firebase-config";
 import { doc, getDoc, setDoc } from "firebase/firestore";

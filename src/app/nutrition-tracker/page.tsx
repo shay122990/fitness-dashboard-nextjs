@@ -6,7 +6,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase/firebase-config";
 import { addCalories, clearCalories, setNutritionData, updateCalories, removeCalories } from "../../store/nutritionSlice";
 import { saveCalorieEntry, updateCaloriesInFirestore, fetchCalorieEntries, clearCaloriesFromFirestore, removeCalorieEntry } from "../../firebase/firestore";
-import { RootState } from "../../store/index";
+import { RootState } from "../../store/store";
 import { daysOfWeek } from "../utils/days";
 import InputBox from "../components/InputBox";
 import DaySelector from "../components/DaySelector";

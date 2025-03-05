@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { useSelector } from "react-redux";
-import { RootState } from "../../store";
+import { RootState } from "../../store/store";
 import { useState } from "react";
 import { RiMenuFoldLine, RiMenuUnfoldLine } from "react-icons/ri";
 

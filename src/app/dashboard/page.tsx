@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Card from "../components/Card";
 import Image from "next/image";
 import { useSelector } from "react-redux";
-import { RootState } from "@/store";
+import { RootState } from "@/store/store";
 import IntervalTimer from "../components/IntervalTimer";
 import WaterTracker from "../components/WaterTracker";
 const Dashboard = () => {
@@ -38,8 +38,8 @@ const Dashboard = () => {
           <Image
             src="/jellyfish.jpg"
             alt="Background"
-            layout="fill"
-            objectFit="cover"
+            fill
+            style={{ objectFit: 'cover' }}
             className="opacity-80"
             priority
           />

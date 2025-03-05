@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase/firebase-config";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "@/store";
+import { RootState } from "@/store/store";
 import {addWorkout,removeWorkout,updateWorkout,setWorkouts,} from "@/store/workoutsSlice";
 import {fetchUserWorkouts,saveWorkout,removeWorkoutFromFirestore,updateWorkoutInFirestore,} from "../../firebase/firestore";
 import { daysOfWeek } from "../utils/days";

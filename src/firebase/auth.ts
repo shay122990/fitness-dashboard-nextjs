@@ -1,6 +1,6 @@
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleAuthProvider } from "./firebase-config";
-import { AppDispatch } from "../store";
+import { AppDispatch } from "../store/store";
 import { setUser } from "../store/authSlice";
 
 export const googleSignIn = async (dispatch: AppDispatch) => {

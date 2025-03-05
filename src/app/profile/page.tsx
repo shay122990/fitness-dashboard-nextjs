@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../../store";
+import { RootState } from "../../store/store";
 import { clearUser } from "../../store/authSlice";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase/firebase-config";

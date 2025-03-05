@@ -4,7 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { fetchUserWorkouts, fetchCalorieEntries } from "../../firebase/firestore";
 import { auth } from "../../firebase/firebase-config";
 import { useSelector } from "react-redux";
-import { RootState } from "../../store";
+import { RootState } from "../../store/store";
 import Chart from "../components/Chart";
 import StatCard from "../components/StatCard";
 import AuthCheck from "../components/AuthCheck";
