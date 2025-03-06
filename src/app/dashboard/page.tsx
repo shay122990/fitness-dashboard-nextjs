@@ -30,7 +30,22 @@ const Dashboard = () => {
           <div className="absolute inset-0 bg-black/60"></div>
         </div>
 
-        {user && (
+        {!user ? (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7 }}
+            className="w-24 h-24 rounded-full border-4 border-white shadow-lg z-10"
+          >
+            <Image
+              src="/today-logo.png"  
+              alt="Logo"
+              width={96}
+              height={96}
+              className="rounded-full"
+            />
+          </motion.div>
+        ) : (
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -46,8 +61,9 @@ const Dashboard = () => {
             />
           </motion.div>
         )}
+
         <motion.h1
-          className="relative lg:text-4xl text-xl font-bold  break-words"
+          className="relative lg:text-4xl text-xl font-bold break-words"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -67,7 +83,6 @@ const Dashboard = () => {
         </motion.p>
       </motion.div>
 
-      {/* Dashboard Cards */}
       <motion.div
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
         initial={{ opacity: 0 }}
