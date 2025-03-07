@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import IntervalTimer from "../components/IntervalTimer";
 import WaterTracker from "../components/WaterTracker";
+import TdeeCalculator from "../components/TdeeCalculator";
 
 const Dashboard = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -159,6 +160,13 @@ const Dashboard = () => {
           className="relative"
         >
           <WaterTracker />
+        </motion.div>
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="relative"
+        >
+         <TdeeCalculator/>
         </motion.div>
       </motion.div>
     </div>
