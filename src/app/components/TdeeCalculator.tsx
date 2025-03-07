@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import InputBox from './InputBox';
 import Button from './Button';
+import Card from './Card';
 
 const TdeeCalculator = () => {
   const [age, setAge] = useState<number>(25);
@@ -34,9 +35,11 @@ const TdeeCalculator = () => {
   };
 
   return (
-    <div className="p-6 bg-black transparent rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold text-center mb-4">TDEE & Calorie Calculator</h2>
-
+    <Card
+      title="TDEE & Calorie Calculator"
+      description="Calculate your Total Daily Energy Expenditure and macronutrient breakdown."
+      className="p-6 w-full max-w-md text-center text-sm"
+    >
       <InputBox label="Age" placeholder="Enter your age" value={age.toString()} onChange={(val) => setAge(Number(val))} type="number" />
       <InputBox label="Weight (kg)" placeholder="Enter your weight" value={weight.toString()} onChange={(val) => setWeight(Number(val))} type="number" />
       <InputBox label="Height (cm)" placeholder="Enter your height" value={height.toString()} onChange={(val) => setHeight(Number(val))} type="number" />
@@ -76,7 +79,7 @@ const TdeeCalculator = () => {
           </div>
         </div>
       )}
-    </div>
+    </Card>
   );
 };
 
