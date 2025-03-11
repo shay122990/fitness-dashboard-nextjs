@@ -87,7 +87,7 @@ const IntervalTimer = () => {
     <Card
       title="Interval Timer"
       description="Customize your interval training by setting work and rest durations."
-      className="p-6 w-full max-w-md text-center text-sm"
+      className="p-6 w-full max-w-md text-center text-sm rounded-lg"
     >
       {!hasStarted ? (
         <div className="grid grid-cols-1 gap-3">
