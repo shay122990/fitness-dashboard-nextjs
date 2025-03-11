@@ -85,7 +85,7 @@ const Dashboard = () => {
       </motion.div>
 
       <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+        className="grid  sm:grid-cols-2 gap-6"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
@@ -164,7 +164,7 @@ const Dashboard = () => {
         <motion.div
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="relative"
+          className="relative col-span-full"
         >
          <TdeeCalculator/>
         </motion.div>
