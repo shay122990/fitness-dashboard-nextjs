@@ -138,6 +138,7 @@ const Nutrition = () => {
       <Card
         key={day}
         title={`${day} Entries`}
+        className="rounded-lg"
         description={
           <div className="space-y-4">
             <div>
@@ -163,6 +164,7 @@ const Nutrition = () => {
       <Card
         key={day}
         title={`${day} Entries`}
+        className="rounded-lg"
         description={
           <div className="space-y-4">
             <div>

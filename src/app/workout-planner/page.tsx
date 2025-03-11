@@ -127,6 +127,7 @@ const Planner = () => {
     <Card
       key={`${day}-${uuidv4()}`}
       title={`${day} Workouts`}
+      className="rounded-lg"
       description={
         workouts.length > 0 ? (
           <ol className="space-y-3">
