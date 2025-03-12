@@ -43,7 +43,7 @@ const TdeeCalculator = () => {
 
         <div className="mb-4">
           <label className="block mb-2">Gender</label>
-          <select value={gender} onChange={(e) => setGender(e.target.value)} className="w-full p-2 border rounded bg-transparent">
+          <select value={gender} onChange={(e) => setGender(e.target.value)} className="w-full p-2 border border-green-500 rounded bg-transparent">
             <option value="male">Male</option>
             <option value="female">Female</option>
           </select>
@@ -51,7 +51,7 @@ const TdeeCalculator = () => {
 
         <div className="mb-4">
           <label className="block mb-2">Activity Level</label>
-          <select value={activityLevel} onChange={(e) => setActivityLevel(Number(e.target.value))} className="w-full p-2 border rounded bg-transparent">
+          <select value={activityLevel} onChange={(e) => setActivityLevel(Number(e.target.value))} className="w-full p-2 border rounded bg-transparent border-green-500">
             <option value={1.2}>Sedentary (little or no exercise)</option>
             <option value={1.375}>Lightly active (light exercise 1-3 days/week)</option>
             <option value={1.55}>Moderately active (moderate exercise 3-5 days/week)</option>
@@ -59,8 +59,7 @@ const TdeeCalculator = () => {
             <option value={1.9}>Super active (very hard exercise or a physical job)</option>
           </select>
         </div>
-
-        <Button label="Calculate" onClick={calculateTdee} className='border' />
+        <Button label="Calculate" onClick={calculateTdee} className="bg-gradient-to-br from-gray-950  to-gray-800 text-green-400 shadow-md shadow-green-400/50 mt-4"/>
       </Card>
 
       {tdee && (
