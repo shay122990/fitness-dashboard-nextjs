@@ -123,7 +123,7 @@ const IntervalTimer = () => {
 
       <div className="flex justify-center gap-4 mt-6">
         {!hasStarted ? (
-          <Button label="Start" onClick={handleStart} className="bg-green-500 text-white" />
+          <Button label="Start" onClick={handleStart} className="bg-gradient-to-br from-gray-950  to-gray-800 text-green-400 shadow-md shadow-green-400/50" />
         ) : (
           <>
             <Button

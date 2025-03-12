@@ -5,9 +5,9 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store/store";
 import { setUser, updateWaterIntake, resetWaterIntake } from "@/store/waterSlice";
-import { auth,db } from "@/firebase/firebase-config";
+import { auth, db } from "@/firebase/firebase-config";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-
+import Button from "./Button";
 
 const WaterTracker = () => {
   const goal = 8;
@@ -19,10 +19,10 @@ const WaterTracker = () => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         dispatch(setUser(user.uid));
-  
+
         const userDocRef = doc(db, "waterIntake", user.uid);
         const docSnap = await getDoc(userDocRef);
-  
+
         if (docSnap.exists()) {
           dispatch(updateWaterIntake(docSnap.data().cups || 0));
         } else {
@@ -34,10 +34,9 @@ const WaterTracker = () => {
         dispatch(updateWaterIntake(0));
       }
     });
-  
+
     return () => unsubscribe();
   }, [dispatch]);
-  
 
   const addCup = async () => {
     if (cups < goal && userId) {
@@ -46,14 +45,14 @@ const WaterTracker = () => {
       await setDoc(doc(db, "waterIntake", userId), { cups: newCups });
     }
   };
-  
+
   const resetWater = async () => {
     if (userId) {
       dispatch(resetWaterIntake());
       await setDoc(doc(db, "waterIntake", userId), { cups: 0 });
     }
   };
-  
+
   return (
     <div className="flex flex-col justify-center gap-2 p-6 h-auto bg-black bg-opacity-30 rounded-lg text-center text-white">
       <h2 className="text-2xl font-bold mb-4">Water Tracker</h2>
@@ -69,16 +68,16 @@ const WaterTracker = () => {
               />
             ))}
           </div>
-          <button
-            onClick={addCup}
-            className="bg-blue-500 text-white px-4 py-2 rounded "
-            disabled={cups >= goal}
-          >
-            + Add Cup
-          </button>
-          <button onClick={resetWater} className="bg-red-500 text-white px-4 py-2 rounded">
-            Reset
-          </button>
+          <Button 
+            onClick={addCup} 
+            label="+ Add Cup"
+            className="bg-gradient-to-br from-gray-950 to-gray-800 text-green-400 shadow-md shadow-green-400/50"
+          />
+          <Button 
+            onClick={resetWater} 
+            label="Reset"
+            className="bg-gradient-to-br from-gray-950 to-gray-800 text-red-500 shadow-md shadow-green-400/50"
+          />
         </>
       ) : (
         <p>Please log in to track your water intake.</p>
