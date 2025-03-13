@@ -35,15 +35,15 @@ const TdeeCalculator = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row items-stretch w-full rounded-lg overflow-hidden">
-      <Card className="p-6 w-full flex-1 text-sm" title="TDEE & Calorie Calculator" description="Calculate your Total Daily Energy Expenditure and macronutrient breakdown.">
+    <div className="flex flex-col md:flex-row items-stretch w-full rounded-lg overflow-hidden gap-6 bg-gray-900 p-6 text-white shadow-lg">
+      <Card className="p-6 w-full flex-1 text-sm bg-gray-800 rounded-lg shadow-md" title="TDEE & Calorie Calculator" description="Calculate your Total Daily Energy Expenditure and macronutrient breakdown.">
         <InputBox label="Age" placeholder="Enter your age" value={age.toString()} onChange={(val) => setAge(Number(val))} type="number" />
         <InputBox label="Weight (kg)" placeholder="Enter your weight" value={weight.toString()} onChange={(val) => setWeight(Number(val))} type="number" />
         <InputBox label="Height (cm)" placeholder="Enter your height" value={height.toString()} onChange={(val) => setHeight(Number(val))} type="number" />
 
         <div className="mb-4">
           <label className="block mb-2">Gender</label>
-          <select value={gender} onChange={(e) => setGender(e.target.value)} className="w-full p-2 border border-green-500 rounded bg-transparent">
+          <select value={gender} onChange={(e) => setGender(e.target.value)} className="w-full p-2 border border-green-500 rounded bg-gray-700">
             <option value="male">Male</option>
             <option value="female">Female</option>
           </select>
@@ -51,7 +51,7 @@ const TdeeCalculator = () => {
 
         <div className="mb-4">
           <label className="block mb-2">Activity Level</label>
-          <select value={activityLevel} onChange={(e) => setActivityLevel(Number(e.target.value))} className="w-full p-2 border rounded bg-transparent border-green-500">
+          <select value={activityLevel} onChange={(e) => setActivityLevel(Number(e.target.value))} className="w-full p-2 border rounded bg-gray-700 border-green-500">
             <option value={1.2}>Sedentary (little or no exercise)</option>
             <option value={1.375}>Lightly active (light exercise 1-3 days/week)</option>
             <option value={1.55}>Moderately active (moderate exercise 3-5 days/week)</option>
@@ -59,19 +59,24 @@ const TdeeCalculator = () => {
             <option value={1.9}>Super active (very hard exercise or a physical job)</option>
           </select>
         </div>
-        <Button label="Calculate" onClick={calculateTdee} className="bg-gradient-to-br from-gray-950  to-gray-800 text-green-400 shadow-md shadow-green-400/50 mt-4"/>
+        <Button label="Calculate" onClick={calculateTdee} className="bg-gradient-to-br from-gray-950  to-gray-800 text-green-400  shadow-md shadow-green-400/50 mt-4 rounded-lg"/>
       </Card>
 
       {tdee && (
-        <Card className="p-6 w-full flex-1 text-sm" title="Your Results" description="Your calculated BMR, TDEE, BMI, and macronutrients.">
-          <p><strong>BMR (Basal Metabolic Rate):</strong> {bmr?.toFixed(2)} kcal/day</p>
-          <p><strong>TDEE (Total Daily Energy Expenditure):</strong> {tdee?.toFixed(2)} kcal/day</p>
-          <p><strong>BMI (Body Mass Index):</strong> {bmi?.toFixed(2)}</p>
-          <div className="mt-4">
-            <h4 className="text-lg font-semibold">Macronutrients</h4>
-            <p><strong>Protein:</strong> {macros?.protein.toFixed(2)} grams</p>
-            <p><strong>Carbs:</strong> {macros?.carbs.toFixed(2)} grams</p>
-            <p><strong>Fat:</strong> {macros?.fat.toFixed(2)} grams</p>
+        <Card className="p-6 w-full flex-1 text-sm bg-gray-800 rounded-lg shadow-md" title="Your Results" description="Your calculated BMR, TDEE, BMI, and macronutrients.">
+          <div className="text-center">
+            <p className="text-lg font-semibold">BMR (Basal Metabolic Rate)</p>
+            <p className="text-xl font-bold text-green-400">{bmr?.toFixed(2)} kcal/day</p>
+            <p className="text-lg font-semibold mt-2">TDEE (Total Daily Energy Expenditure)</p>
+            <p className="text-xl font-bold text-blue-400">{tdee?.toFixed(2)} kcal/day</p>
+            <p className="text-lg font-semibold mt-2">BMI (Body Mass Index)</p>
+            <p className="text-xl font-bold text-yellow-400">{bmi?.toFixed(2)}</p>
+          </div>
+          <div className="mt-6">
+            <h4 className="text-lg font-semibold border-b border-gray-600 pb-2">Macronutrients</h4>
+            <p className="mt-2"><strong>Protein:</strong> <span className="text-red-400">{macros?.protein.toFixed(2)}</span> grams</p>
+            <p><strong>Carbs:</strong> <span className="text-blue-400">{macros?.carbs.toFixed(2)}</span> grams</p>
+            <p><strong>Fat:</strong> <span className="text-yellow-400">{macros?.fat.toFixed(2)}</span> grams</p>
           </div>
         </Card>
       )}
