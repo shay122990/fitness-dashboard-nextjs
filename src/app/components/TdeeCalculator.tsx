@@ -35,8 +35,8 @@ const TdeeCalculator = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row items-stretch w-full rounded-lg overflow-hidden gap-6 bg-gray-900 p-6 text-white shadow-lg">
-      <Card className="p-6 w-full flex-1 text-sm bg-gray-800 rounded-lg shadow-md" title="TDEE & Calorie Calculator" description="Calculate your Total Daily Energy Expenditure and macronutrient breakdown.">
+    <div className="flex flex-col md:flex-row items-stretch w-full rounded-lg overflow-hidden gap-6 text-white shadow-lg">
+      <Card className="p-6 w-full flex-1 text-sm  rounded-lg shadow-md" title="TDEE & Calorie Calculator" description="Calculate your Total Daily Energy Expenditure and macronutrient breakdown.">
         <InputBox label="Age" placeholder="Enter your age" value={age.toString()} onChange={(val) => setAge(Number(val))} type="number" />
         <InputBox label="Weight (kg)" placeholder="Enter your weight" value={weight.toString()} onChange={(val) => setWeight(Number(val))} type="number" />
         <InputBox label="Height (cm)" placeholder="Enter your height" value={height.toString()} onChange={(val) => setHeight(Number(val))} type="number" />
@@ -63,7 +63,7 @@ const TdeeCalculator = () => {
       </Card>
 
       {tdee && (
-        <Card className="p-6 w-full flex-1 text-sm bg-gray-800 rounded-lg shadow-md" title="Your Results" description="Your calculated BMR, TDEE, BMI, and macronutrients.">
+        <Card className="p-6 w-full flex-1 text-sm  rounded-lg shadow-md justify-center items-center text-center" title="Your Results" description="Your calculated BMR, TDEE, BMI, and macronutrients.">
           <div className="text-center">
             <p className="text-lg font-semibold">BMR (Basal Metabolic Rate)</p>
             <p className="text-xl font-bold text-green-400">{bmr?.toFixed(2)} kcal/day</p>
