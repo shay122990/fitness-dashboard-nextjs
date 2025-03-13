@@ -8,6 +8,7 @@ import { setUser, updateWaterIntake, resetWaterIntake } from "@/store/waterSlice
 import { auth, db } from "@/firebase/firebase-config";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import Button from "./Button";
+import Card from "./Card";
 
 const WaterTracker = () => {
   const goal = 8;
@@ -54,8 +55,11 @@ const WaterTracker = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center gap-2 p-6 h-auto bg-black bg-opacity-30 rounded-lg text-center text-white">
-      <h2 className="text-2xl font-bold mb-4">Water Tracker</h2>
+    <Card 
+      title="Water Tracker" 
+      description="Track your daily water intake and reach your goal." 
+      className="p-6 text-white text-center rounded-lg shadow-md"
+    >
       {userId ? (
         <>
           <p className="text-lg mb-2">{cups} / {goal} cups</p>
@@ -68,21 +72,23 @@ const WaterTracker = () => {
               />
             ))}
           </div>
-          <Button 
-            onClick={addCup} 
-            label="+ Add Cup"
-            className="bg-gradient-to-br from-gray-950 to-gray-800 text-green-400 shadow-md shadow-green-400/50"
-          />
-          <Button 
-            onClick={resetWater} 
-            label="Reset"
-            className="bg-gradient-to-br from-gray-950 to-gray-800 text-red-500 shadow-md shadow-green-400/50"
-          />
+          <div className="flex gap-4 justify-center">
+            <Button 
+              onClick={addCup} 
+              label="+ Add Cup"
+              className="bg-gradient-to-br from-gray-950 to-gray-800 text-green-400 shadow-md shadow-green-400/50"
+            />
+            <Button 
+              onClick={resetWater} 
+              label="Reset"
+              className="bg-gradient-to-br from-gray-950 to-gray-800 text-red-500 shadow-md shadow-green-400/50"
+            />
+          </div>
         </>
       ) : (
-        <p>Please log in to track your water intake.</p>
+        <p className="text-red-400">Please log in to track your water intake.</p>
       )}
-    </div>
+    </Card>
   );
 };
 
