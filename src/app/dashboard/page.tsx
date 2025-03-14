@@ -179,9 +179,11 @@ const Dashboard = () => {
         <motion.div
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="relative col-span-full text-center"
+          className="relative col-span-full"
         >
-         <TdeeCalculator/>
+          <Card className="text-center pb-8">
+            <TdeeCalculator />
+          </Card>
         </motion.div>
       </motion.div>
     </div>
@@ -189,3 +191,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
