@@ -1,4 +1,4 @@
-'use client';
+"use client"
 import { motion } from "framer-motion";
 import Card from "../components/Card";
 import Image from "next/image";
@@ -85,7 +85,7 @@ const Dashboard = () => {
       </motion.div>
 
       <motion.div
-        className="grid  sm:grid-cols-2 gap-6"
+        className="grid sm:grid-cols-2 gap-6"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
@@ -93,57 +93,72 @@ const Dashboard = () => {
         <motion.div
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="relative"
+          className="relative col-span-full"
         >
           <Card
-            title="Workout Planner"
-            description="Plan and track your workouts to stay on track with your fitness goals."
-            tabId="workout-planner"
-            textColor="text-white"
-            className="flex flex-col justify-between lg:h-56 text-sm rounded-lg"
-          />
-        </motion.div>
+            title="Activity Tracker"
+            description="Access the following features."
+            textColor="text-white text-center"
+            className="flex flex-col justify-between rounded-lg"
+          >
+            <div className="grid sm:grid-cols-2 gap-6 mt-4">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative"
+              >
+                <Card
+                  title="Workout Planner"
+                  description="Plan and track your workouts to stay on track with your fitness goals."
+                  tabId="workout-planner"
+                  textColor="text-white"
+                  className="flex flex-col justify-between lg:h-56 text-sm rounded-lg"
+                />
+              </motion.div>
 
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="relative"
-        >
-          <Card
-            title="Nutrition Tracker"
-            description="Track your meals and calories to maintain a balanced diet."
-            tabId="nutrition-tracker"
-            textColor="text-white"
-            className="flex flex-col justify-between lg:h-56 text-sm rounded-lg"
-          />
-        </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative"
+              >
+                <Card
+                  title="Nutrition Tracker"
+                  description="Track your meals and calories to maintain a balanced diet."
+                  tabId="nutrition-tracker"
+                  textColor="text-white"
+                  className="flex flex-col justify-between lg:h-56 text-sm rounded-lg"
+                />
+              </motion.div>
 
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="relative"
-        >
-          <Card
-            title="Insights"
-            description="View your progress, workout statistics, and overall fitness trends."
-            tabId="progress-insights"
-            textColor="text-white"
-            className="flex flex-col justify-between lg:h-56 text-sm rounded-lg"
-          />
-        </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative"
+              >
+                <Card
+                  title="Insights"
+                  description="View your progress, workout statistics, and overall fitness trends."
+                  tabId="progress-insights"
+                  textColor="text-white"
+                  className="flex flex-col justify-between lg:h-56 text-sm rounded-lg"
+                />
+              </motion.div>
 
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="relative"
-        >
-          <Card
-            title="Profile"
-            description="Update your personal information and view your fitness profile."
-            tabId="profile"
-            textColor="text-white"
-            className="flex flex-col justify-between lg:h-56 text-sm rounded-lg"
-          />
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative"
+              >
+                <Card
+                  title="Profile"
+                  description="Update your personal information and view your fitness profile."
+                  tabId="profile"
+                  textColor="text-white"
+                  className="flex flex-col justify-between lg:h-56 text-sm rounded-lg"
+                />
+              </motion.div>
+            </div>
+          </Card>
         </motion.div>
 
         <motion.div
@@ -164,7 +179,7 @@ const Dashboard = () => {
         <motion.div
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="relative col-span-full"
+          className="relative col-span-full text-center"
         >
          <TdeeCalculator/>
         </motion.div>
