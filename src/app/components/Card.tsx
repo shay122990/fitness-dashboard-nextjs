@@ -2,8 +2,8 @@ import React from "react";
 import Link from "next/link";
 
 interface CardProps {
-  title: string;
-  description: React.ReactNode;
+  title?: string;
+  description?: React.ReactNode;
   tabId?: string;
   textColor?: string;
   children?: React.ReactNode; 
