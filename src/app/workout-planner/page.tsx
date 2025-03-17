@@ -180,8 +180,8 @@ const Planner = () => {
             Plan your weekly workout and keep track for progressive overload
           </h4>
         </div>
-        <div className="flex flex-col lg:flex-row justify-between gap-2 items-center">
-          <div className="w-2/3 lg:w-1/2">
+        <div className="flex flex-col lg:flex-row justify-between gap-5">
+          <div className="w-2/3 lg:w-1/2 sm:w-full  flex flex-col justify-between gap-1">
             <DaySelector selectedDay={selectedDay} onChange={setSelectedDay} days={daysOfWeek} />
             <InputBox label="WORKOUT NAME" placeholder="e.g., Squats" value={newWorkout} onChange={setNewWorkout} />
             <InputBox label="SETS" placeholder="e.g., 3" value={sets} type="text" onChange={setSets} />
