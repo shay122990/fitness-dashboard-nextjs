@@ -180,19 +180,25 @@ const Planner = () => {
             Plan your weekly workout and keep track for progressive overload
           </h4>
         </div>
-        <DaySelector selectedDay={selectedDay} onChange={setSelectedDay} days={daysOfWeek} />
-        <InputBox label="WORKOUT NAME" placeholder="e.g., Squats" value={newWorkout} onChange={setNewWorkout} />
-        <InputBox label="SETS" placeholder="e.g., 3" value={sets} type="text" onChange={setSets} />
-        <InputBox label="REPS" placeholder="e.g., 8 or 8-10" value={reps} type="text" onChange={setReps} />
-        <InputBox label="WEIGHT" placeholder="e.g., 10kg or band" value={weight.toString()} type="text" onChange={setWeight} />
-        <Button
-          label={editingWorkout ? "Update Workout" : "Add Workout"}
-          onClick={addOrUpdateWorkoutHandler}
-          className="bg-gradient-to-br from-gray-950  to-gray-800 text-green-400 shadow-md shadow-green-400/50 mt-4"
-        />
-        <div className="mt-6">
-          <h4 className="mt-2 text-green-400 uppercase bg-gray-900 text-center p-6 rounded mb-2">Workouts for {selectedDay}</h4>
-          <div className="mt-4">{renderCardForDay(selectedDay, workouts[selectedDay] || [], true)}</div>
+        <div className="flex flex-col lg:flex-row justify-between gap-2 items-center">
+          <div className="w-2/3 lg:w-1/2">
+            <DaySelector selectedDay={selectedDay} onChange={setSelectedDay} days={daysOfWeek} />
+            <InputBox label="WORKOUT NAME" placeholder="e.g., Squats" value={newWorkout} onChange={setNewWorkout} />
+            <InputBox label="SETS" placeholder="e.g., 3" value={sets} type="text" onChange={setSets} />
+            <InputBox label="REPS" placeholder="e.g., 8 or 8-10" value={reps} type="text" onChange={setReps} />
+            <InputBox label="WEIGHT" placeholder="e.g., 10kg or band" value={weight.toString()} type="text" onChange={setWeight} />
+            <Button
+              label={editingWorkout ? "Update Workout" : "Add Workout"}
+              onClick={addOrUpdateWorkoutHandler}
+              className="bg-gradient-to-br from-gray-950 to-gray-800 text-green-400 shadow-md shadow-green-400/50 mt-4"
+            />
+          </div>
+          <div className="w-full lg:w-1/2">
+            <h4 className="text-green-400 uppercase bg-gray-900 text-center p-6 rounded mb-2">
+              Workouts for {selectedDay}
+            </h4>
+            <div className="mt-4">{renderCardForDay(selectedDay, workouts[selectedDay] || [], true)}</div>
+          </div>
         </div>
         <div className="mt-6">
           <h4 className="mt-2 text-green-400 uppercase bg-gray-900 text-center p-6 rounded mb-2">Workouts for the Week</h4>
