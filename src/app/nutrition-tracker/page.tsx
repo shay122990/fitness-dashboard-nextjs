@@ -219,32 +219,31 @@ const Nutrition = () => {
             <h4 className=" drop-shadow-sm">
             Keep track of your daily calorie intake or calories burned through workout.
             </h4>
+        </div>
+        <div className="flex flex-col lg:flex-row justify-between gap-5">
+          <div className="lg:w-2/4">
+            <DaySelector selectedDay={selectedDay} onChange={setSelectedDay} days={daysOfWeek} />
+            <InputBox label="CALORIES" placeholder={editingEntry ? "Update calories" : "Enter calories"} value={calories} onChange={setCalories}/>
+            <div className="flex gap-2 mt-2">
+              <Button
+                label={editingEntry ? "Update Eaten Calories" : "Add Eaten Calories"}
+                onClick={() => handleAddOrUpdateCalories("eaten")}
+                className="bg-gradient-to-br from-gray-950  to-gray-800 text-green-400 shadow-md shadow-green-900/50"
+              />
+              <Button
+                label={editingEntry ? "Update Burned Calories" : "Add Burned Calories"}
+                onClick={() => handleAddOrUpdateCalories("burned")}
+                className="bg-gradient-to-br from-gray-950  to-gray-800 text-orange-500 shadow-md shadow-orange-500/50"
+              />
+            </div>
           </div>
-        <DaySelector selectedDay={selectedDay} onChange={setSelectedDay} days={daysOfWeek} />
-        <InputBox
-          label="CALORIES"
-          placeholder={editingEntry ? "Update calories" : "Enter calories"}
-          value={calories}
-          onChange={setCalories}
-        />
-        <div className="flex gap-2 mt-2">
-          <Button
-            label={editingEntry ? "Update Eaten Calories" : "Add Eaten Calories"}
-            onClick={() => handleAddOrUpdateCalories("eaten")}
-            className="bg-gradient-to-br from-gray-950  to-gray-800 text-green-400 shadow-md shadow-green-900/50"
-          />
-          <Button
-            label={editingEntry ? "Update Burned Calories" : "Add Burned Calories"}
-            onClick={() => handleAddOrUpdateCalories("burned")}
-            className="bg-gradient-to-br from-gray-950  to-gray-800 text-orange-500 shadow-md shadow-orange-500/50"
-          />
+          <div className="w-full lg:w-1/2">
+            <h2 className=" text-green-400 uppercase bg-gray-900 text-center p-6 rounded mb-2">Entries for {selectedDay}</h2>
+            <div className="">
+              {nutritionData[selectedDay] && renderSelectedDayCard(selectedDay, nutritionData[selectedDay])}
+            </div>
+          </div>
         </div>
-
-        <h2 className="mt-6 text-green-400 uppercase bg-gray-900 text-center p-6 rounded mb-2">Entries for {selectedDay}</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {nutritionData[selectedDay] && renderSelectedDayCard(selectedDay, nutritionData[selectedDay])}
-        </div>
-
         <h2 className="mt-2 text-green-400 uppercase bg-gray-900 text-center p-6 rounded mb-2">Entries for the Week</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {renderWeekCards()}
