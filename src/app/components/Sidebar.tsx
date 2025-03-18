@@ -58,7 +58,7 @@ const Sidebar = () => {
                 <li key={path}>
                   <Link
                     href={path}
-                    className={`block w-full text-left hover:bg-blue-600 lg:uppercase text-sm rounded p-2 lg:p-3 ${isActive(path)}`}
+                    className={`block w-full text-left hover:bg-gray-950/80  lg:uppercase text-sm rounded p-2 lg:p-3 ${isActive(path)}`}
                     onClick={() => setIsOpen(false)} 
                   >
                     {label}
