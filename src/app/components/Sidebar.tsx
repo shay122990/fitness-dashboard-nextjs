@@ -20,7 +20,7 @@ const Sidebar = () => {
   return (
     <>
       <button 
-        className="fixed top-4 left-4 z-50 lg:hidden p-2 bg-gradient-to-b from-blue-700 to-blue-950 text-white rounded-md"
+        className="fixed top-4 left-4 z-50 lg:hidden p-2 bg-gradient-to-b from-blue-900 to-blue-750 text-white rounded-md"
         onClick={() => setIsOpen(!isOpen)}
         aria-label={isOpen ? "Close menu" : "Open menu"}
       >
