@@ -112,7 +112,7 @@ const Dashboard = () => {
                   description="Plan and track your workouts to stay on track with your fitness goals."
                   tabId="workout-planner"
                   textColor="text-white"
-                  className="flex flex-col justify-between lg:h-56 text-sm rounded-lg"
+                  className="flex flex-col justify-between  rounded-lg"
                 />
               </motion.div>
 
@@ -126,7 +126,7 @@ const Dashboard = () => {
                   description="Track your meals and calories to maintain a balanced diet."
                   tabId="nutrition-tracker"
                   textColor="text-white"
-                  className="flex flex-col justify-between lg:h-56 text-sm rounded-lg"
+                  className="flex flex-col justify-between  rounded-lg"
                 />
               </motion.div>
 
@@ -140,7 +140,7 @@ const Dashboard = () => {
                   description="View your progress, workout statistics, and overall fitness trends."
                   tabId="progress-insights"
                   textColor="text-white"
-                  className="flex flex-col justify-between lg:h-56 text-sm rounded-lg"
+                  className="flex flex-col justify-between  rounded-lg"
                 />
               </motion.div>
 
@@ -154,7 +154,7 @@ const Dashboard = () => {
                   description="Update your personal information and view your fitness profile."
                   tabId="profile"
                   textColor="text-white"
-                  className="flex flex-col justify-between lg:h-56 text-sm rounded-lg"
+                  className="flex flex-col justify-between  rounded-lg"
                 />
               </motion.div>
             </div>
