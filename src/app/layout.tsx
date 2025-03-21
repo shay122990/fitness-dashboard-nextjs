@@ -3,6 +3,12 @@ import "./globals.css";
 import Providers from "../providers";
 import ClientSideWrapper from "./clientSideWrapper";
 import Sidebar from "./components/Sidebar";
+import { Open_Sans, Montserrat, Roboto, Kanit } from "next/font/google";
+
+const openSans = Open_Sans({ subsets: ["latin"], variable: "--font-open-sans" });
+const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-montserrat" });
+const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"], variable: "--font-roboto" });
+const kanit = Kanit({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-kanit" });
 
 export const metadata: Metadata = {
   title: "Today - A Fitness Planner",
@@ -15,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${openSans.variable} ${montserrat.variable} ${roboto.variable} ${kanit.variable}`}>
       <head>
         <link rel="icon" href="/favicon.png" type="image/x-icon" />
         <meta name="viewport" content="width=device-width, initial-scale=1" charSet="UTF-8" />
