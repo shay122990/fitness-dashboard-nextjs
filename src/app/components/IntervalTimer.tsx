@@ -147,7 +147,7 @@ const IntervalTimer = () => {
           />
         </div>
       ) : (
-        <>
+        <div className="flex flex-col justify-center h-96 items-center">
           {!completed ? (
             <>
               <h2 className="text-2xl font-bold mt-4">
@@ -166,7 +166,7 @@ const IntervalTimer = () => {
               🎉 Workout complete! Great job!
             </div>
           )}
-        </>
+        </div>
       )}
   
       <div className="flex justify-center gap-4 mt-6">
