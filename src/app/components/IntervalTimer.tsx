@@ -14,6 +14,7 @@ const IntervalTimer = () => {
   const [workTime, setWorkTime] = useState("30");
   const [restTime, setRestTime] = useState("15");
   const [rounds, setRounds] = useState("5");
+  const [completed, setCompleted] = useState(false)
 
   const [timeLeft, setTimeLeft] = useState(Number(workTime));
   const [isRunning, setIsRunning] = useState(false);
@@ -38,6 +39,7 @@ const IntervalTimer = () => {
               if (currentSuperRound >= Number(superRounds)) {
                 setIsRunning(false);
                 setIsTransitioning(false);
+                setCompleted(true);
                 return;
               } else {
                 setCurrentSuperRound((prev) => prev + 1);
@@ -87,10 +89,11 @@ const IntervalTimer = () => {
       Number(superRounds) <= 0
     )
       return;
-
+    setCompleted(false);
     setHasStarted(true);
     setIsRunning(true);
     setTimeLeft(Number(workTime));
+    
   };
 
   const handlePauseResume = () => {
@@ -104,9 +107,9 @@ const IntervalTimer = () => {
     setCurrentSuperRound(1);
     setTimeLeft(Number(workTime));
     setHasStarted(false);
+    setCompleted(false);
   };
-
-  return (
+ return (
     <Card
       title="Interval Timer"
       description="Customize your interval training by setting work, rest, rounds, and super rounds."
@@ -114,20 +117,58 @@ const IntervalTimer = () => {
     >
       {!hasStarted ? (
         <div className="grid grid-cols-1 gap-3">
-          <InputBox placeholder="enter number of super rounds" label="Super Rounds" value={superRounds} onChange={setSuperRounds} type="number" />
-          <InputBox placeholder="enter workout time" label="Work Time (seconds)" value={workTime} onChange={setWorkTime} type="number" />
-          <InputBox placeholder="enter rest time"  label="Rest Time (seconds)" value={restTime} onChange={setRestTime} type="number" />
-          <InputBox placeholder="enter number of rounds" label="Rounds per Super Round" value={rounds} onChange={setRounds} type="number" />
+          <InputBox
+            placeholder="enter number of super rounds"
+            label="Super Rounds"
+            value={superRounds}
+            onChange={setSuperRounds}
+            type="number"
+          />
+          <InputBox
+            placeholder="enter workout time"
+            label="Work Time (seconds)"
+            value={workTime}
+            onChange={setWorkTime}
+            type="number"
+          />
+          <InputBox
+            placeholder="enter rest time"
+            label="Rest Time (seconds)"
+            value={restTime}
+            onChange={setRestTime}
+            type="number"
+          />
+          <InputBox
+            placeholder="enter number of rounds"
+            label="Rounds per Super Round"
+            value={rounds}
+            onChange={setRounds}
+            type="number"
+          />
         </div>
       ) : (
         <>
-          <h2 className="text-2xl font-bold mt-4">{isWorkPhase ? "Work" : "Rest"} Time</h2>
-          <p className="text-5xl font-bold my-4">{timeLeft}s</p>
-          <p className="text-lg">Interval Round: {currentRound}/{rounds}</p>
-          <p className="text-lg">Super Round: {currentSuperRound}/{superRounds}</p>
+          {!completed ? (
+            <>
+              <h2 className="text-2xl font-bold mt-4">
+                {isWorkPhase ? "Work" : "Rest"} Time
+              </h2>
+              <p className="text-5xl font-bold my-4">{timeLeft}s</p>
+              <p className="text-lg">
+                Interval Round: {currentRound}/{rounds}
+              </p>
+              <p className="text-lg">
+                Super Round: {currentSuperRound}/{superRounds}
+              </p>
+            </>
+          ) : (
+            <div className="text-green-500 text-xl font-bold mt-6">
+              🎉 Workout complete! Great job!
+            </div>
+          )}
         </>
       )}
-
+  
       <div className="flex justify-center gap-4 mt-6">
         {!hasStarted ? (
           <Button
@@ -137,12 +178,18 @@ const IntervalTimer = () => {
           />
         ) : (
           <>
+            {!completed && (
+              <Button
+                label={isRunning ? "Pause" : "Resume"}
+                onClick={handlePauseResume}
+                className="bg-blue-500 text-white"
+              />
+            )}
             <Button
-              label={isRunning ? "Pause" : "Resume"}
-              onClick={handlePauseResume}
-              className="bg-blue-500 text-white"
+              label="Reset"
+              onClick={handleReset}
+              className="bg-red-500 text-white"
             />
-            <Button label="Reset" onClick={handleReset} className="bg-red-500 text-white" />
           </>
         )}
       </div>
