@@ -4,6 +4,7 @@ Today is a fitness planning application that helps users plan their workouts, tr
 
 ## Features
 
+- **Dashboard**: Navigate to your activity, track your water intake, cardio timer, and calculate your tdee.
 - **User Authentication**: Firebase Authentication to securely sign up and log in users.
 - **Workout Planner**: Create, edit, and delete workouts for specific days of the week.
 - **Nutrition Tracker**: Add and track consumed and burned calories for each day.
@@ -20,12 +21,11 @@ Today is a fitness planning application that helps users plan their workouts, tr
 
 ## Screenshots
 
-_(coming soon)_
-
-1. **Login Page**: ![Login Screenshot](#)
-2. **Workout Planner**: ![Workout Planner Screenshot](#)
-3. **Nutrition Tracker**: ![Nutrition Tracker Screenshot](#)
-4. **Insights Dashboard**: ![Insights Screenshot](#)
+1. **Login Page**: ![Login Screenshot](/public/profile.jpg)
+2. **Workout Planner**: ![Workout Planner Screenshot](/public//planner.jpg)
+3. **Nutrition Tracker**: ![Nutrition Tracker Screenshot](/public/nutrition.jpg)
+4. **Insights Dashboard**: ![Insights Screenshot](/public/insights.jpg)
+5. **Mobile View**: ![Mobile Screenshot](/public/mobile.jpg)
 
 ## Setup Instructions
 
