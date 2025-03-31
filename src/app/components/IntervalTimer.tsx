@@ -10,6 +10,7 @@ const restBeep = typeof window !== "undefined" ? new Audio("/restBeep.mp3") : nu
 const transitionBeep = typeof window !== "undefined" ? new Audio("/transitionBeep.mp3") : null;
 
 const IntervalTimer = () => {
+  const [superRounds, setSuperRounds] = useState("2");
   const [workTime, setWorkTime] = useState("30");
   const [restTime, setRestTime] = useState("15");
   const [rounds, setRounds] = useState("5");
@@ -18,36 +19,50 @@ const IntervalTimer = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [isWorkPhase, setIsWorkPhase] = useState(true);
   const [currentRound, setCurrentRound] = useState(1);
+  const [currentSuperRound, setCurrentSuperRound] = useState(1);
   const [hasStarted, setHasStarted] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
     if (!isRunning || isTransitioning) return;
-  
+
     if (timeLeft === 0) {
-      setIsTransitioning(true); 
-      
+      setIsTransitioning(true);
+
       setTimeout(() => {
-        transitionBeep?.play(); 
-        
+        transitionBeep?.play();
+
         setTimeout(() => {
-          if (currentRound >= Number(rounds) && !isWorkPhase) {
-            setIsRunning(false);
-            setIsTransitioning(false);
-            return;
+          if (!isWorkPhase) {
+            if (currentRound >= Number(rounds)) {
+              if (currentSuperRound >= Number(superRounds)) {
+                setIsRunning(false);
+                setIsTransitioning(false);
+                return;
+              } else {
+                setCurrentSuperRound((prev) => prev + 1);
+                setCurrentRound(1);
+                setIsWorkPhase(true);
+                setTimeLeft(Number(workTime));
+                setIsTransitioning(false);
+                return;
+              }
+            } else {
+              setCurrentRound((prev) => prev + 1);
+            }
           }
-  
+
           setIsWorkPhase((prev) => !prev);
           const nextTime = isWorkPhase ? Number(restTime) : Number(workTime);
           setTimeLeft(nextTime);
-  
+
           setIsTransitioning(false);
-        }, 2000); 
-      }, 0); 
-  
+        }, 2000);
+      }, 0);
+
       return;
     }
-  
+
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev > 1) {
@@ -60,12 +75,19 @@ const IntervalTimer = () => {
         return prev - 1;
       });
     }, 1000);
-  
+
     return () => clearInterval(timer);
-  }, [isRunning, timeLeft, isWorkPhase, currentRound, rounds, workTime, restTime, isTransitioning]);
+  }, [isRunning, timeLeft, isWorkPhase, currentRound, currentSuperRound, superRounds, rounds, workTime, restTime, isTransitioning]);
 
   const handleStart = () => {
-    if (Number(workTime) <= 0 || Number(restTime) <= 0 || Number(rounds) <= 0) return;
+    if (
+      Number(workTime) <= 0 ||
+      Number(restTime) <= 0 ||
+      Number(rounds) <= 0 ||
+      Number(superRounds) <= 0
+    )
+      return;
+
     setHasStarted(true);
     setIsRunning(true);
     setTimeLeft(Number(workTime));
@@ -79,6 +101,7 @@ const IntervalTimer = () => {
     setIsRunning(false);
     setIsWorkPhase(true);
     setCurrentRound(1);
+    setCurrentSuperRound(1);
     setTimeLeft(Number(workTime));
     setHasStarted(false);
   };
@@ -86,44 +109,32 @@ const IntervalTimer = () => {
   return (
     <Card
       title="Interval Timer"
-      description="Customize your interval training by setting work and rest durations."
-      className=" text-center text-sm rounded-lg"
+      description="Customize your interval training by setting work, rest, rounds, and super rounds."
+      className="text-center rounded-lg"
     >
       {!hasStarted ? (
         <div className="grid grid-cols-1 gap-3">
-          <InputBox
-            label="Work Time (seconds)"
-            placeholder="Enter work time"
-            value={workTime}
-            onChange={setWorkTime}
-            type="number"
-          />
-          <InputBox
-            label="Rest Time (seconds)"
-            placeholder="Enter rest time"
-            value={restTime}
-            onChange={setRestTime}
-            type="number"
-          />
-          <InputBox
-            label="Rounds"
-            placeholder="Enter number of rounds"
-            value={rounds}
-            onChange={setRounds}
-            type="number"
-          />
+          <InputBox placeholder="enter number of super rounds" label="Super Rounds" value={superRounds} onChange={setSuperRounds} type="number" />
+          <InputBox placeholder="enter workout time" label="Work Time (seconds)" value={workTime} onChange={setWorkTime} type="number" />
+          <InputBox placeholder="enter rest time"  label="Rest Time (seconds)" value={restTime} onChange={setRestTime} type="number" />
+          <InputBox placeholder="enter number of rounds" label="Rounds per Super Round" value={rounds} onChange={setRounds} type="number" />
         </div>
       ) : (
         <>
           <h2 className="text-2xl font-bold mt-4">{isWorkPhase ? "Work" : "Rest"} Time</h2>
           <p className="text-5xl font-bold my-4">{timeLeft}s</p>
-          <p className="text-lg">Round: {currentRound}/{rounds}</p>
+          <p className="text-lg">Interval Round: {currentRound}/{rounds}</p>
+          <p className="text-lg">Super Round: {currentSuperRound}/{superRounds}</p>
         </>
       )}
 
       <div className="flex justify-center gap-4 mt-6">
         {!hasStarted ? (
-          <Button label="Start" onClick={handleStart} className="bg-gradient-to-br from-gray-950  to-gray-800 text-green-400 shadow-md shadow-green-400/50" />
+          <Button
+            label="Start"
+            onClick={handleStart}
+            className="bg-gradient-to-br from-gray-950 to-gray-800 text-green-400 shadow-md shadow-green-400/50"
+          />
         ) : (
           <>
             <Button
