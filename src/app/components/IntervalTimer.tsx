@@ -109,65 +109,63 @@ const IntervalTimer = () => {
     setHasStarted(false);
     setCompleted(false);
   };
- return (
+  return (
     <Card
       title="Interval Timer"
       description="Customize your interval training by setting work, rest, rounds, and super rounds."
       className="text-center rounded-lg"
     >
-      {!hasStarted ? (
-        <div className="grid grid-cols-1 gap-3">
-          <InputBox
-            placeholder="enter number of super rounds"
-            label="Super Rounds"
-            value={superRounds}
-            onChange={setSuperRounds}
-            type="number"
-          />
-          <InputBox
-            placeholder="enter workout time"
-            label="Work Time (seconds)"
-            value={workTime}
-            onChange={setWorkTime}
-            type="number"
-          />
-          <InputBox
-            placeholder="enter rest time"
-            label="Rest Time (seconds)"
-            value={restTime}
-            onChange={setRestTime}
-            type="number"
-          />
-          <InputBox
-            placeholder="enter number of rounds"
-            label="Rounds per Super Round"
-            value={rounds}
-            onChange={setRounds}
-            type="number"
-          />
-        </div>
-      ) : (
-        <div className="flex flex-col justify-center h-96 items-center">
-          {!completed ? (
-            <>
-              <h2 className="text-2xl font-bold mt-4">
-                {isWorkPhase ? "Work" : "Rest"} Time
-              </h2>
-              <p className="text-5xl font-bold my-4">{timeLeft}s</p>
-              <p className="text-lg">
-                Interval Round: {currentRound}/{rounds}
-              </p>
-              <p className="text-lg">
-                Super Round: {currentSuperRound}/{superRounds}
-              </p>
-            </>
-          ) : (
-            <div className="text-green-500 text-xl font-bold mt-6">
-              🎉 Workout complete! Great job!
-            </div>
-          )}
-        </div>
-      )}
+      <div className="min-h-[380px] flex flex-col items-center justify-center">
+        {!hasStarted ? (
+          <div className="grid grid-cols-1 gap-3 w-full">
+            <InputBox
+              placeholder="enter number of super rounds"
+              label="Super Rounds"
+              value={superRounds}
+              onChange={setSuperRounds}
+              type="number"
+            />
+            <InputBox
+              placeholder="enter workout time"
+              label="Work Time (seconds)"
+              value={workTime}
+              onChange={setWorkTime}
+              type="number"
+            />
+            <InputBox
+              placeholder="enter rest time"
+              label="Rest Time (seconds)"
+              value={restTime}
+              onChange={setRestTime}
+              type="number"
+            />
+            <InputBox
+              placeholder="enter number of rounds"
+              label="Rounds per Super Round"
+              value={rounds}
+              onChange={setRounds}
+              type="number"
+            />
+          </div>
+        ) : !completed ? (
+          <>
+            <h2 className="text-2xl font-bold mt-4">
+              {isWorkPhase ? "Work" : "Rest"} Time
+            </h2>
+            <p className="text-5xl font-bold my-4">{timeLeft}s</p>
+            <p className="text-lg">
+              Interval Round: {currentRound}/{rounds}
+            </p>
+            <p className="text-lg">
+              Super Round: {currentSuperRound}/{superRounds}
+            </p>
+          </>
+        ) : (
+          <div className="text-green-500 text-xl font-bold mt-6">
+            🎉 Workout complete! Great job!
+          </div>
+        )}
+      </div>
   
       <div className="flex justify-center gap-4 mt-6">
         {!hasStarted ? (
@@ -195,6 +193,7 @@ const IntervalTimer = () => {
       </div>
     </Card>
   );
+  
 };
 
 export default IntervalTimer;
