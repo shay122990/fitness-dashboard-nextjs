@@ -14,7 +14,7 @@ const Dashboard = () => {
   return (
     <div className="mb-24 p-6 bg-black bg-opacity-30 w-full rounded">
       <motion.div
-        className="relative flex flex-col justify-center items-center text-white p-6 rounded-lg text-center mb-8 h-auto lg:h-96 overflow-hidden gap-4"
+        className="relative flex flex-col justify-center items-center align-middle text-white p-6 rounded-lg text-center mb-8 h-auto lg:h-96 overflow-hidden gap-4"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
@@ -85,7 +85,7 @@ const Dashboard = () => {
       </motion.div>
 
       <motion.div
-        className="grid sm:grid-cols-2 gap-6"
+        className="grid sm:grid-cols-2 gap-6 items-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}

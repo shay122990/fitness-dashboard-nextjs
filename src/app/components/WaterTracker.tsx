@@ -58,7 +58,7 @@ const WaterTracker = () => {
     <Card 
       title="Water Tracker" 
       description="Track your daily water intake and reach your goal." 
-      className="p-6 h-96 text-white text-center rounded-lg shadow-md"
+      className="p-6 text-white text-center rounded-lg shadow-md"
     >
       {userId ? (
         <>
