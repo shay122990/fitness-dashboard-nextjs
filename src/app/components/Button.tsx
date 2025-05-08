@@ -4,6 +4,7 @@ interface ButtonProps {
   label: string;
   onClick: () => void | Promise<void>;
   className?: string; 
+  disabled?: boolean
 }
 
 const Button: React.FC<ButtonProps> = ({
