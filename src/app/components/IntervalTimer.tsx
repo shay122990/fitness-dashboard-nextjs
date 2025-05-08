@@ -81,6 +81,17 @@ const IntervalTimer = () => {
     return () => clearInterval(timer);
   }, [isRunning, timeLeft, isWorkPhase, currentRound, currentSuperRound, superRounds, rounds, workTime, restTime, isTransitioning]);
 
+  const unlockAudio = (audio: HTMLAudioElement | null) => {
+    if (audio) {
+      audio.play().then(() => {
+        audio.pause();
+        audio.currentTime = 0; 
+      }).catch((err) => {
+        console.error("Audio unlock failed:", err);
+      });
+    }
+  };
+  
   const handleStart = () => {
     if (
       Number(workTime) <= 0 ||
@@ -89,12 +100,17 @@ const IntervalTimer = () => {
       Number(superRounds) <= 0
     )
       return;
+  
+    unlockAudio(workBeep);
+    unlockAudio(restBeep);
+    unlockAudio(transitionBeep);
+  
     setCompleted(false);
     setHasStarted(true);
     setIsRunning(true);
     setTimeLeft(Number(workTime));
-    
   };
+  
 
   const handlePauseResume = () => {
     setIsRunning((prev) => !prev);
