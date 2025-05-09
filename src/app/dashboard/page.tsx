@@ -83,18 +83,13 @@ const Dashboard = () => {
             : "Plan. Track. Achieve. All in one place."}
         </motion.p>
       </motion.div>
-
       <motion.div
         className="grid sm:grid-cols-2 gap-6 items-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
       >
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="relative col-span-full"
-        >
+        <div className="relative col-span-full">
           <Card
             title="Activity Tracker"
             description="Access the following features."
@@ -115,7 +110,6 @@ const Dashboard = () => {
                   className="flex flex-col justify-between  rounded-lg"
                 />
               </motion.div>
-
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -129,7 +123,6 @@ const Dashboard = () => {
                   className="flex flex-col justify-between  rounded-lg"
                 />
               </motion.div>
-
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -143,7 +136,6 @@ const Dashboard = () => {
                   className="flex flex-col justify-between  rounded-lg"
                 />
               </motion.div>
-
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -159,32 +151,14 @@ const Dashboard = () => {
               </motion.div>
             </div>
           </Card>
-        </motion.div>
-
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="relative"
-        >
+        </div>
           <IntervalTimer />
-        </motion.div>
-
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="relative"
-        >
           <WaterTracker />
-        </motion.div>
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="relative col-span-full"
-        >
+        <div className="relative col-span-full">
           <Card className="text-center pb-8">
             <TdeeCalculator />
           </Card>
-        </motion.div>
+        </div>
       </motion.div>
     </div>
   );
