@@ -39,7 +39,7 @@ Today is a fitness planning application that helps users plan their workouts, tr
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/your-repo-name.git
+   git clonehttps://github.com/shay122990/fitness-dashboard-nextjs
    cd your-repo-name
    ```
 
