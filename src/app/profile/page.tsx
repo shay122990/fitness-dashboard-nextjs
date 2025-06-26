@@ -15,17 +15,17 @@ const Profile = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
   const router = useRouter();
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
 
   const handleSignIn = async () => {
     try {
-      setLoading(true); 
+      setLoading(true);
       await googleSignIn(dispatch);
       router.push("/");
     } catch (error) {
       console.error("Sign-In failed:", error);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
@@ -40,11 +40,13 @@ const Profile = () => {
   };
 
   return (
-    <div className="relative flex justify-center w-full h-full px-6 pb-4 pt-20 rounded bg-cover bg-center bg-no-repeat" 
-      style={{ backgroundImage: "url('/profile-bg.jpg')" }}>
+    <div
+      className="relative flex justify-center w-full h-full px-6 pb-4 pt-20 rounded bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: "url('/profile-bg.jpg')" }}
+    >
       <div className="absolute inset-0 bg-gray-950 bg-opacity-70"></div>
       <div className="relative flex flex-col bg-white shadow-md rounded-lg p-4 text-center justify-center items-center w-96 h-80 bg-gradient-to-br from-gray-900 to-blue-700">
-        <h2 className="text-2xl font-bold text-center mb-4">Your Profile</h2>
+        <h1 className="text-2xl font-bold text-center mb-4">Your Profile</h1>
         {user ? (
           <>
             <div className="text-white">
@@ -70,9 +72,9 @@ const Profile = () => {
           </>
         ) : (
           <Button
-            label={loading ? "Signing in..." : "Sign in with Google"} 
+            label={loading ? "Signing in..." : "Sign in with Google"}
             onClick={handleSignIn}
-            disabled={loading} 
+            disabled={loading}
             className="w-52 bg-green-500"
           />
         )}

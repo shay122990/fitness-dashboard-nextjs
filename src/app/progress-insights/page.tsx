@@ -1,7 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { fetchUserWorkouts, fetchCalorieEntries } from "../../firebase/firestore";
+import {
+  fetchUserWorkouts,
+  fetchCalorieEntries,
+} from "../../firebase/firestore";
 import { auth } from "../../firebase/firebase-config";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
@@ -14,7 +17,7 @@ const Insights = () => {
   const [burnedCaloriesData, setBurnedCaloriesData] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [userId, setUserId] = useState<string | null>(null);
-  const [authLoading, setAuthLoading] = useState<boolean>(true); 
+  const [authLoading, setAuthLoading] = useState<boolean>(true);
 
   const nutritionData = useSelector((state: RootState) => state.nutrition);
 
@@ -25,7 +28,7 @@ const Insights = () => {
       } else {
         setUserId(null);
       }
-      setAuthLoading(false); 
+      setAuthLoading(false);
     });
 
     return () => unsubscribe();
@@ -49,7 +52,10 @@ const Insights = () => {
           if (userCalories) {
             const calorieData = Object.keys(userCalories).map((day) => {
               const burned = userCalories[day]?.burned || [];
-              return burned.reduce((acc: number, curr: string) => acc + parseInt(curr, 10), 0);
+              return burned.reduce(
+                (acc: number, curr: string) => acc + parseInt(curr, 10),
+                0
+              );
             });
             setBurnedCaloriesData(calorieData);
           }
@@ -64,7 +70,7 @@ const Insights = () => {
     } else {
       setWorkoutData([]);
       setBurnedCaloriesData([]);
-      setLoading(false); 
+      setLoading(false);
     }
   }, [userId, nutritionData]);
 
@@ -96,26 +102,51 @@ const Insights = () => {
 
   return (
     <AuthCheck
-      authLoading={authLoading} 
+      authLoading={authLoading}
       userId={userId}
       loading={loading}
       onRedirect={() => (window.location.href = "/profile")}
       message="Sign in to see your progress and personalized insights."
     >
       <div className="mb-24 p-4 bg-black bg-opacity-30 rounded ">
-        <h3 className="text-xl font-bold mb-4 text-center">Your Progress</h3>
+        <h1 className="text-xl font-bold mb-4 text-center">Your Progress</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Chart title="Weekly Workout Progress" data={workoutChartData} options={{ responsive: true }} />
-          <Chart title="Calories Burned Over Time" data={caloriesChartData} options={{ responsive: true }} />
+          <Chart
+            title="Weekly Workout Progress"
+            data={workoutChartData}
+            options={{ responsive: true }}
+          />
+          <Chart
+            title="Calories Burned Over Time"
+            data={caloriesChartData}
+            options={{ responsive: true }}
+          />
         </div>
 
         <div className="mt-6">
-          <h4 className="font-semibold">Key Stats</h4>
+          <h2 className="font-semibold">Key Stats</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <StatCard label="Total Workouts" value={`${workoutData.reduce((acc, val) => acc + val, 0)} Workouts`} />
-            <StatCard label="Total Calories Burned" value={`${burnedCaloriesData.reduce((acc, curr) => acc + curr, 0)} kcal`} />
-            <StatCard label="Consistency" value={`${workoutData.filter((val) => val > 0).length}/7 days this week`} />
+            <StatCard
+              label="Total Workouts"
+              value={`${workoutData.reduce(
+                (acc, val) => acc + val,
+                0
+              )} Workouts`}
+            />
+            <StatCard
+              label="Total Calories Burned"
+              value={`${burnedCaloriesData.reduce(
+                (acc, curr) => acc + curr,
+                0
+              )} kcal`}
+            />
+            <StatCard
+              label="Consistency"
+              value={`${
+                workoutData.filter((val) => val > 0).length
+              }/7 days this week`}
+            />
           </div>
         </div>
       </div>
