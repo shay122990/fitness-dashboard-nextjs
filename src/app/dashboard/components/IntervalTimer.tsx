@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import InputBox from "../../components/InputBox";
 import Card from "../../components/Card";
 import Button from "../../components/Button";
@@ -32,35 +32,15 @@ const IntervalTimer = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (!isRunning) return;
-
-    const interval = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev > 1) {
-          if (prev <= 4) {
-            playCountdownBeep();
-          }
-          return prev - 1;
-        } else {
-          handlePhaseChange();
-          return 0;
-        }
-      });
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [isRunning, currentPhase]);
-
-  const playCountdownBeep = () => {
+  const playCountdownBeep = useCallback(() => {
     if (currentPhase === "work") {
       workBeep.current?.play().catch(() => {});
     } else if (currentPhase === "rest") {
       restBeep.current?.play().catch(() => {});
     }
-  };
+  }, [currentPhase]);
 
-  const handlePhaseChange = () => {
+  const handlePhaseChange = useCallback(() => {
     if (currentPhase === "work") {
       setCurrentPhase("rest");
       setTimeLeft(Number(restTime));
@@ -81,7 +61,35 @@ const IntervalTimer = () => {
       setCurrentPhase("work");
       setTimeLeft(Number(workTime));
     }
-  };
+  }, [
+    currentPhase,
+    currentRound,
+    currentSuperRound,
+    restTime,
+    rounds,
+    superRounds,
+    workTime,
+  ]);
+
+  useEffect(() => {
+    if (!isRunning) return;
+
+    const interval = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev > 1) {
+          if (prev <= 4) {
+            playCountdownBeep();
+          }
+          return prev - 1;
+        } else {
+          handlePhaseChange();
+          return 0;
+        }
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isRunning, currentPhase, playCountdownBeep, handlePhaseChange]);
 
   const unlockAudio = async () => {
     try {
