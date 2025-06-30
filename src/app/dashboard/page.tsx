@@ -1,12 +1,12 @@
-"use client"
+"use client";
 import { motion } from "framer-motion";
 import Card from "../components/Card";
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import IntervalTimer from "../components/IntervalTimer";
-import WaterTracker from "../components/WaterTracker";
-import TdeeCalculator from "../components/TdeeCalculator";
+import IntervalTimer from "./components/IntervalTimer";
+import WaterTracker from "./components/WaterTracker";
+import TdeeCalculator from "./components/TdeeCalculator";
 
 const Dashboard = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -39,7 +39,7 @@ const Dashboard = () => {
             className="w-24 h-24 rounded-full border-4 border-white shadow-lg z-10"
           >
             <Image
-              src="/today-logo.png"  
+              src="/today-logo.png"
               alt="Logo"
               width={96}
               height={96}
@@ -152,8 +152,8 @@ const Dashboard = () => {
             </div>
           </Card>
         </div>
-          <IntervalTimer />
-          <WaterTracker />
+        <IntervalTimer />
+        <WaterTracker />
         <div className="relative col-span-full">
           <Card className="text-center pb-8">
             <TdeeCalculator />
@@ -165,4 +165,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-

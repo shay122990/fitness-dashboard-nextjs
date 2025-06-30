@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import InputBox from "./InputBox";
-import Card from "./Card";
-import Button from "./Button";
+import InputBox from "../../components/InputBox";
+import Card from "../../components/Card";
+import Button from "../../components/Button";
 
 type Phase = "work" | "rest" | "complete";
 
@@ -69,7 +69,7 @@ const IntervalTimer = () => {
         if (currentSuperRound >= Number(superRounds)) {
           setCurrentPhase("complete");
           setIsRunning(false);
-          transitionBeep.current?.play().catch(() => {}); 
+          transitionBeep.current?.play().catch(() => {});
           return;
         } else {
           setCurrentSuperRound((prev) => prev + 1);
