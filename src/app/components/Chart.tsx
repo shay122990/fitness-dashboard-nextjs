@@ -33,7 +33,7 @@ ChartJS.register(
 const Chart: React.FC<ChartProps> = ({ data, title, options }) => {
   return (
     <div className="border p-4 rounded-lg">
-      <h3 className="font-semibold">{title}</h3>
+      <span className="font-semibold">{title}</span>
       <Line data={data} options={options} />
     </div>
   );
