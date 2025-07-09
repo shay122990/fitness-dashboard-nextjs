@@ -1,6 +1,7 @@
 # Today - A Fitness Planner
 
 Today is a fitness planning application that helps users plan their workouts, track their nutrition, and gain insights into their progress. Built with modern web technologies, it provides a seamless user experience for managing fitness goals.
+You can add the app to your phone as a PWA, through Safari or Chrome.
 
 ## Features
 
@@ -26,6 +27,7 @@ Today is a fitness planning application that helps users plan their workouts, tr
 3. **Nutrition Tracker**: ![Nutrition Tracker Screenshot](/public/nutrition.jpg)
 4. **Insights Dashboard**: ![Insights Screenshot](/public/insights.jpg)
 5. **Mobile View**: ![Mobile Screenshot](/public/mobile.jpg)
+6. **Mobile App** ![Mobile App](/public/mobile-app.jpg)
 
 ## Setup Instructions
 
