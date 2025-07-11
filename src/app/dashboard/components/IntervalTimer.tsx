@@ -26,7 +26,7 @@ const IntervalTimer = () => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      workBeep.current = new Audio("/workBeep.mp3");
+      workBeep.current = new Audio("/restBeep.mp3");
       restBeep.current = new Audio("/restBeep.mp3");
       transitionBeep.current = new Audio("/transitionBeep.mp3");
     }
@@ -158,6 +158,13 @@ const IntervalTimer = () => {
               type="number"
             />
             <InputBox
+              placeholder="Enter number of rounds"
+              label="Rounds per Super Round"
+              value={rounds}
+              onChange={setRounds}
+              type="number"
+            />
+            <InputBox
               placeholder="Enter workout time"
               label="Work Time (seconds)"
               value={workTime}
@@ -169,13 +176,6 @@ const IntervalTimer = () => {
               label="Rest Time (seconds)"
               value={restTime}
               onChange={setRestTime}
-              type="number"
-            />
-            <InputBox
-              placeholder="Enter number of rounds"
-              label="Rounds per Super Round"
-              value={rounds}
-              onChange={setRounds}
               type="number"
             />
           </div>
