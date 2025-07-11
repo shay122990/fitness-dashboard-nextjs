@@ -41,11 +41,11 @@ const Profile = () => {
 
   return (
     <div
-      className="relative flex justify-center w-full h-full px-6 pb-4 pt-20 rounded bg-cover bg-center bg-no-repeat"
+      className="relative flex justify-center  h-full px-6 pb-4 pt-20 rounded bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: "url('/profile-bg.jpg')" }}
     >
       <div className="absolute inset-0 bg-gray-950 bg-opacity-70"></div>
-      <div className="relative flex flex-col bg-white shadow-md rounded-lg p-4 text-center justify-center items-center w-96 h-80 bg-gradient-to-br from-gray-900 to-blue-700">
+      <div className="relative flex flex-col bg-white shadow-md rounded-lg p-4 text-center justify-center items-center w-full h-80 bg-gradient-to-br from-gray-900 to-blue-700">
         <h1 className="text-2xl font-bold text-center mb-4">Your Profile</h1>
         {user ? (
           <>
