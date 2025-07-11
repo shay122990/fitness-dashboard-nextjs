@@ -96,7 +96,7 @@ const Dashboard = () => {
             textColor="text-white text-center"
             className="flex flex-col justify-between rounded-lg"
           >
-            <div className="grid sm:grid-cols-2 gap-6 mt-4">
+            <div className="grid grid-cols-2 gap-6 mt-4">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -107,7 +107,7 @@ const Dashboard = () => {
                   description="Plan and track your workouts to stay on track with your fitness goals."
                   tabId="workout-planner"
                   textColor="text-white"
-                  className="flex flex-col justify-between  rounded-lg"
+                  className="flex flex-col justify-between  rounded-lg text-sm"
                 />
               </motion.div>
               <motion.div
@@ -120,7 +120,7 @@ const Dashboard = () => {
                   description="Track your meals and calories to maintain a balanced diet."
                   tabId="nutrition-tracker"
                   textColor="text-white"
-                  className="flex flex-col justify-between  rounded-lg"
+                  className="flex flex-col justify-between  rounded-lg text-sm"
                 />
               </motion.div>
               <motion.div
@@ -133,7 +133,7 @@ const Dashboard = () => {
                   description="View your progress, workout statistics, and overall fitness trends."
                   tabId="progress-insights"
                   textColor="text-white"
-                  className="flex flex-col justify-between  rounded-lg"
+                  className="flex flex-col justify-between  rounded-lg text-sm"
                 />
               </motion.div>
               <motion.div
@@ -146,7 +146,7 @@ const Dashboard = () => {
                   description="Update your personal information and view your fitness profile."
                   tabId="profile"
                   textColor="text-white"
-                  className="flex flex-col justify-between  rounded-lg"
+                  className="flex flex-col justify-between  rounded-lg text-sm"
                 />
               </motion.div>
             </div>
