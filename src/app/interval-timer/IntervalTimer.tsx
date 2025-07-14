@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import InputBox from "../../components/InputBox";
-import Card from "../../components/Card";
-import Button from "../../components/Button";
+import InputBox from "../components/InputBox";
+import Card from "../components/Card";
+import Button from "../components/Button";
 
 type Phase = "work" | "rest" | "complete";
 

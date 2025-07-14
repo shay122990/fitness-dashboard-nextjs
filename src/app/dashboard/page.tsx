@@ -4,9 +4,7 @@ import Card from "../components/Card";
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import IntervalTimer from "./components/IntervalTimer";
 import WaterTracker from "./components/WaterTracker";
-import TdeeCalculator from "./components/TdeeCalculator";
 
 const Dashboard = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -152,13 +150,7 @@ const Dashboard = () => {
             </div>
           </Card>
         </div>
-        <IntervalTimer />
         <WaterTracker />
-        <div className="relative col-span-full">
-          <Card className="text-center pb-8">
-            <TdeeCalculator />
-          </Card>
-        </div>
       </motion.div>
     </div>
   );

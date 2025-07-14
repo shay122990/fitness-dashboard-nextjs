@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname } from "next/navigation"; 
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { useSelector } from "react-redux";
@@ -8,18 +8,16 @@ import { RootState } from "../../store/store";
 import { useState } from "react";
 import { RiMenuFoldLine, RiMenuUnfoldLine } from "react-icons/ri";
 
-
-
 const Sidebar = () => {
-  const pathname = usePathname();  
-  const user = useSelector((state: RootState) => state.auth.user); 
-  const [isOpen, setIsOpen] = useState(false); 
+  const pathname = usePathname();
+  const user = useSelector((state: RootState) => state.auth.user);
+  const [isOpen, setIsOpen] = useState(false);
 
   const isActive = (path: string) => (pathname === path ? "bg-blue-950" : "");
 
   return (
     <>
-      <button 
+      <button
         className="fixed top-4 left-4 z-50 lg:hidden p-2 bg-gradient-to-br from-blue-800 to-gray-900  shadow-sm shadow-blue-400/80 text-white rounded-md"
         onClick={() => setIsOpen(!isOpen)}
         aria-label={isOpen ? "Close menu" : "Open menu"}
@@ -27,7 +25,7 @@ const Sidebar = () => {
         {isOpen ? <RiMenuUnfoldLine size={24} /> : <RiMenuFoldLine size={24} />}
       </button>
 
-      <div 
+      <div
         className={`fixed lg:static top-0 left-0 h-screen w-[150px] bg-gradient-to-b from-blue-700 to-blue-950 text-white transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 transition-transform duration-300 ease-in-out z-40`}
@@ -38,7 +36,7 @@ const Sidebar = () => {
       >
         <div className="h-full px-4 pt-16 flex flex-col items-center">
           <Image
-            src={user?.photoURL || "/today-logo.png"} 
+            src={user?.photoURL || "/today-logo.png"}
             width={100}
             height={100}
             alt="Profile Logo"
@@ -51,6 +49,7 @@ const Sidebar = () => {
               {[
                 { path: "/", label: "Dashboard" },
                 { path: "/workout-planner", label: "Planner" },
+                { path: "/interval-timer", label: "Interval-Timer" },
                 { path: "/nutrition-tracker", label: "Nutrition" },
                 { path: "/progress-insights", label: "Insights" },
                 { path: "/profile", label: "Profile" },
@@ -58,8 +57,10 @@ const Sidebar = () => {
                 <li key={path}>
                   <Link
                     href={path}
-                    className={`block w-full text-left hover:bg-gray-950/80  lg:uppercase text-sm rounded p-2 lg:p-3 ${isActive(path)}`}
-                    onClick={() => setIsOpen(false)} 
+                    className={`block w-full text-left hover:bg-gray-950/80  lg:uppercase text-sm rounded p-2 lg:p-3 ${isActive(
+                      path
+                    )}`}
+                    onClick={() => setIsOpen(false)}
                   >
                     {label}
                   </Link>
@@ -70,9 +71,9 @@ const Sidebar = () => {
         </div>
       </div>
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black bg-opacity-50 lg:hidden z-30"
-          onClick={() => setIsOpen(false)} 
+          onClick={() => setIsOpen(false)}
         ></div>
       )}
     </>
