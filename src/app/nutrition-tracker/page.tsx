@@ -312,7 +312,7 @@ const Nutrition = () => {
                   : "Add Eaten Calories"
               }
               onClick={() => handleAddOrUpdateCalories("eaten", eatenCalories)}
-              className="mt-2 bg-gradient-to-br from-gray-950  to-gray-800 text-green-400 shadow-md shadow-green-900/50"
+              className="mt-2 mb-4 bg-gradient-to-br from-gray-950  to-gray-800 text-green-400 shadow-md shadow-green-900/50"
             />
 
             <InputBox
