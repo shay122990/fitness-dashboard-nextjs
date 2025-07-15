@@ -187,7 +187,7 @@ const Nutrition = () => {
       <Card
         key={day}
         title={`${day} Entries`}
-        className="rounded-lg"
+        className="rounded-lg max-h-96 overflow-y-auto custom-scrollbar"
         description={
           <div className="space-y-4">
             <div>
