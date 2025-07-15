@@ -30,7 +30,8 @@ import Modal from "../components/Modal";
 const Nutrition = () => {
   const dispatch = useDispatch();
   const nutritionData = useSelector((state: RootState) => state.nutrition);
-  const [calories, setCalories] = useState<string>("");
+  const [eatenCalories, setEatenCalories] = useState<string>("");
+  const [burnedCalories, setBurnedCalories] = useState<string>("");
   const [editingEntry, setEditingEntry] = useState<{
     type: "eaten" | "burned";
     oldCalories: string;
@@ -45,7 +46,6 @@ const Nutrition = () => {
       setUserId(user?.uid || null);
       setAuthLoading(false);
     });
-
     return () => unsubscribe();
   }, []);
 
@@ -58,21 +58,23 @@ const Nutrition = () => {
         }
       }
     };
-
     loadCalories();
   }, [userId, dispatch]);
 
-  const handleAddOrUpdateCalories = async (type: "eaten" | "burned") => {
-    if (selectedDay && calories.trim() && userId) {
-      const calorieValue = calories.trim();
+  const handleAddOrUpdateCalories = async (
+    type: "eaten" | "burned",
+    value: string
+  ) => {
+    if (selectedDay && value.trim() && userId) {
+      const calorieValue = value.trim();
 
-      if (editingEntry) {
+      if (editingEntry && editingEntry.type === type) {
         dispatch(
           updateCalories({
             day: selectedDay,
             oldCalories: editingEntry.oldCalories,
             newCalories: calorieValue,
-            type: editingEntry.type,
+            type,
           })
         );
 
@@ -82,7 +84,7 @@ const Nutrition = () => {
             selectedDay,
             editingEntry.oldCalories,
             calorieValue,
-            editingEntry.type
+            type
           );
         } catch (error) {
           console.error("Failed to update calorie entry:", error);
@@ -101,7 +103,11 @@ const Nutrition = () => {
         }
       }
 
-      setCalories("");
+      if (type === "eaten") {
+        setEatenCalories("");
+      } else {
+        setBurnedCalories("");
+      }
     } else {
       setIsModalVisible(true);
     }
@@ -109,7 +115,12 @@ const Nutrition = () => {
 
   const startEditingEntry = (type: "eaten" | "burned", oldCalories: string) => {
     setEditingEntry({ type, oldCalories });
-    setCalories(oldCalories);
+
+    if (type === "eaten") {
+      setEatenCalories(oldCalories);
+    } else {
+      setBurnedCalories(oldCalories);
+    }
   };
 
   const handleClearCalories = async (day: string) => {
@@ -123,6 +134,7 @@ const Nutrition = () => {
       }
     }
   };
+
   const handleRemoveCalorie = async (
     day: string,
     calories: string,
@@ -269,11 +281,12 @@ const Nutrition = () => {
           <h1 className="text-xl font-bold uppercase text-green-400 drop-shadow-md">
             Nutrition Tracker
           </h1>
-          <h2 className=" drop-shadow-sm">
+          <h2 className="drop-shadow-sm">
             Keep track of your daily calorie intake or calories burned through
             workout.
           </h2>
         </div>
+
         <div className="flex flex-col lg:flex-row justify-between gap-5">
           <div className="lg:w-2/4">
             <DaySelector
@@ -281,41 +294,61 @@ const Nutrition = () => {
               onChange={setSelectedDay}
               days={daysOfWeek}
             />
+
             <InputBox
-              label="CALORIES"
-              placeholder={editingEntry ? "Update calories" : "Enter calories"}
-              value={calories}
-              onChange={setCalories}
+              label="Calories Eaten"
+              placeholder={
+                editingEntry?.type === "eaten"
+                  ? "Update eaten calories"
+                  : "Enter eaten calories"
+              }
+              value={eatenCalories}
+              onChange={setEatenCalories}
             />
-            <div className="flex gap-2 mt-2">
-              <Button
-                label={
-                  editingEntry ? "Update Eaten Calories" : "Add Eaten Calories"
-                }
-                onClick={() => handleAddOrUpdateCalories("eaten")}
-                className="bg-gradient-to-br from-gray-950  to-gray-800 text-green-400 shadow-md shadow-green-900/50"
-              />
-              <Button
-                label={
-                  editingEntry
-                    ? "Update Burned Calories"
-                    : "Add Burned Calories"
-                }
-                onClick={() => handleAddOrUpdateCalories("burned")}
-                className="bg-gradient-to-br from-gray-950  to-gray-800 text-orange-500 shadow-md shadow-orange-500/50"
-              />
-            </div>
+            <Button
+              label={
+                editingEntry?.type === "eaten"
+                  ? "Update Eaten Calories"
+                  : "Add Eaten Calories"
+              }
+              onClick={() => handleAddOrUpdateCalories("eaten", eatenCalories)}
+              className="mt-2 bg-gradient-to-br from-gray-950  to-gray-800 text-green-400 shadow-md shadow-green-900/50"
+            />
+
+            <InputBox
+              label="Calories Burned"
+              placeholder={
+                editingEntry?.type === "burned"
+                  ? "Update burned calories"
+                  : "Enter burned calories"
+              }
+              value={burnedCalories}
+              onChange={setBurnedCalories}
+            />
+            <Button
+              label={
+                editingEntry?.type === "burned"
+                  ? "Update Burned Calories"
+                  : "Add Burned Calories"
+              }
+              onClick={() =>
+                handleAddOrUpdateCalories("burned", burnedCalories)
+              }
+              className="mt-2 bg-gradient-to-br from-gray-950  to-gray-800 text-orange-500 shadow-md shadow-orange-500/50"
+            />
           </div>
+
           <div className="w-full lg:w-1/2">
-            <h3 className=" text-green-400 uppercase bg-gray-900 text-center p-6 rounded mb-2">
+            <h3 className="text-green-400 uppercase bg-gray-900 text-center p-6 rounded mb-2">
               Entries for {selectedDay}
             </h3>
-            <div className="">
+            <div>
               {nutritionData[selectedDay] &&
                 renderSelectedDayCard(selectedDay, nutritionData[selectedDay])}
             </div>
           </div>
         </div>
+
         <h3 className="mt-2 text-green-400 uppercase bg-gray-900 text-center p-6 rounded mb-2">
           Entries for the Week
         </h3>
@@ -323,6 +356,7 @@ const Nutrition = () => {
           {renderWeekCards()}
         </div>
       </div>
+
       <Modal
         message="Please enter a valid calorie number."
         visible={isModalVisible}
