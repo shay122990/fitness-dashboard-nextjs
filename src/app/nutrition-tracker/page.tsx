@@ -157,9 +157,9 @@ const Nutrition = () => {
     const renderEntries = (entries: string[], type: "eaten" | "burned") => (
       <div className="space-y-2">
         {entries.length > 0 ? (
-          entries.map((entry) => (
+          entries.map((entry, index) => (
             <div
-              key={entry}
+              key={`${entry}-${index}`}
               className="flex justify-between items-center bg-gray-800 p-2 rounded-md"
             >
               <span className="text-white">{entry} kcal</span>
@@ -229,9 +229,9 @@ const Nutrition = () => {
               </span>
               <div className="space-y-2">
                 {data.eaten.length > 0 ? (
-                  data.eaten.map((entry) => (
+                  data.eaten.map((entry, index) => (
                     <div
-                      key={entry}
+                      key={`eaten-${index}-${entry}`}
                       className="flex justify-between items-center bg-gray-800 p-2 rounded-md"
                     >
                       <span className="text-white">{entry} kcal</span>
@@ -248,9 +248,9 @@ const Nutrition = () => {
               </span>
               <div className="space-y-2">
                 {data.burned.length > 0 ? (
-                  data.burned.map((entry) => (
+                  data.burned.map((entry, index) => (
                     <div
-                      key={entry}
+                      key={`eaten-${index}-${entry}`}
                       className="flex justify-between items-center bg-gray-800 p-2 rounded-md"
                     >
                       <span className="text-white">{entry} kcal</span>
