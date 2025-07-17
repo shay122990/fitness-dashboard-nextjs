@@ -216,57 +216,35 @@ const Nutrition = () => {
   };
 
   const renderWeekCards = () => {
-    return Object.entries(nutritionData).map(([day, data]) => (
-      <Card
-        key={day}
-        title={`${day} Entries`}
-        className="rounded-lg max-h-96 overflow-y-auto custom-scrollbar"
-        description={
-          <div className="space-y-4">
-            <div>
-              <span className="text-green-300 font-semibold">
-                Eaten Calories
-              </span>
-              <div className="space-y-2">
-                {data.eaten.length > 0 ? (
-                  data.eaten.map((entry, index) => (
-                    <div
-                      key={`eaten-${index}-${entry}`}
-                      className="flex justify-between items-center bg-gray-800 p-2 rounded-md"
-                    >
-                      <span className="text-white">{entry} kcal</span>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-gray-400">None</p>
-                )}
-              </div>
+    return Object.entries(nutritionData).map(([day, data]) => {
+      const totalEaten = data.eaten.reduce(
+        (sum, val) => sum + parseInt(val),
+        0
+      );
+      const totalBurned = data.burned.reduce(
+        (sum, val) => sum + parseInt(val),
+        0
+      );
+      const net = totalEaten - totalBurned;
+
+      return (
+        <Card
+          key={day}
+          title={`${day} Summary`}
+          className="rounded-lg p-4 text-white bg-gray-900 shadow-md"
+          textColor="text-white"
+          description={
+            <div className="space-y-2 text-sm">
+              <p className="text-green-300">Total Eaten: {totalEaten} kcal</p>
+              <p className="text-red-300">Total Burned: {totalBurned} kcal</p>
+              <p className="text-yellow-400 font-semibold">Net: {net} kcal</p>
             </div>
-            <div>
-              <span className="text-red-300 font-semibold">
-                Burned Calories
-              </span>
-              <div className="space-y-2">
-                {data.burned.length > 0 ? (
-                  data.burned.map((entry, index) => (
-                    <div
-                      key={`eaten-${index}-${entry}`}
-                      className="flex justify-between items-center bg-gray-800 p-2 rounded-md"
-                    >
-                      <span className="text-white">{entry} kcal</span>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-gray-400">None</p>
-                )}
-              </div>
-            </div>
-          </div>
-        }
-        textColor="text-white"
-      />
-    ));
+          }
+        />
+      );
+    });
   };
+
   const totalEaten = Object.values(nutritionData)
     .flatMap((entry) => entry.eaten)
     .reduce((acc, curr) => acc + parseInt(curr), 0);
