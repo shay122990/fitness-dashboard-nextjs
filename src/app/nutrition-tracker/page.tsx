@@ -267,15 +267,15 @@ const Nutrition = () => {
       />
     ));
   };
-  // const totalEaten = Object.values(nutritionData)
-  //   .flatMap((entry) => entry.eaten)
-  //   .reduce((acc, curr) => acc + parseInt(curr), 0);
+  const totalEaten = Object.values(nutritionData)
+    .flatMap((entry) => entry.eaten)
+    .reduce((acc, curr) => acc + parseInt(curr), 0);
 
-  // const totalBurned = Object.values(nutritionData)
-  //   .flatMap((entry) => entry.burned)
-  //   .reduce((acc, curr) => acc + parseInt(curr), 0);
+  const totalBurned = Object.values(nutritionData)
+    .flatMap((entry) => entry.burned)
+    .reduce((acc, curr) => acc + parseInt(curr), 0);
 
-  // const netCalories = totalEaten - totalBurned;
+  const netCalories = totalEaten - totalBurned;
 
   return (
     <AuthCheck
@@ -363,6 +363,20 @@ const Nutrition = () => {
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {renderWeekCards()}
+        </div>
+      </div>
+      <div className="mt-6 bg-gray-900 p-6 rounded shadow-lg text-center">
+        <h3 className="text-xl font-bold text-white mb-4">Weekly Summary</h3>
+        <div className="flex flex-col sm:flex-row justify-around text-white gap-4">
+          <div className="text-green-400 font-semibold">
+            Total Eaten: {totalEaten} kcal
+          </div>
+          <div className="text-red-400 font-semibold">
+            Total Burned: {totalBurned} kcal
+          </div>
+          <div className="text-yellow-400 font-semibold">
+            Net Calories: {netCalories} kcal
+          </div>
         </div>
       </div>
 
