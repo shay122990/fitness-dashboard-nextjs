@@ -267,6 +267,15 @@ const Nutrition = () => {
       />
     ));
   };
+  // const totalEaten = Object.values(nutritionData)
+  //   .flatMap((entry) => entry.eaten)
+  //   .reduce((acc, curr) => acc + parseInt(curr), 0);
+
+  // const totalBurned = Object.values(nutritionData)
+  //   .flatMap((entry) => entry.burned)
+  //   .reduce((acc, curr) => acc + parseInt(curr), 0);
+
+  // const netCalories = totalEaten - totalBurned;
 
   return (
     <AuthCheck
