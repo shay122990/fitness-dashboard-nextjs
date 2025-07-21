@@ -4,7 +4,6 @@ import Card from "../components/Card";
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import WaterTracker from "./components/WaterTracker";
 
 const Dashboard = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -150,7 +149,6 @@ const Dashboard = () => {
             </div>
           </Card>
         </div>
-        <WaterTracker />
       </motion.div>
     </div>
   );
