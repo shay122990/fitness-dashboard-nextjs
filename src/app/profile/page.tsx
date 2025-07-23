@@ -50,7 +50,7 @@ const Profile = () => {
           <h1 className="text-2xl font-bold text-center mb-4">Your Profile</h1>
           {user ? (
             <>
-              <div className="text-white">
+              <div className="text-white ">
                 <Image
                   src={user.photoURL || "/default-profile.png"}
                   alt={user.name || "Profile Picture"}
@@ -65,16 +65,18 @@ const Profile = () => {
                   <span className="font-semibold">Email:</span> {user.email}
                 </p>
               </div>
-              <Button
-                label="Log Out"
-                onClick={handleLogout}
-                className="w-52 bg-red-500"
-              />
-              <Button
-                label="Go to Dashboard"
-                onClick={() => router.push("/dashboard")}
-                className="w-52 bg-blue-500"
-              />{" "}
+              <div className="w-full flex flex-col items-center gap-2">
+                <Button
+                  label="Log Out"
+                  onClick={handleLogout}
+                  className="w-52 bg-red-500"
+                />
+                <Button
+                  label="Go to Dashboard"
+                  onClick={() => router.push("/dashboard")}
+                  className="w-52 bg-blue-500"
+                />
+              </div>
             </>
           ) : (
             <Button
