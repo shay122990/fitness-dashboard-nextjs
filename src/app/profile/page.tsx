@@ -22,7 +22,6 @@ const Profile = () => {
     try {
       setLoading(true);
       await googleSignIn(dispatch);
-      router.push("/");
     } catch (error) {
       console.error("Sign-In failed:", error);
     } finally {
@@ -71,6 +70,11 @@ const Profile = () => {
                 onClick={handleLogout}
                 className="w-52 bg-red-500"
               />
+              <Button
+                label="Go to Dashboard"
+                onClick={() => router.push("/dashboard")}
+                className="w-52 bg-blue-500"
+              />{" "}
             </>
           ) : (
             <Button
