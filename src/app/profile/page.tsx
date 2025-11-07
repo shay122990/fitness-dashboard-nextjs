@@ -11,6 +11,7 @@ import Image from "next/image";
 import Button from "../components/Button";
 import { useRouter } from "next/navigation";
 import WaterTracker from "./components/WaterTracker";
+import WeeklySummaryCard from "./components/WeeklySummaryCard";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -89,6 +90,9 @@ const Profile = () => {
         </div>
         <div className="w-full flex flex-row items-start">
           <WaterTracker />
+        </div>
+        <div className="w-full flex flex-row ">
+          <WeeklySummaryCard />
         </div>
       </div>
     </div>
