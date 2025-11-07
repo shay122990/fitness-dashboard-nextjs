@@ -1,64 +1,69 @@
 "use client";
+
 import React, { useEffect, useMemo, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../../../firebase/firebase-config";
-import {
-  fetchUserWorkouts,
-  fetchCalorieEntries,
-} from "../../../firebase/firestore";
-import AuthCheck from "../../components/AuthCheck";
+import { auth } from "@/firebase/firebase-config";
+import { fetchUserWorkouts, fetchCalorieEntries } from "@/firebase/firestore";
+import Card from "../../components/Card";
 
-type DayKey = "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat" | "Sun";
-const DAYS: DayKey[] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+type ShortDay = "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat" | "Sun";
+const SHORT_DAYS: ShortDay[] = [
+  "Mon",
+  "Tue",
+  "Wed",
+  "Thu",
+  "Fri",
+  "Sat",
+  "Sun",
+];
 
-const Skeleton = () => (
-  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-    <div className="rounded-2xl border border-white/10 bg-black/30 p-4">
-      <div className="h-4 w-32 animate-pulse rounded bg-white/10 mb-3" />
-      <div className="h-8 w-24 animate-pulse rounded bg-white/10" />
-    </div>
-    <div className="rounded-2xl border border-white/10 bg-black/30 p-4">
-      <div className="h-4 w-40 animate-pulse rounded bg-white/10 mb-3" />
-      <div className="h-8 w-32 animate-pulse rounded bg-white/10" />
-    </div>
-  </div>
-);
+const fullToShort: Record<string, ShortDay> = {
+  Monday: "Mon",
+  Tuesday: "Tue",
+  Wednesday: "Wed",
+  Thursday: "Thu",
+  Friday: "Fri",
+  Saturday: "Sat",
+  Sunday: "Sun",
+};
 
-const Stat = ({
-  label,
-  value,
-  sublabel,
-}: {
-  label: string;
-  value: string;
-  sublabel?: string;
-}) => (
-  <div className="rounded-2xl border border-white/10 bg-black/30 p-4">
-    <p className="text-sm text-white/70">{label}</p>
-    <p className="mt-1 text-3xl font-semibold tracking-tight">{value}</p>
-    {sublabel ? <p className="mt-1 text-xs text-white/50">{sublabel}</p> : null}
-  </div>
-);
+interface CaloriesDayData {
+  eaten: (number | string)[];
+  burned: (number | string)[];
+}
+
+interface CaloriesByFullDay {
+  [key: string]: CaloriesDayData;
+}
 
 const WeeklySummaryCard: React.FC = () => {
   const [authLoading, setAuthLoading] = useState(true);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
 
-  const [workoutsByDay, setWorkoutsByDay] = useState<
-    Partial<Record<DayKey, unknown[]>>
-  >({});
-  const [caloriesByDay, setCaloriesByDay] = useState<
-    Partial<
-      Record<
-        DayKey,
-        {
-          eaten?: (number | string)[];
-          burned?: (number | string)[];
-        }
-      >
-    >
-  >({});
+  const [workoutsByShort, setWorkoutsByShort] = useState<
+    Record<ShortDay, number>
+  >({
+    Mon: 0,
+    Tue: 0,
+    Wed: 0,
+    Thu: 0,
+    Fri: 0,
+    Sat: 0,
+    Sun: 0,
+  });
+
+  const [caloriesByShort, setCaloriesByShort] = useState<
+    Record<ShortDay, { eaten: number[]; burned: number[] }>
+  >({
+    Mon: { eaten: [], burned: [] },
+    Tue: { eaten: [], burned: [] },
+    Wed: { eaten: [], burned: [] },
+    Thu: { eaten: [], burned: [] },
+    Fri: { eaten: [], burned: [] },
+    Sat: { eaten: [], burned: [] },
+    Sun: { eaten: [], burned: [] },
+  });
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
@@ -71,11 +76,10 @@ const WeeklySummaryCard: React.FC = () => {
   useEffect(() => {
     const run = async () => {
       if (!userId) {
-        setWorkoutsByDay({});
-        setCaloriesByDay({});
         setLoading(false);
         return;
       }
+
       setLoading(true);
       try {
         const [uw, uc] = await Promise.all([
@@ -83,86 +87,131 @@ const WeeklySummaryCard: React.FC = () => {
           fetchCalorieEntries(userId),
         ]);
 
-        const normWorkouts: Partial<Record<DayKey, unknown[]>> = {};
-        const normCalories: Partial<
-          Record<
-            DayKey,
-            { eaten?: (number | string)[]; burned?: (number | string)[] }
-          >
-        > = {};
+        const wNorm: Record<ShortDay, number> = {
+          Mon: 0,
+          Tue: 0,
+          Wed: 0,
+          Thu: 0,
+          Fri: 0,
+          Sat: 0,
+          Sun: 0,
+        };
+        if (uw && typeof uw === "object") {
+          Object.entries(uw).forEach(([fullDay, arr]) => {
+            const short = fullToShort[fullDay] ?? (fullDay as ShortDay);
+            if (SHORT_DAYS.includes(short) && Array.isArray(arr)) {
+              wNorm[short] = arr.length;
+            }
+          });
+        }
 
-        DAYS.forEach((d) => {
-          const w = (uw?.[d] as unknown[]) || [];
-          const c =
-            (uc?.[d] as {
-              eaten?: (number | string)[];
-              burned?: (number | string)[];
-            }) || {};
-          normWorkouts[d] = w;
-          normCalories[d] = {
-            eaten: Array.isArray(c.eaten) ? c.eaten : [],
-            burned: Array.isArray(c.burned) ? c.burned : [],
-          };
-        });
+        const cNorm: Record<ShortDay, { eaten: number[]; burned: number[] }> = {
+          Mon: { eaten: [], burned: [] },
+          Tue: { eaten: [], burned: [] },
+          Wed: { eaten: [], burned: [] },
+          Thu: { eaten: [], burned: [] },
+          Fri: { eaten: [], burned: [] },
+          Sat: { eaten: [], burned: [] },
+          Sun: { eaten: [], burned: [] },
+        };
 
-        setWorkoutsByDay(normWorkouts);
-        setCaloriesByDay(normCalories);
+        if (uc && typeof uc === "object") {
+          const caloriesObj = uc as CaloriesByFullDay;
+
+          Object.entries(caloriesObj).forEach(([fullDay, data]) => {
+            const short = fullToShort[fullDay] ?? (fullDay as ShortDay);
+            if (!SHORT_DAYS.includes(short)) return;
+
+            const eatenArr = Array.isArray(data.eaten) ? data.eaten : [];
+            const burnedArr = Array.isArray(data.burned) ? data.burned : [];
+
+            cNorm[short] = {
+              eaten: eatenArr.map((v) =>
+                typeof v === "number" ? v : parseInt(v, 10) || 0
+              ),
+              burned: burnedArr.map((v) =>
+                typeof v === "number" ? v : parseInt(v, 10) || 0
+              ),
+            };
+          });
+        }
+
+        setWorkoutsByShort(wNorm);
+        setCaloriesByShort(cNorm);
       } catch (e) {
         console.error("WeeklySummaryCard load error:", e);
       } finally {
         setLoading(false);
       }
     };
+
     run();
   }, [userId]);
 
-  const { daysWorkedOut, totalCaloriesEaten } = useMemo(() => {
-    const daysWorked = DAYS.reduce((acc, d) => {
-      const sessions = workoutsByDay[d]?.length ?? 0;
-      return acc + (sessions > 0 ? 1 : 0);
+  const USE_BURNED = true;
+
+  const { daysWorkedOut, totalCalories } = useMemo(() => {
+    const daysWorked = SHORT_DAYS.reduce(
+      (acc, d) => acc + (workoutsByShort[d] > 0 ? 1 : 0),
+      0
+    );
+
+    const calTotal = SHORT_DAYS.reduce((acc, d) => {
+      const arr = USE_BURNED
+        ? caloriesByShort[d].burned
+        : caloriesByShort[d].eaten;
+      return acc + arr.reduce((s, n) => s + n, 0);
     }, 0);
 
-    const caloriesTotal = DAYS.reduce((acc: number, d) => {
-      const eatenArr = caloriesByDay[d]?.eaten ?? [];
-      const sum = eatenArr.reduce((s: number, v): number => {
-        const num = typeof v === "number" ? v : parseInt(String(v), 10) || 0;
-        return s + num;
-      }, 0);
-      return acc + sum;
-    }, 0);
-
-    return { daysWorkedOut: daysWorked, totalCaloriesEaten: caloriesTotal };
-  }, [workoutsByDay, caloriesByDay]);
+    return { daysWorkedOut: daysWorked, totalCalories: calTotal };
+  }, [workoutsByShort, caloriesByShort]);
 
   return (
-    <AuthCheck
-      authLoading={authLoading}
-      userId={userId}
-      loading={loading}
-      onRedirect={() => (window.location.href = "/profile")}
-      message="Sign in to view your weekly summary."
+    <Card
+      title="Weekly Summary"
+      description={
+        USE_BURNED
+          ? "Workouts and calories burned this week."
+          : "Workouts and calories eaten this week."
+      }
+      className="p-6 text-white text-center rounded-lg shadow-md bg-black/55 max-w-full"
     >
-      <div className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/5 to-white/[0.03] p-4">
-        <h2 className="mb-3 text-lg font-semibold">This Week</h2>
-
-        {loading ? (
-          <Skeleton />
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Stat
-              label="Days Worked Out"
-              value={`${daysWorkedOut} / 7`}
-              sublabel="Mon–Sun"
-            />
-            <Stat
-              label="Calories Eaten"
-              value={`${totalCaloriesEaten.toLocaleString()} kcal`}
-              sublabel="Weekly total"
-            />
+      {authLoading || loading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {[1, 2].map((i) => (
+            <div
+              key={i}
+              className="rounded-lg border border-white/10 bg-black/30 p-4 animate-pulse"
+            >
+              <div className="h-4 w-24 bg-white/10 rounded mb-2" />
+              <div className="h-8 w-16 bg-white/10 rounded" />
+            </div>
+          ))}
+        </div>
+      ) : userId ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="rounded-lg border border-white/10 bg-gradient-to-br from-gray-950 to-gray-800 p-4">
+            <p className="text-sm text-white/70">Days Worked Out</p>
+            <p className="mt-1 text-3xl font-semibold tracking-tight">
+              {daysWorkedOut} / 7
+            </p>
+            <p className="mt-1 text-xs text-white/50">Mon–Sun</p>
           </div>
-        )}
-      </div>
-    </AuthCheck>
+
+          <div className="rounded-lg border border-white/10 bg-gradient-to-br from-gray-950 to-gray-800 p-4">
+            <p className="text-sm text-white/70">
+              Calories {USE_BURNED ? "Burned" : "Eaten"}
+            </p>
+            <p className="mt-1 text-3xl font-semibold tracking-tight">
+              {totalCalories.toLocaleString()} kcal
+            </p>
+            <p className="mt-1 text-xs text-white/50">Weekly total</p>
+          </div>
+        </div>
+      ) : (
+        <p className="text-red-400">Please log in to see your summary.</p>
+      )}
+    </Card>
   );
 };
 
