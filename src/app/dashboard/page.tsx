@@ -9,7 +9,7 @@ const Dashboard = () => {
   const user = useSelector((state: RootState) => state.auth.user);
 
   return (
-    <div className="mb-24 p-6 bg-black bg-opacity-30 w-full rounded">
+    <div className="mb-24 p-6 w-full ">
       <motion.div
         className="relative flex flex-col justify-center items-center align-middle text-white p-6 rounded-lg text-center mb-8 h-auto lg:h-96 overflow-hidden gap-4"
         initial={{ opacity: 0, y: -50 }}

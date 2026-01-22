@@ -127,10 +127,10 @@ const WeeklySummaryCard: React.FC = () => {
 
             cNorm[short] = {
               eaten: eatenArr.map((v) =>
-                typeof v === "number" ? v : parseInt(v, 10) || 0
+                typeof v === "number" ? v : parseInt(v, 10) || 0,
               ),
               burned: burnedArr.map((v) =>
-                typeof v === "number" ? v : parseInt(v, 10) || 0
+                typeof v === "number" ? v : parseInt(v, 10) || 0,
               ),
             };
           });
@@ -153,7 +153,7 @@ const WeeklySummaryCard: React.FC = () => {
   const { daysWorkedOut, totalCalories } = useMemo(() => {
     const daysWorked = SHORT_DAYS.reduce(
       (acc, d) => acc + (workoutsByShort[d] > 0 ? 1 : 0),
-      0
+      0,
     );
 
     const calTotal = SHORT_DAYS.reduce((acc, d) => {

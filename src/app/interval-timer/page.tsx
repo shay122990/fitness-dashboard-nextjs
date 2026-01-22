@@ -142,88 +142,90 @@ const IntervalTimer = () => {
   };
 
   return (
-    <Card
-      title="Interval Timer"
-      description="Customize your interval training by setting work, rest, rounds, and super rounds."
-      className="text-center rounded-lg"
-    >
-      <div className="min-h-[380px] flex flex-col items-center justify-center">
-        {!hasStarted ? (
-          <div className="grid grid-cols-1 gap-3 w-full">
-            <InputBox
-              placeholder="Enter number of super rounds"
-              label="Super Rounds"
-              value={superRounds}
-              onChange={setSuperRounds}
-              type="number"
-            />
-            <InputBox
-              placeholder="Enter number of rounds"
-              label="Rounds per Super Round"
-              value={rounds}
-              onChange={setRounds}
-              type="number"
-            />
-            <InputBox
-              placeholder="Enter workout time"
-              label="Work Time (seconds)"
-              value={workTime}
-              onChange={setWorkTime}
-              type="number"
-            />
-            <InputBox
-              placeholder="Enter rest time"
-              label="Rest Time (seconds)"
-              value={restTime}
-              onChange={setRestTime}
-              type="number"
-            />
-          </div>
-        ) : currentPhase !== "complete" ? (
-          <>
-            <h2 className="text-2xl font-bold mt-4 capitalize">
-              {currentPhase} Time
-            </h2>
-            <p className="text-5xl font-bold my-4">{timeLeft}s</p>
-            <p className="text-lg">
-              Round {currentRound}/{rounds}
-            </p>
-            <p className="text-lg">
-              Super Round {currentSuperRound}/{superRounds}
-            </p>
-          </>
-        ) : (
-          <div className="text-green-500 text-xl font-bold mt-6">
-            🎉 Workout complete! Great job!
-          </div>
-        )}
-      </div>
-
-      <div className="flex justify-center gap-4 mt-6">
-        {!hasStarted ? (
-          <Button
-            label="Start"
-            onClick={handleStart}
-            className="bg-gradient-to-br from-gray-950 to-gray-800 text-green-400 shadow-md shadow-green-400/50"
-          />
-        ) : (
-          <>
-            {currentPhase !== "complete" && (
-              <Button
-                label={isRunning ? "Pause" : "Resume"}
-                onClick={handlePauseResume}
-                className="bg-blue-500 text-white"
+    <div className="w-full mt-8 md:0">
+      <Card
+        title="Interval Timer"
+        description="Customize your interval training by setting work, rest, rounds, and super rounds."
+        className="text-center rounded-lg"
+      >
+        <div className="min-h-[380px] flex flex-col items-center justify-center">
+          {!hasStarted ? (
+            <div className="grid grid-cols-1 gap-3 w-full">
+              <InputBox
+                placeholder="Enter number of super rounds"
+                label="Super Rounds"
+                value={superRounds}
+                onChange={setSuperRounds}
+                type="number"
               />
-            )}
+              <InputBox
+                placeholder="Enter number of rounds"
+                label="Rounds per Super Round"
+                value={rounds}
+                onChange={setRounds}
+                type="number"
+              />
+              <InputBox
+                placeholder="Enter workout time"
+                label="Work Time (seconds)"
+                value={workTime}
+                onChange={setWorkTime}
+                type="number"
+              />
+              <InputBox
+                placeholder="Enter rest time"
+                label="Rest Time (seconds)"
+                value={restTime}
+                onChange={setRestTime}
+                type="number"
+              />
+            </div>
+          ) : currentPhase !== "complete" ? (
+            <>
+              <h2 className="text-2xl font-bold mt-4 capitalize">
+                {currentPhase} Time
+              </h2>
+              <p className="text-5xl font-bold my-4">{timeLeft}s</p>
+              <p className="text-lg">
+                Round {currentRound}/{rounds}
+              </p>
+              <p className="text-lg">
+                Super Round {currentSuperRound}/{superRounds}
+              </p>
+            </>
+          ) : (
+            <div className="text-green-500 text-xl font-bold mt-6">
+              🎉 Workout complete! Great job!
+            </div>
+          )}
+        </div>
+
+        <div className="flex justify-center gap-4 mt-6">
+          {!hasStarted ? (
             <Button
-              label="Reset"
-              onClick={handleReset}
-              className="bg-red-500 text-white"
+              label="Start"
+              onClick={handleStart}
+              className="bg-gradient-to-br from-gray-950 to-gray-800 text-green-400 shadow-md shadow-green-400/50"
             />
-          </>
-        )}
-      </div>
-    </Card>
+          ) : (
+            <>
+              {currentPhase !== "complete" && (
+                <Button
+                  label={isRunning ? "Pause" : "Resume"}
+                  onClick={handlePauseResume}
+                  className="bg-blue-500 text-white"
+                />
+              )}
+              <Button
+                label="Reset"
+                onClick={handleReset}
+                className="bg-red-500 text-white"
+              />
+            </>
+          )}
+        </div>
+      </Card>
+    </div>
   );
 };
 
