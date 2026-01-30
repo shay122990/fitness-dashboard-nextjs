@@ -164,7 +164,7 @@ const WeeklySummaryCard: React.FC = () => {
     }, 0);
 
     return { daysWorkedOut: daysWorked, totalCalories: calTotal };
-  }, [workoutsByShort, caloriesByShort]);
+  }, [workoutsByShort, caloriesByShort, USE_BURNED]);
 
   return (
     <Card
