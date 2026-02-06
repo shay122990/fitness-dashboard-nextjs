@@ -174,7 +174,7 @@ const WeeklySummaryCard: React.FC = () => {
           ? "Workouts and calories burned this week."
           : "Workouts and calories eaten this week."
       }
-      className="p-6 text-white text-center rounded-lg shadow-md bg-black/55 max-w-full"
+      className="p-6 text-white text-center rounded-lg shadow-md min-h-[220px]"
     >
       {authLoading || loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
